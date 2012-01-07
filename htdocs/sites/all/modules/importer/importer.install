@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @file
+ * Installation / uninstallation routines.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function importer_install() {
+    if (!db_table_exists('importer_change_log')) {
+        drupal_install_schema('importer');
+    }
+}
+
+function importer_schema() {
+    $schema['importer_change_log'] = array(
+        'description' => 'Generic cache table for caching things not separated out into their own tables. Contributed modules may also use this to store cached items.',
+        'fields' => array(
+            'table_name' => array(
+                'description' => t('Primary Key: The name of the table that had it\'s field modified.'),
+                'type' => 'varchar',
+                'length' => '255',
+                'default' => '',
+                'not null' => TRUE,
+             ),
+             'record_id' => array(
+                'description' => t('Primary Key. The id of the record conected to this log entry.'),
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'size' => 'normal',
+                'not null' => TRUE,
+                'default' => 0,
+             ),
+             'field_name' => array(
+                'description' => t('Name of the field that has been modified.'),
+                'type' => 'varchar',
+                'length' => '255',
+                'default' => '',
+                'not null' => TRUE,
+             ),
+             'old_value' => array(
+                'description' => t('Old value of the field (old filename the field is linked to).'),
+                'type' => 'text',
+                'size' => 'normal',
+                'not null' => TRUE,
+             ),
+             'new_value' => array(
+                'description' => t('New value of the field (the real path the field is linked to).'),
+                'type' => 'text',
+                'size' => 'normal',
+                'not null' => TRUE,
+             ),
+         ),
+         'primary key' => array('table_name', 'record_id'),
+         /*
+         'indexes' => array(
+            'old_value' => array('old_value(64)'),
+         ),
+          */
+    );
+    return $schema;
+}
+
+function importer_uninstall() {
+    drupal_uninstall_schema('importer');
+}

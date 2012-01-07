@@ -1,0 +1,12 @@
+; $Id: autoadmin_simpletest.info,v 1.6 2011/01/25 10:53:22 rune Exp $
+name = Autoadmin_simpletest
+description = Simpletests for Auto Admin
+package = Database
+dependencies[] = autoadmin
+
+; Information added by drupal.org packaging script on January 1, 1970 - 00:00
+version = "6.x-1.8"
+core = "6.x"
+project = "autoadmin"
+datestamp = "1296037353"
+
