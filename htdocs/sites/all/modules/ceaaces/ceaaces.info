@@ -1,0 +1,7 @@
+; $Id: content.info,v 1.6 2007/07/04 23:46:29 yched Exp $
+name = Ceaaces
+description = Módulo de apoyo a la evaluación de Universidades e Institutos.
+package = CEAACES
+version = "6.x-1.0"
+core = 6.x
+
