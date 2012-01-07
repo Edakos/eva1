@@ -1,4 +1,24 @@
 <?php
 
-  $frf = 1;
+/**
+ * hook_autoload_info implementation.
+ * The hook was provided by the 'autoload' module.
+ * http://engineeredweb.com/blog/10/5/3-tips-using-external-libraries-drupal
+  */
+function ceaaces_autoload_info() {
 
+  return array(
+    'PHPExcel' => array(
+      'file' => 'PHPExcel.php',
+      'file path' => libraries_get_path('PHPExcel'),
+    ),
+    'idiorm' => array(
+      'file' => 'idiorm.php',
+      'file path' => libraries_get_path('j4mie-orm'),
+    ),
+    'paris' => array(
+      'file' => 'paris.php',
+      'file path' => libraries_get_path('j4mie-orm'),
+    ),
+  );
+}
