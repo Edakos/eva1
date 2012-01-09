@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- SQL XML created by WWW SQL Designer, http://code.google.com/p/wwwsqldesigner/ -->
-<!-- Active URL: http://sql.edgarvalarezo.com/ -->
 <sql>
 <datatypes db="postgresql">
 	<group label="Numeric" color="rgb(238,238,170)">
@@ -42,32 +40,10 @@
 		<type label="Geometry" length="0" sql="GEOMETRY" quote="'"/>
 	</group>
 </datatypes><table x="111" y="36" name="criterio">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_criterio_padre" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default><relation table="criterio" row="id" />
-</row>
-<row name="codigo" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="descripcion" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
-<row name="id_tipo_instituto" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default><relation table="tipo_instituto" row="id" />
-</row>
-<key type="PRIMARY" name="">
-<part>id</part>
-</key>
-</table>
-<table x="428" y="20" name="indicador">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
-<row name="id_criterio" null="0" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="criterio" row="id" />
 </row>
@@ -77,36 +53,76 @@
 <row name="descripcion" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="id_tipo_instituto" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="tipo_instituto" row="id" />
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="428" y="20" name="indicador">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="id_criterio" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="criterio" row="id" />
+</row>
+<row name="codigo" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="descripcion" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="649" y="52" name="formula">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
-<row name="id_indicador" null="0" autoincrement="0">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="id_indicador" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="indicador" row="id" />
 </row>
-<row name="id_variable" null="0" autoincrement="0">
+<row name="id_variable" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="variable" row="id" />
 </row>
 <row name="orden" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="864" y="247" name="variable">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_tipo_dato" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="tipo_dato" row="id" />
+<relation table="tipo_dato" row="id" />
 </row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -116,26 +132,32 @@
 <default>NULL</default></row>
 <row name="id_tipo_instituto" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="tipo_instituto" row="id" />
+<relation table="tipo_instituto" row="id" />
 </row>
 <row name="borrado" null="1" autoincrement="0">
 <datatype>BOOLEAN</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="625" y="310" name="valor">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_variable" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="variable" row="id" />
+<relation table="variable" row="id" />
 </row>
 <row name="id_instituto" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="instituto" row="id" />
+<relation table="instituto" row="id" />
 </row>
 <row name="dato" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -146,15 +168,21 @@
 <row name="borrado" null="1" autoincrement="0">
 <datatype>BOOLEAN</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="368" y="434" name="instituto">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
-<row name="id_tipo_instituto" null="0" autoincrement="0">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="id_tipo_instituto" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="tipo_instituto" row="id" />
 </row>
@@ -178,68 +206,92 @@
 <default>NULL</default></row>
 <row name="id_lugar" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="lugar" row="id" />
+<relation table="lugar" row="id" />
 </row>
 <row name="id_financiamiento" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="financiamiento" row="id" />
+<relation table="financiamiento" row="id" />
 </row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="123" y="982" name="provincia">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_pais" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="pais" row="id" />
+<relation table="pais" row="id" />
 </row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="151" y="863" name="canton">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_provincia" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="provincia" row="id" />
+<relation table="provincia" row="id" />
 </row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="172" y="732" name="parroquia">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_canton" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="canton" row="id" />
+<relation table="canton" row="id" />
 </row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="854" y="79" name="valor_posible">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_variable" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="variable" row="id" />
+<relation table="variable" row="id" />
 </row>
 <row name="dato" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -247,59 +299,77 @@
 <row name="descripcion" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="903" y="452" name="tipo_dato">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="438" y="200" name="tipo_instituto">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 <comment>universidad o instituto</comment>
 </table>
 <table x="630" y="649" name="profesor">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_persona" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="persona" row="id" />
+<relation table="persona" row="id" />
 </row>
 <row name="id_instituto" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="instituto" row="id" />
+<relation table="instituto" row="id" />
 </row>
 <row name="fecha_ingreso" null="1" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>NULL</default></row>
 <row name="id_relacion_trabajo" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="relacion_trabajo" row="id" />
+<relation table="relacion_trabajo" row="id" />
 </row>
 <row name="id_cargo" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="cargo" row="id" />
+<relation table="cargo" row="id" />
 </row>
 <row name="id_categoria" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="categoria" row="id" />
+<relation table="categoria" row="id" />
 </row>
 <row name="sueldo" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
@@ -309,7 +379,7 @@
 <default>NULL</default></row>
 <row name="id_unidad_academica" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="unidad_academica" row="id" />
+<relation table="unidad_academica" row="id" />
 </row>
 <row name="email" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -317,21 +387,27 @@
 <row name="observaciones" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="626" y="1413" name="alumno">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_persona" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="persona" row="id" />
+<relation table="persona" row="id" />
 </row>
 <row name="id_carrera" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="carrera" row="id" />
+<relation table="carrera" row="id" />
 </row>
 <row name="num_matricula" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -339,14 +415,20 @@
 <row name="observaciones" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="891" y="1126" name="persona">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="prefijo" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
@@ -382,7 +464,7 @@
 <default>NULL</default></row>
 <row name="id_lugar_nacimiento" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="lugar" row="id" />
+<relation table="lugar" row="id" />
 </row>
 <row name="es_mujer" null="0" autoincrement="0">
 <datatype>INTEGER</datatype>
@@ -390,45 +472,63 @@
 </row>
 <row name="id_pais_nacionalidad" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="pais" row="id" />
+<relation table="pais" row="id" />
 </row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="298" y="971" name="lugar">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_parroquia" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="parroquia" row="id" />
+<relation table="parroquia" row="id" />
 </row>
 <row name="descripcion" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="166" y="1126" name="pais">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
 <row name="nacionalidad" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="633" y="1113" name="titulo">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="descripcion" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
@@ -437,11 +537,11 @@
 <default>NULL</default></row>
 <row name="id_carrera" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="carrera" row="id" />
+<relation table="carrera" row="id" />
 </row>
 <row name="id_persona" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="persona" row="id" />
+<relation table="persona" row="id" />
 </row>
 <row name="fecha_inicio_estudios" null="1" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
@@ -449,80 +549,116 @@
 <row name="fecha_fin_estudios" null="1" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="876" y="928" name="relacion_trabajo">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 <comment>nombramiento, contrato con relacion de dependencia, etc.</comment>
 </table>
-<table x="906" y="728" name="cargo">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<table x="941" y="667" name="cargo">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 <comment>cargo administrativo o academico</comment>
 </table>
 <table x="659" y="990" name="categoria">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 <comment>no titular, titular auxiliar, etc.</comment>
 </table>
 <table x="359" y="781" name="unidad_academica">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_instituto" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="instituto" row="id" />
+<relation table="instituto" row="id" />
 </row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="111" y="379" name="financiamiento">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 <comment>publica, privada</comment>
 </table>
 <table x="353" y="1096" name="carrera">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_subarea_unesco" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="subarea_unesco" row="id" />
+<relation table="subarea_unesco" row="id" />
 </row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -532,53 +668,77 @@
 <default>NULL</default></row>
 <row name="id_instituto" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="instituto" row="id" />
+<relation table="instituto" row="id" />
 </row>
 <row name="id_pais" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="pais" row="id" />
+<relation table="pais" row="id" />
 </row>
 <row name="id_modalidad_carrera" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="modalidad_carrera" row="id" />
+<relation table="modalidad_carrera" row="id" />
 </row>
 <row name="num_creditos" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="311" y="1434" name="subarea_unesco">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="98" y="1328" name="modalidad_carrera">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="nombre" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="626" y="539" name="mec">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
 <row name="id_instituto" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="instituto" row="id" />
+<relation table="instituto" row="id" />
 </row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
