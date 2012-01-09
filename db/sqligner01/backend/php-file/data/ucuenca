@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sql>
+<datatypes db="postgresql">
+	<group label="Numeric" color="rgb(238,238,170)">
+		<type label="Integer" length="0" sql="INTEGER" re="INT" quote=""/>
+		<type label="Small Integer" length="0" sql="SMALLINT" quote=""/>
+		<type label="Big Integer" length="0" sql="BIGINT" quote=""/>
+		<type label="Decimal" length="1" sql="DECIMAL" re="numeric" quote=""/>
+		<type label="Serial" length="0" sql="SERIAL" re="SERIAL4" quote=""/>
+		<type label="Big Serial" length="0" sql="BIGSERIAL" re="SERIAL8" quote=""/>
+		<type label="Real" length="0" sql="BIGINT" quote=""/>
+		<type label="Single precision" length="0" sql="FLOAT" quote=""/>
+		<type label="Double precision" length="0" sql="DOUBLE" re="DOUBLE" quote=""/>
+	</group>
+
+	<group label="Character" color="rgb(255,200,200)">
+		<type label="Char" length="1" sql="CHAR" quote="'"/>
+		<type label="Varchar" length="1" sql="VARCHAR" re="CHARACTER VARYING" quote="'"/>
+		<type label="Text" length="0" sql="TEXT" quote="'"/>
+		<type label="Binary" length="1" sql="BYTEA" quote="'"/>
+		<type label="Boolean" length="0" sql="BOOLEAN" quote="'"/>
+	</group>
+
+	<group label="Date &amp; Time" color="rgb(200,255,200)">
+		<type label="Date" length="0" sql="DATE" quote="'"/>
+		<type label="Time" length="1" sql="TIME" quote="'"/>
+		<type label="Time w/ TZ" length="0" sql="TIME WITH TIMEZONE" quote="'"/>
+		<type label="Interval" length="1" sql="INTERVAL" quote="'"/>
+		<type label="Timestamp" length="1" sql="TIMESTAMP" quote="'"/>
+		<type label="Timestamp w/ TZ" length="0" sql="TIMESTAMP WITH TIMEZONE" quote="'"/>
+	</group>
+
+	<group label="Miscellaneous" color="rgb(200,200,255)">
+		<type label="XML" length="1" sql="XML" quote="'"/>
+		<type label="Bit" length="1" sql="BIT" quote="'"/>
+		<type label="Bit Varying" length="1" sql="VARBIT" re="BIT VARYING" quote="'"/>
+		<type label="Inet Host Addr" length="0" sql="INET" quote="'"/>
+		<type label="Inet CIDR Addr" length="0" sql="CIDR" quote="'"/>
+	</group>
+</datatypes><table x="2060" y="1859" name="projects">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="person_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="people" row="id" />
+<comment>project director</comment>
+</row>
+<row name="research_type_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="research_types" row="id" />
+</row>
+<row name="planned_cost" null="1" autoincrement="0">
+<datatype>DECIMAL</datatype>
+</row>
+<row name="executed_cost" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="start_date" null="1" autoincrement="0">
+<datatype>DATE</datatype>
+</row>
+<row name="end_date" null="1" autoincrement="0">
+<datatype>DATE</datatype>
+</row>
+<row name="duracion" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<comment>en meses</comment>
+</row>
+<row name="descripcion" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1496" y="1581" name="knowledge_areas">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="knowledge_group_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="knowledge_groups" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="2439" y="1576" name="development_objectives">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="strategic_axis_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="strategic_axes" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1607" y="1850" name="project_knowledge_areas">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="project_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="projects" row="id" />
+</row>
+<row name="knowledge_area_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="knowledge_areas" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="2234" y="1845" name="project_development_objetives">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="development_objective_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="development_objectives" row="id" />
+</row>
+<row name="project_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="projects" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1813" y="1059" name="people">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="primer_apellido" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="segundo_apellido" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="nombres" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="estado_civil" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="lugar_nacimiento" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="fecha_nacimiento" null="1" autoincrement="0">
+<datatype>DATE</datatype>
+</row>
+<row name="nacionalidad" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="cedula" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="pasaporte" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="numero_afliacion_seguridad_social" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="domicilio_direccion" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="domicilio_ciudad" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="domicilio_provincia" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="telefono_fijo" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="telefono_movil" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="correo_electronico" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="prefijo" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="subfijo" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="2105" y="1519" name="researchers">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="person_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="people" row="id" />
+</row>
+<row name="project_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="projects" row="id" />
+</row>
+<row name="tipo_nombramiento" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="unidad_academica" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="categoria" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="fecha_ingreso" null="1" autoincrement="0">
+<datatype>DATE</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1475" y="1334" name="knowledge_groups">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="2328" y="1253" name="strategic_axes">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="2050" y="2192" name="research_types">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+</sql>

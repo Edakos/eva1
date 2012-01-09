@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SQL XML created by WWW SQL Designer, http://code.google.com/p/wwwsqldesigner/ -->
+<!-- Active URL: http://sql.edgarvalarezo.com/ -->
+<sql>
+<datatypes db="postgresql">
+	<group label="Numeric" color="rgb(238,238,170)">
+		<type label="Integer" length="0" sql="INTEGER" re="INT" quote=""/>
+		<type label="Small Integer" length="0" sql="SMALLINT" quote=""/>
+		<type label="Big Integer" length="0" sql="BIGINT" quote=""/>
+		<type label="Decimal" length="1" sql="DECIMAL" re="numeric" quote=""/>
+		<type label="Serial" length="0" sql="SERIAL" re="SERIAL4" fk="Integer" quote=""/>
+		<type label="Big Serial" length="0" sql="BIGSERIAL" re="SERIAL8" fk="Big Integer" quote=""/>
+		<type label="Real" length="0" sql="BIGINT" quote=""/>
+		<type label="Single precision" length="0" sql="FLOAT" quote=""/>
+		<type label="Double precision" length="0" sql="DOUBLE" re="DOUBLE" quote=""/>
+	</group>
+
+	<group label="Character" color="rgb(255,200,200)">
+		<type label="Char" length="1" sql="CHAR" quote="'"/>
+		<type label="Varchar" length="1" sql="VARCHAR" re="CHARACTER VARYING" quote="'"/>
+		<type label="Text" length="0" sql="TEXT" quote="'"/>
+		<type label="Binary" length="1" sql="BYTEA" quote="'"/>
+		<type label="Boolean" length="0" sql="BOOLEAN" quote="'"/>
+	</group>
+
+	<group label="Date &amp; Time" color="rgb(200,255,200)">
+		<type label="Date" length="0" sql="DATE" quote="'"/>
+		<type label="Time" length="1" sql="TIME" quote="'"/>
+		<type label="Time w/ TZ" length="0" sql="TIME WITH TIME ZONE" quote="'"/>
+		<type label="Interval" length="1" sql="INTERVAL" quote="'"/>
+		<type label="Timestamp" length="1" sql="TIMESTAMP" quote="'"/>
+		<type label="Timestamp w/ TZ" length="0" sql="TIMESTAMP WITH TIME ZONE" quote="'"/>
+		<type label="Timestamp wo/ TZ" length="0" sql="TIMESTAMP WITHOUT TIME ZONE" quote="'"/>
+	</group>
+
+	<group label="Miscellaneous" color="rgb(200,200,255)">
+		<type label="XML" length="1" sql="XML" quote="'"/>
+		<type label="Bit" length="1" sql="BIT" quote="'"/>
+		<type label="Bit Varying" length="1" sql="VARBIT" re="BIT VARYING" quote="'"/>
+		<type label="Inet Host Addr" length="0" sql="INET" quote="'"/>
+		<type label="Inet CIDR Addr" length="0" sql="CIDR" quote="'"/>
+		<type label="Geometry" length="0" sql="GEOMETRY" quote="'"/>
+	</group>
+</datatypes><table x="231" y="648" name="EV_APRECIACION">
+<row name="APR_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IND_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_INDICADOR" row="IND_ID" />
+</row>
+<row name="APR_ORDEN" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="APR_DESCRIPCION" null="1" autoincrement="0">
+<datatype>VARCHAR(255)</datatype>
+<default>NULL</default></row>
+<row name="APR_INDICE" null="1" autoincrement="0">
+<datatype>VARCHAR(128)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>APR_ID</part>
+</key>
+</table>
+<table x="165" y="833" name="EV_INDICADOR">
+<row name="IND_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="CR_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_CRITERIO" row="CR_ID" />
+</row>
+<row name="IND_TITULO" null="1" autoincrement="0">
+<datatype>VARCHAR(128)</datatype>
+<default>NULL</default></row>
+<row name="IND_DESCRIPCION" null="1" autoincrement="0">
+<datatype>VARCHAR(255)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>IND_ID</part>
+</key>
+</table>
+<table x="108" y="987" name="EV_CRITERIO">
+<row name="CR_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="CR_TIPO" null="1" autoincrement="0">
+<datatype>VARCHAR(1)</datatype>
+<default>NULL</default></row>
+<row name="CR_TITULO" null="1" autoincrement="0">
+<datatype>VARCHAR(128)</datatype>
+<default>NULL</default></row>
+<row name="CR_DESCRIPCION" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>CR_ID</part>
+</key>
+</table>
+<table x="444" y="793" name="EV_VALOR_APRECIACION">
+<row name="VA_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IND_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_INDICADOR" row="IND_ID" />
+</row>
+<row name="USU_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_USUARIO" row="USU_ID" />
+</row>
+<row name="IES_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_IES" row="IES_ID" />
+</row>
+<row name="VA_VALOR" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="VA_OBSERVACION" null="1" autoincrement="0">
+<datatype>VARCHAR(255)</datatype>
+<default>NULL</default></row>
+<row name="VA_FECHA_LLENA" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="VA_IP_LLENA" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<row name="APR_INDICE" null="1" autoincrement="0">
+<datatype>VARCHAR(128)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>VA_ID</part>
+</key>
+</table>
+<table x="786" y="877" name="EV_USUARIO">
+<row name="USU_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="USU_LOGIN" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_IES" row="IES_ID" />
+</row>
+<row name="USU_PASSWORD" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<row name="USU_TIPO" null="1" autoincrement="0">
+<datatype>VARCHAR(1)</datatype>
+<default>NULL</default></row>
+<row name="USU_ESTADO" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="USU_APELLIDOS" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<row name="USU_NOMBRES" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<row name="USU_CI" null="1" autoincrement="0">
+<datatype>VARCHAR(10)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>USU_ID</part>
+</key>
+</table>
+<table x="758" y="571" name="EV_INFORME">
+<row name="INF_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="INF_FECHA" null="1" autoincrement="0">
+<datatype>DATE</datatype>
+<default>NULL</default></row>
+<row name="INF_NOVEDADES" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="INF_OBSERVACIONES" null="1" autoincrement="0">
+<datatype>VARCHAR(1024)</datatype>
+<default>NULL</default></row>
+<row name="INF_RECOMENDACIONES" null="1" autoincrement="0">
+<datatype>VARCHAR(1024)</datatype>
+<default>NULL</default></row>
+<row name="IES_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_IES" row="IES_ID" />
+</row>
+<row name="USU_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_USUARIO" row="USU_ID" />
+</row>
+<row name="INF_FECHA_CREA" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="INF_IP_CREA" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>INF_ID</part>
+</key>
+</table>
+<table x="726" y="281" name="EV_OBSERVACION">
+<row name="OBS_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="OBS_OBSERVACION" null="1" autoincrement="0">
+<datatype>VARCHAR(1024)</datatype>
+<default>NULL</default></row>
+<row name="OBS_RESPUESTA" null="1" autoincrement="0">
+<datatype>VARCHAR(1024)</datatype>
+<default>NULL</default></row>
+<row name="INF_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_INFORME" row="INF_ID" />
+</row>
+<row name="RES_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_RESPUESTA" row="RES_ID" />
+</row>
+<row name="OBS_FECHA_CREA" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="OBS_IP_CREA" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<row name="OBS_ORIGINAL" null="1" autoincrement="0">
+<datatype>VARCHAR(1024)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>OBS_ID</part>
+</key>
+</table>
+<table x="823" y="23" name="EV_RESPUESTA">
+<row name="RES_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="PRG_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_PREGUNTA" row="PRG_ID" />
+</row>
+<row name="IES_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_IES" row="IES_ID" />
+</row>
+<row name="RES_RESPUESTA" null="1" autoincrement="0">
+<datatype>VARCHAR(1024)</datatype>
+<default>NULL</default></row>
+<row name="RES_COMENTARIO" null="1" autoincrement="0">
+<datatype>VARCHAR(1024)</datatype>
+<default>NULL</default></row>
+<row name="RES_FECHA" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="RES_ORIGINAL" null="1" autoincrement="0">
+<datatype>VARCHAR(1024)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>RES_ID</part>
+</key>
+</table>
+<table x="656" y="1231" name="EV_LOG_ACCESOS">
+<row name="LA_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="USU_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_USUARIO" row="USU_ID" />
+</row>
+<row name="LA_FECHA_HORA" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="LA_IP_ACCESO" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>LA_ID</part>
+</key>
+</table>
+<table x="877" y="1248" name="EV_USUARIO_GRUPO">
+<row name="USU_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_USUARIO" row="USU_ID" />
+</row>
+<row name="GRP_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_GRUPO_VERIFICADOR" row="GRP_ID" />
+</row>
+<row name="GUS_PERTENECE" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="GUS_COORDINADOR" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>USU_ID</part>
+</key>
+</table>
+<table x="895" y="1472" name="EV_GRUPO_VERIFICADOR">
+<row name="GRP_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="GRP_NOMBRE" null="1" autoincrement="0">
+<datatype>VARCHAR(48)</datatype>
+<default>NULL</default></row>
+<row name="GRP_DESCRIPCION" null="1" autoincrement="0">
+<datatype>VARCHAR(128)</datatype>
+<default>NULL</default></row>
+<row name="GRP_TIPO" null="1" autoincrement="0">
+<datatype>VARCHAR(1)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>GRP_ID</part>
+</key>
+</table>
+<table x="1148" y="13" name="EV_PREGUNTA">
+<row name="PRG_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="PRG_ORDEN" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="PRG_TEXTO" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
+<default>NULL</default></row>
+<row name="PRG_EXPLICACION" null="1" autoincrement="0">
+<datatype>VARCHAR(1024)</datatype>
+<default>NULL</default></row>
+<row name="PRG_TIPO" null="1" autoincrement="0">
+<datatype>VARCHAR(1)</datatype>
+<default>NULL</default></row>
+<row name="TF_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_TIPO_FORMULARIO" row="TF_ID" />
+</row>
+<row name="GRP_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_GRUPO" row="GRP_ID" />
+</row>
+<row name="PRG_VALORES" null="1" autoincrement="0">
+<datatype>VARCHAR(10)</datatype>
+<default>NULL</default></row>
+<row name="PRG_SECUENCIA_ARBOL" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>PRG_ID</part>
+</key>
+</table>
+<table x="1142" y="286" name="EV_IES">
+<row name="IES_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_VALOR_INDICADOR" row="IES_ID" />
+<relation table="EV_IES_AREA_CONOCIMIENTO" row="IES_ID" />
+</row>
+<row name="IES_NOMBRE" null="1" autoincrement="0">
+<datatype>VARCHAR(128)</datatype>
+<default>NULL</default></row>
+<row name="IES_SIGLA" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<row name="IES_PROVINCIA" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_LOCALIDAD" row="LOC_ID" />
+</row>
+<row name="IES_CANTON" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_LOCALIDAD" row="LOC_ID" />
+</row>
+<row name="IES_TIPO" null="1" autoincrement="0">
+<datatype>VARCHAR(1)</datatype>
+<default>NULL</default></row>
+<row name="IES_FINANCIAMIENTO" null="1" autoincrement="0">
+<datatype>VARCHAR(1)</datatype>
+<default>NULL</default></row>
+<row name="IES_SUBCLASE" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_SUBCLASE" row="SC_ID" />
+</row>
+<row name="GRP_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_GRUPO_VERIFICADOR" row="GRP_ID" />
+</row>
+<row name="IES_RUC" null="1" autoincrement="0">
+<datatype>VARCHAR(13)</datatype>
+<default>NULL</default></row>
+<row name="IES_REGISTRO_CONESUP" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<row name="IES_FECHA_CREACION" null="1" autoincrement="0">
+<datatype>DATE</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_CARRERAS" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_CIUDAD" null="1" autoincrement="0">
+<datatype>VARCHAR(48)</datatype>
+<default>NULL</default></row>
+<row name="IES_CALLE_PRINCIPAL" null="1" autoincrement="0">
+<datatype>VARCHAR(64)</datatype>
+<default>NULL</default></row>
+<row name="IES_CALLE_SECUNDARIA" null="1" autoincrement="0">
+<datatype>VARCHAR(64)</datatype>
+<default>NULL</default></row>
+<row name="IES_NUMERO" null="1" autoincrement="0">
+<datatype>VARCHAR(16)</datatype>
+<default>NULL</default></row>
+<row name="IES_TELEFONOS" null="1" autoincrement="0">
+<datatype>VARCHAR(64)</datatype>
+<default>NULL</default></row>
+<row name="IES_FAX" null="1" autoincrement="0">
+<datatype>VARCHAR(64)</datatype>
+<default>NULL</default></row>
+<row name="IES_PAGINA_WEB" null="1" autoincrement="0">
+<datatype>VARCHAR(64)</datatype>
+<default>NULL</default></row>
+<row name="IES_RECTOR" null="1" autoincrement="0">
+<datatype>VARCHAR(64)</datatype>
+<default>NULL</default></row>
+<row name="IES_VICERECTOR" null="1" autoincrement="0">
+<datatype>VARCHAR(64)</datatype>
+<default>NULL</default></row>
+<row name="IES_ENLACE_CONEA" null="1" autoincrement="0">
+<datatype>VARCHAR(64)</datatype>
+<default>NULL</default></row>
+<row name="IES_CARGO_ENLACE" null="1" autoincrement="0">
+<datatype>VARCHAR(64)</datatype>
+<default>NULL</default></row>
+<row name="IES_TELEFONO_ENLACE" null="1" autoincrement="0">
+<datatype>VARCHAR(20)</datatype>
+<default>NULL</default></row>
+<row name="IES_CORREO_ENLACE" null="1" autoincrement="0">
+<datatype>VARCHAR(48)</datatype>
+<default>NULL</default></row>
+<row name="IES_TERMINO_PROCESO" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_FECHA_FIN_PROCESO" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="IES_IP_FIN_PROCESO" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<row name="IES_TERMINO_VERIFICACION" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_FECHA_FIN_VERIFICACION" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="IES_IP_FIN_VERIFICACION" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<row name="IES_TERMINA_GUIA_CONSOLIDADA" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_IP_FIN_GUIA_CONSOLIDADA" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<row name="IES_FECHA_FIN_GUIA_CONSOLIDADA" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_CARR_TERNIV" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_CARR_CUARNIV" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_CARR_TEC" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_CARR_TERNIV_PRES" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_CARR_TERNIV_SEMI" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_CARR_TERNIV_DIST" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_PROG_CUARNIV_PRES" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_PROG_CUARNIV_SEMI" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_PROG_CUARNIV_DIST" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_PROG_CUARNIV_DIPL" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_PROG_CUARNIV_ESP" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_PROG_CUARNIV_MAES" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IES_NUM_PROG_CUARNIV_PHD" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>IES_ID</part>
+</key>
+</table>
+<table x="1382" y="25" name="EV_TIPO_FORMULARIO">
+<row name="TF_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="TF_NOMBRE" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<row name="TF_DESCRIPCION" null="1" autoincrement="0">
+<datatype>VARCHAR(255)</datatype>
+<default>NULL</default></row>
+<row name="TF_TIPO" null="1" autoincrement="0">
+<datatype>VARCHAR(1)</datatype>
+<default>NULL</default></row>
+<row name="TF_SUBCLASE" null="1" autoincrement="0">
+<datatype>VARCHAR(1)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>TF_ID</part>
+</key>
+</table>
+<table x="1613" y="70" name="EV_INDICADOR_PREGUNTA">
+<row name="IND_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="PRG_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>IND_ID</part>
+<part>PRG_ID</part>
+</key>
+</table>
+<table x="1420" y="230" name="EV_GRUPO">
+<row name="GRP_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="GRP_NOMBRE" null="1" autoincrement="0">
+<datatype>VARCHAR(48)</datatype>
+<default>NULL</default></row>
+<row name="GRP_PADRE" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="GRP_NIVEL" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>GRP_ID</part>
+</key>
+</table>
+<table x="1586" y="208" name="EV_INDICADOR_COLUMNA">
+<row name="IND_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_INDICADOR_PREGUNTA" row="IND_ID" />
+</row>
+<row name="TF_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IND_NOMBRE" null="1" autoincrement="0">
+<datatype>VARCHAR(128)</datatype>
+<default>NULL</default></row>
+<row name="IND_ORDEN" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="IND_FORMULA_CALCULO" null="1" autoincrement="0">
+<datatype>VARCHAR(512)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>IND_ID</part>
+</key>
+</table>
+<table x="1561" y="409" name="EV_VALOR_INDICADOR">
+<row name="IND_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_INDICADOR_COLUMNA" row="IND_ID" />
+</row>
+<row name="IES_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="VIND_CALCULADO" null="1" autoincrement="0">
+<datatype>DOUBLE</datatype>
+<default>NULL</default></row>
+<row name="VIND_LETRA" null="1" autoincrement="0">
+<datatype>VARCHAR(128)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>IND_ID</part>
+<part>IES_ID</part>
+</key>
+</table>
+<table x="1496" y="622" name="EV_SUBCLASE">
+<row name="SC_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="SC_NOMBRE" null="1" autoincrement="0">
+<datatype>VARCHAR(48)</datatype>
+<default>NULL</default></row>
+<row name="SC_TIPO" null="1" autoincrement="0">
+<datatype>VARCHAR(1)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>SC_ID</part>
+</key>
+</table>
+<table x="1697" y="593" name="EV_LOCALIDAD">
+<row name="LOC_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="LOC_NOMBRE" null="1" autoincrement="0">
+<datatype>VARCHAR(48)</datatype>
+<default>NULL</default></row>
+<row name="LOC_PADRE" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="LOC_NIVEL" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>LOC_ID</part>
+</key>
+</table>
+<table x="1598" y="831" name="EV_LISTA_VALORES">
+<row name="LV_VALOR" null="1" autoincrement="0">
+<datatype>VARCHAR(1)</datatype>
+<default>NULL</default></row>
+<row name="LV_DESCRIPCION" null="1" autoincrement="0">
+<datatype>VARCHAR(32)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>LV_VALOR</part>
+</key>
+</table>
+<table x="1492" y="1011" name="EV_IES_AREA_CONOCIMIENTO">
+<row name="IES_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="AC_ID" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="EV_AREA_CONOCIMIENTO" row="AC_ID" />
+</row>
+<row name="AC_TECNOLOGIAS" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="AC_TERNIVEL" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="AC_CUARNIVEL" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="AC_TECNOLOGIAS_VERIF" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="AC_TERNIVEL_VERIF" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="AC_CUARNIVEL_VERIF" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>IES_ID</part>
+<part>AC_ID</part>
+</key>
+</table>
+<table x="1521" y="1311" name="EV_AREA_CONOCIMIENTO">
+<row name="AC_ID" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="AC_DESCRIPCION" null="1" autoincrement="0">
+<datatype>VARCHAR(64)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>AC_ID</part>
+</key>
+</table>
+</sql>

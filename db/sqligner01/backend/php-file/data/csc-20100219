@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sql>
+<datatypes db="postgresql">
+	<group label="Numeric" color="rgb(238,238,170)">
+		<type label="Integer" length="0" sql="INTEGER" re="INT" quote=""/>
+		<type label="Small Integer" length="0" sql="SMALLINT" quote=""/>
+		<type label="Big Integer" length="0" sql="BIGINT" quote=""/>
+		<type label="Decimal" length="1" sql="DECIMAL" re="numeric" quote=""/>
+		<type label="Serial" length="0" sql="SERIAL" re="SERIAL4" quote=""/>
+		<type label="Big Serial" length="0" sql="BIGSERIAL" re="SERIAL8" quote=""/>
+		<type label="Real" length="0" sql="BIGINT" quote=""/>
+		<type label="Single precision" length="0" sql="FLOAT" quote=""/>
+		<type label="Double precision" length="0" sql="DOUBLE" re="DOUBLE" quote=""/>
+	</group>
+
+	<group label="Character" color="rgb(255,200,200)">
+		<type label="Char" length="1" sql="CHAR" quote="'"/>
+		<type label="Varchar" length="1" sql="VARCHAR" re="CHARACTER VARYING" quote="'"/>
+		<type label="Text" length="0" sql="TEXT" quote="'"/>
+		<type label="Binary" length="1" sql="BYTEA" quote="'"/>
+		<type label="Boolean" length="0" sql="BOOLEAN" quote="'"/>
+	</group>
+
+	<group label="Date &amp; Time" color="rgb(200,255,200)">
+		<type label="Date" length="0" sql="DATE" quote="'"/>
+		<type label="Time" length="1" sql="TIME" quote="'"/>
+		<type label="Time w/ TZ" length="0" sql="TIME WITH TIMEZONE" quote="'"/>
+		<type label="Interval" length="1" sql="INTERVAL" quote="'"/>
+		<type label="Timestamp" length="1" sql="TIMESTAMP" quote="'"/>
+		<type label="Timestamp w/ TZ" length="0" sql="TIMESTAMP WITH TIMEZONE" quote="'"/>
+	</group>
+
+	<group label="Miscellaneous" color="rgb(200,200,255)">
+		<type label="XML" length="1" sql="XML" quote="'"/>
+		<type label="Bit" length="1" sql="BIT" quote="'"/>
+		<type label="Bit Varying" length="1" sql="VARBIT" re="BIT VARYING" quote="'"/>
+		<type label="Inet Host Addr" length="0" sql="INET" quote="'"/>
+		<type label="Inet CIDR Addr" length="0" sql="CIDR" quote="'"/>
+	</group>
+</datatypes><table x="63" y="165" name="people">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+<default>NULL</default></row>
+<row name="initials" null="1" autoincrement="0">
+<datatype>VARCHAR(10)</datatype>
+<default>NULL</default></row>
+<row name="first_name" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="middle_name" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="first_surname" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="second_surname" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="birthdate" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="nationality" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="countries" row="id" />
+</row>
+<row name="is_company" null="1" autoincrement="0">
+<datatype>SMALLINT</datatype>
+<default>0</default></row>
+<row name="is_alive" null="1" autoincrement="0">
+<datatype>SMALLINT</datatype>
+<default>1</default></row>
+<row name="personal_code" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="prefix" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="subfix" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="248" y="549" name="countries">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="phone_code" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="personal_code_name" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="424" y="495" name="provinces">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="code" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="region_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="regions" row="id" />
+</row>
+<row name="phone_code" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="country_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="countries" row="id" />
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="623" y="743" name="regions">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="country_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="716" y="513" name="cities">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="code" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="province_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="provinces" row="id" />
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="774" y="689" name="workers">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="person_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="people" row="id" />
+</row>
+<row name="entry_date" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="departure_date" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="company_position_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="company_positions" row="id" />
+</row>
+<row name="email_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="emails" row="id" />
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="234" y="10" name="phones">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="is_mobile" null="1" autoincrement="0">
+<datatype>SMALLINT</datatype>
+<default>0</default></row>
+<row name="number" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="person_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="people" row="id" />
+</row>
+<row name="province_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="provinces" row="id" />
+</row>
+<row name="is_active" null="1" autoincrement="0">
+<datatype>SMALLINT</datatype>
+<default>1</default></row>
+<row name="place_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="places" row="id" />
+</row>
+<row name="order" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="company_position_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="company_positions" row="id" />
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="584" y="341" name="places">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="city_" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="cities" row="id" />
+</row>
+<row name="address" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="longitude" null="1" autoincrement="0">
+<datatype>DECIMAL</datatype>
+<default>NULL</default></row>
+<row name="latitude" null="1" autoincrement="0">
+<datatype>DECIMAL</datatype>
+<default>NULL</default></row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="264" y="313" name="homes">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="person_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="people" row="id" />
+</row>
+<row name="place_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="places" row="id" />
+</row>
+<row name="is_active" null="1" autoincrement="0">
+<datatype>SMALLINT</datatype>
+<default>1</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="order" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="951" y="510" name="company_positions">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="company" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="people" row="id" />
+</row>
+<row name="title" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="description" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="company_department_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="company_departments" row="id" />
+</row>
+<row name="order" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="903" y="45" name="company_dependencies">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="boss" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="company_positions" row="id" />
+</row>
+<row name="dependent" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="company_positions" row="id" />
+</row>
+<row name="order" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="56" y="898" name="web_domains">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="main_domain" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="web_domains" row="id" />
+</row>
+<row name="value" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="52" y="734" name="webpages">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="person_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="people" row="id" />
+</row>
+<row name="web_domain_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="web_domains" row="id" />
+</row>
+<row name="value" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="276" y="757" name="emails">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="web_domain_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="web_domains" row="id" />
+</row>
+<row name="user" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="password" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="smtp_port" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="smtp_server" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="web_domains" row="id" />
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="898" y="236" name="company_departments">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="company_department_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="company_departments" row="id" />
+</row>
+<row name="company" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="people" row="id" />
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="545" y="160" name="company_position_places">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="places_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="places" row="id" />
+</row>
+<row name="company_positions_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="company_positions" row="id" />
+</row>
+<row name="order" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="456" y="1052" name="tickets">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="responsible" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="workers" row="id" />
+</row>
+<row name="request_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="requests" row="id" />
+</row>
+<row name="description" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="notification_date" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="agreed_date" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="start_date" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="end_date" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="customer_delivery_date" null="1" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>NULL</default></row>
+<row name="ticket_code" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default><comment>codigo de ticket dado al inicio del servicio</comment>
+</row>
+<row name="service_report_code" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default><comment>codigo del reporte de servicio hecho al final</comment>
+</row>
+<row name="external_code" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="428" y="857" name="clients">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="worker_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="workers" row="id" />
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="order" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="profit_percentage" null="1" autoincrement="0">
+<datatype>DECIMAL</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="29" y="7" name="person_groups">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="person_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="people" row="id" />
+</row>
+<row name="group" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="people" row="id" />
+</row>
+<row name="is_active" null="1" autoincrement="0">
+<datatype>SMALLINT</datatype>
+<default>1</default></row>
+<row name="description" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="691" y="946" name="allocations">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="worker_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="workers" row="id" />
+</row>
+<row name="ticket_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="tickets" row="id" />
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="234" y="1201" name="proposals">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="request_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="requests" row="id" />
+</row>
+<row name="contracts_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="contracts" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="259" y="1061" name="requests">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="client_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="clients" row="id" />
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="861" y="916" name="company_position_emails">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="company_position_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="company_positions" row="id" />
+</row>
+<row name="email_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="emails" row="id" />
+</row>
+<row name="order" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="53" y="560" name="person_emails">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="email_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="emails" row="id" />
+</row>
+<row name="person_id" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="people" row="id" />
+</row>
+<row name="order" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="591" y="7" name="parameters">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="decision" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="people" row="id" />
+</row>
+<row name="technicians" null="1" autoincrement="0">
+<datatype>SERIAL</datatype>
+<default>NULL</default><relation table="company_positions" row="id" />
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="34" y="1157" name="contracts">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1263" y="21" name="system_profiles">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1271" y="207" name="system_users">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>'now()'</default></row>
+<row name="username" null="1" autoincrement="0">
+<datatype>VARCHAR(255)</datatype>
+</row>
+<row name="password" null="1" autoincrement="0">
+<datatype>VARCHAR(255)</datatype>
+</row>
+<row name="system_profile_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="system_profiles" row="id" />
+</row>
+<row name="worker_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="workers" row="id" />
+</row>
+<row name="is_active" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>1</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+</sql>
