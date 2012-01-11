@@ -39,13 +39,16 @@
 		<type label="Inet CIDR Addr" length="0" sql="CIDR" quote="'"/>
 		<type label="Geometry" length="0" sql="GEOMETRY" quote="'"/>
 	</group>
-</datatypes><table x="80" y="254" name="ev_criterio">
+</datatypes><table x="78" y="146" name="ev_criterio">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_criterio_padre" null="1" autoincrement="0">
+<row name="ev_criterio_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_criterio" row="id" />
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
 </row>
 <row name="codigo" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -53,7 +56,7 @@
 <row name="descripcion" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
-<row name="id_tipo_ies" null="1" autoincrement="0">
+<row name="ev_tipo_ies_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_tipo_ies" row="id" />
 </row>
@@ -70,17 +73,16 @@
 <part>id</part>
 </key>
 </table>
-<table x="258" y="10" name="ev_indicador">
+<table x="281" y="27" name="ev_indicador">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="indicador_id" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<relation table="ev_indicador" row="id" />
-</row>
-<row name="id_criterio" null="1" autoincrement="0">
+<row name="ev_criterio_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_criterio" row="id" />
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
 </row>
 <row name="codigo" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -89,11 +91,7 @@
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
 <row name="borrado" null="1" autoincrement="0">
-<datatype>BOOLEAN</datatype>
-</row>
-<row name="id_tipo_ies" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<relation table="ev_tipo_ies" row="id" />
+<datatype>SMALLINT</datatype>
 </row>
 <row name="orden" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
@@ -108,17 +106,26 @@
 <part>id</part>
 </key>
 </table>
-<table x="649" y="52" name="ev_formula">
+<table x="617" y="19" name="ev_formula">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_indicador" null="1" autoincrement="0">
+<row name="ev_indicador_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_indicador" row="id" />
 </row>
-<row name="id_variable" null="1" autoincrement="0">
+<row name="ev_variable_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_variable" row="id" />
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="prefijo" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="postfijo" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
 </row>
 <row name="orden" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
@@ -133,57 +140,73 @@
 <part>id</part>
 </key>
 </table>
-<table x="864" y="247" name="ev_variable">
+<table x="930" y="192" name="ev_variable">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_tipo_dato" null="1" autoincrement="0">
+<row name="ev_tipo_dato_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_tipo_dato" row="id" />
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="descripcion" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
-<row name="id_tipo_ies" null="1" autoincrement="0">
+<row name="ev_tipo_ies_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_tipo_ies" row="id" />
 </row>
 <row name="borrado" null="1" autoincrement="0">
-<datatype>BOOLEAN</datatype>
+<datatype>SMALLINT</datatype>
 <default>NULL</default></row>
+<row name="coord" null="1" autoincrement="0">
+<datatype>VARCHAR(10)</datatype>
+<comment>Coordenada para ser obtenido en la hoja de cálculo</comment>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
 <row name="modified" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
+<row name="ev_hoja_calculo_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_hoja_calculo" row="id" />
+</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="625" y="310" name="ev_valor">
+<table x="682" y="227" name="ev_valor">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_variable" null="1" autoincrement="0">
+<row name="ev_variable_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_variable" row="id" />
 </row>
-<row name="id_ies" null="1" autoincrement="0">
+<row name="ev_ies_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_ies" row="id" />
 </row>
 <row name="dato" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
+<row name="grupo" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<comment>diferencia si tipo_ies y variable es igual</comment>
+</row>
+<row name="fuente" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+<comment>archivo, hoja y celda origen</comment>
+</row>
 <row name="fecha_creacion" null="1" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>NULL</default></row>
 <row name="borrado" null="1" autoincrement="0">
-<datatype>BOOLEAN</datatype>
+<datatype>SMALLINT</datatype>
 <default>NULL</default></row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
@@ -191,28 +214,32 @@
 <row name="modified" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
+<row name="ev_evaluador_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_evaluador" row="id" />
+</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="358" y="334" name="ev_ies">
+<table x="305" y="369" name="ev_ies">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_tipo_ies" null="1" autoincrement="0">
+<row name="ev_tipo_ies_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_tipo_ies" row="id" />
 </row>
 <row name="codigo" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>VARCHAR</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="observaciones" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
-<row name="id_lugar" null="1" autoincrement="0">
+<row name="ev_lugar_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_lugar" row="id" />
 </row>
@@ -233,13 +260,13 @@
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_pais" null="1" autoincrement="0">
+<row name="ev_pais_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_pais" row="id" />
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
@@ -254,13 +281,13 @@
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_provincia" null="1" autoincrement="0">
+<row name="ev_provincia_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_provincia" row="id" />
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
@@ -275,13 +302,13 @@
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_canton" null="1" autoincrement="0">
+<row name="ev_canton_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_canton" row="id" />
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
@@ -292,11 +319,11 @@
 <part>id</part>
 </key>
 </table>
-<table x="854" y="79" name="ev_valor_posible">
+<table x="1004" y="15" name="ev_valor_posible">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_variable" null="1" autoincrement="0">
+<row name="ev_variable_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_variable" row="id" />
 </row>
@@ -316,13 +343,13 @@
 <part>id</part>
 </key>
 </table>
-<table x="903" y="452" name="ev_tipo_dato">
+<table x="1195" y="290" name="ev_tipo_dato">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
@@ -333,13 +360,13 @@
 <part>id</part>
 </key>
 </table>
-<table x="438" y="200" name="ev_tipo_ies">
+<table x="429" y="239" name="ev_tipo_ies">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
@@ -351,30 +378,30 @@
 </key>
 <comment>universidad o instituto</comment>
 </table>
-<table x="630" y="649" name="ev_profesor">
+<table x="527" y="609" name="ev_profesor">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_persona" null="1" autoincrement="0">
+<row name="ev_persona_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_persona" row="id" />
 </row>
-<row name="id_ies" null="1" autoincrement="0">
+<row name="ev_ies_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_ies" row="id" />
 </row>
 <row name="fecha_ingreso" null="1" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>NULL</default></row>
-<row name="id_relacion_trabajo" null="1" autoincrement="0">
+<row name="ev_relacion_trabajo_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_relacion_trabajo" row="id" />
 </row>
-<row name="id_cargo" null="1" autoincrement="0">
+<row name="ev_cargo_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_cargo" row="id" />
 </row>
-<row name="id_categoria" null="1" autoincrement="0">
+<row name="ev_categoria_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_categoria" row="id" />
 </row>
@@ -384,7 +411,7 @@
 <row name="dedicacion" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="id_unidad_academica" null="1" autoincrement="0">
+<row name="ev_unidad_academica_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_unidad_academica" row="id" />
 </row>
@@ -408,11 +435,11 @@
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_persona" null="1" autoincrement="0">
+<row name="ev_persona_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_persona" row="id" />
 </row>
-<row name="id_carrera" null="1" autoincrement="0">
+<row name="ev_carrera_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_carrera" row="id" />
 </row>
@@ -432,9 +459,12 @@
 <part>id</part>
 </key>
 </table>
-<table x="891" y="1126" name="ev_persona">
+<table x="1196" y="1024" name="ev_persona">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
 </row>
 <row name="prefijo" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -469,17 +499,19 @@
 <row name="fecha_nacimiento" null="1" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>NULL</default></row>
-<row name="id_lugar_nacimiento" null="1" autoincrement="0">
+<row name="ev_lugar_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_lugar" row="id" />
+<comment>Lugar de nacimiento</comment>
 </row>
 <row name="es_mujer" null="0" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>0</default><comment>1 si es mujer, 0 si es varon</comment>
 </row>
-<row name="id_pais_nacionalidad" null="1" autoincrement="0">
+<row name="ev_pais_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_pais" row="id" />
+<comment>Pais de nacionalidad</comment>
 </row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
@@ -491,13 +523,16 @@
 <part>id</part>
 </key>
 </table>
-<table x="324" y="943" name="ev_lugar">
+<table x="370" y="844" name="ev_lugar">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_parroquia" null="1" autoincrement="0">
+<row name="ev_parroquia_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_parroquia" row="id" />
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
 </row>
 <row name="descripcion" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -516,9 +551,9 @@
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="nacionalidad" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
@@ -532,9 +567,12 @@
 <part>id</part>
 </key>
 </table>
-<table x="633" y="1113" name="ev_titulo">
+<table x="630" y="1166" name="ev_titulo">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
 </row>
 <row name="descripcion" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -542,11 +580,11 @@
 <row name="registro_senescyt" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
-<row name="id_carrera" null="1" autoincrement="0">
+<row name="ev_carrera_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_carrera" row="id" />
 </row>
-<row name="id_persona" null="1" autoincrement="0">
+<row name="ev_persona_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_persona" row="id" />
 </row>
@@ -570,9 +608,9 @@
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
@@ -584,13 +622,13 @@
 </key>
 <comment>nombramiento, contrato con relacion de dependencia, etc.</comment>
 </table>
-<table x="941" y="667" name="ev_cargo">
+<table x="924" y="668" name="ev_cargo">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
@@ -602,13 +640,13 @@
 </key>
 <comment>cargo administrativo o academico</comment>
 </table>
-<table x="659" y="990" name="ev_categoria">
+<table x="599" y="1000" name="ev_categoria">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
@@ -624,13 +662,13 @@
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_ies" null="1" autoincrement="0">
+<row name="ev_ies_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_ies" row="id" />
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
@@ -641,29 +679,29 @@
 <part>id</part>
 </key>
 </table>
-<table x="353" y="1096" name="ev_carrera">
+<table x="359" y="1169" name="ev_carrera">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_subarea_unesco" null="1" autoincrement="0">
+<row name="ev_subarea_unesco_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_subarea_unesco" row="id" />
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="nivel" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="id_ies" null="1" autoincrement="0">
+<row name="ev_ies_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_ies" row="id" />
 </row>
-<row name="id_pais" null="1" autoincrement="0">
+<row name="ev_pais_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_pais" row="id" />
 </row>
-<row name="id_modalidad_carrera" null="1" autoincrement="0">
+<row name="ev_modalidad_carrera_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_modalidad_carrera" row="id" />
 </row>
@@ -684,9 +722,9 @@
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
@@ -701,9 +739,9 @@
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="nombre" null="1" autoincrement="0">
-<datatype>TEXT</datatype>
-<default>NULL</default></row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
@@ -714,11 +752,11 @@
 <part>id</part>
 </key>
 </table>
-<table x="642" y="506" name="ev_mec">
+<table x="16" y="456" name="ev_mec">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
-<row name="id_ies" null="1" autoincrement="0">
+<row name="ev_ies_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_ies" row="id" />
 </row>
@@ -732,5 +770,86 @@
 <part>id</part>
 </key>
 <comment>matriz, extensiones y centros de apoyo</comment>
+</table>
+<table x="997" y="454" name="ev_validacion">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="ev_tipo_dato_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_tipo_dato" row="id" />
+</row>
+<row name="ev_variable_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_variable" row="id" />
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="regexp" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Expresión regular que debe ser verdadera para una variable, o un tipo de dato, a fin de poder ser considerado como válido</comment>
+</table>
+<table x="710" y="462" name="ev_hoja_calculo">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="ev_tipo_ies_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_tipo_ies" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1197" y="538" name="ev_evaluador">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="ev_tipo_ies_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_tipo_ies" row="id" />
+</row>
+<row name="ev_persona_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_persona" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
 </table>
 </sql>

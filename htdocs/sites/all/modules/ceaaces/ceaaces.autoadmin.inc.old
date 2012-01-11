@@ -1,0 +1,389 @@
+<?php
+// $Id
+
+/**
+ * @file
+ * Auto Admin schemas for ceaaces module.
+ *
+ * @tables {ev_tipo_ies}, {ev_variable}, {ev_tipo_dato}, {ev_valor_posible}, {ev_validacion}, {ev_formula}, {ev_indicador}, {ev_criterio}
+ */
+
+/**
+ * Implementation of hook_autoadmin_schema().
+ */
+function ceaaces_autoadmin_schema() {
+  // Auto Admin schema for {ev_tipo_ies} table
+  $autoadmin_schema['ev_tipo_ies'] = array(
+    'alias' => 'id',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_tipo_ies',
+    'title' => t('Ev Tipo Ies'),
+    'title_plural' => t('Ev Tipo y'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'nombre' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Nombre'),
+        'title_plural' => t('Nombres'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+    ),
+    'relations' => array(),
+  );
+
+  // Auto Admin schema for {ev_variable} table
+  $autoadmin_schema['ev_variable'] = array(
+    'alias' => 'nombre',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_variable',
+    'title' => t('Ev Variable'),
+    'title_plural' => t('Ev Variables'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'id_tipo_dato' => array(
+        'autoadmin_type' => 'has_one',
+        'title' => t('Id Tipo Dato'),
+        'title_plural' => t('Id Tipo Datos'),
+      ),
+      'nombre' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Nombre'),
+        'title_plural' => t('Nombres'),
+      ),
+      'descripcion' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Descripcion'),
+        'title_plural' => t('Descripcions'),
+      ),
+      'id_tipo_ies' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Id Tipo Ies'),
+        'title_plural' => t('Id Tipo y'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+      'borrado' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Borrado'),
+        'title_plural' => t('Borrados'),
+      ),
+    ),
+    'relations' => array(
+      'ev_tipo_dato' => array(
+        'type' => 'has_one',
+        'local_key' => 'id_tipo_dato',
+        'foreign_key' => 'id',
+      ),
+    ),
+  );
+
+  // Auto Admin schema for {ev_tipo_dato} table
+  $autoadmin_schema['ev_tipo_dato'] = array(
+    'alias' => 'name',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_tipo_dato',
+    'title' => t('Ev Tipo Dato'),
+    'title_plural' => t('Ev Tipo Datos'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'name' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('xxNombre'),
+        'title_plural' => t('xxNombres'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+    ),
+    'relations' => array(
+      'ev_variable' => array(
+        'type' => 'has_many',
+        'local_key' => 'id',
+        'foreign_key' => 'id_tipo_dato',
+      ),
+    ),
+  );
+
+  // Auto Admin schema for {ev_valor_posible} table
+  $autoadmin_schema['ev_valor_posible'] = array(
+    'alias' => 'id',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_valor_posible',
+    'title' => t('Ev Valor Posible'),
+    'title_plural' => t('Ev Valor Posibles'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'id_variable' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Id Variable'),
+        'title_plural' => t('Id Variables'),
+      ),
+      'dato' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Dato'),
+        'title_plural' => t('Datos'),
+      ),
+      'descripcion' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Descripcion'),
+        'title_plural' => t('Descripcions'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+    ),
+    'relations' => array(),
+  );
+
+  // Auto Admin schema for {ev_validacion} table
+  $autoadmin_schema['ev_validacion'] = array(
+    'alias' => 'id',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_validacion',
+    'title' => t('Ev Validacion'),
+    'title_plural' => t('Ev Validacions'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'regexp' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Regexp'),
+        'title_plural' => t('Regexps'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+      'nombre' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Nombre'),
+        'title_plural' => t('Nombres'),
+      ),
+      'id_tipo_dato' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Id Tipo Dato'),
+        'title_plural' => t('Id Tipo Datos'),
+      ),
+      'id_variable' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Id Variable'),
+        'title_plural' => t('Id Variables'),
+      ),
+    ),
+    'relations' => array(),
+  );
+
+  // Auto Admin schema for {ev_formula} table
+  $autoadmin_schema['ev_formula'] = array(
+    'alias' => 'id',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_formula',
+    'title' => t('Ev Formula'),
+    'title_plural' => t('Ev Formulas'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'id_indicador' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Id Indicador'),
+        'title_plural' => t('Id Indicadors'),
+      ),
+      'id_variable' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Id Variable'),
+        'title_plural' => t('Id Variables'),
+      ),
+      'orden' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Orden'),
+        'title_plural' => t('Ordens'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+      'postfijo' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Postfijo'),
+        'title_plural' => t('Postfijos'),
+      ),
+      'prefijo' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Prefijo'),
+        'title_plural' => t('Prefijos'),
+      ),
+    ),
+    'relations' => array(),
+  );
+
+  // Auto Admin schema for {ev_indicador} table
+  $autoadmin_schema['ev_indicador'] = array(
+    'alias' => 'id',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_indicador',
+    'title' => t('Ev Indicador'),
+    'title_plural' => t('Ev Indicadors'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'id_criterio' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Id Criterio'),
+        'title_plural' => t('Id Criterios'),
+      ),
+      'codigo' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Codigo'),
+        'title_plural' => t('Codigos'),
+      ),
+      'descripcion' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Descripcion'),
+        'title_plural' => t('Descripcions'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+      'orden' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Orden'),
+        'title_plural' => t('Ordens'),
+      ),
+      'borrado' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Borrado'),
+        'title_plural' => t('Borrados'),
+      ),
+    ),
+    'relations' => array(),
+  );
+
+  // Auto Admin schema for {ev_criterio} table
+  $autoadmin_schema['ev_criterio'] = array(
+    'alias' => 'id',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_criterio',
+    'title' => t('Ev Criterio'),
+    'title_plural' => t('Ev Criterios'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'id_criterio_padre' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Id Criterio Padre'),
+        'title_plural' => t('Id Criterio Padres'),
+      ),
+      'codigo' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Codigo'),
+        'title_plural' => t('Codigos'),
+      ),
+      'descripcion' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Descripcion'),
+        'title_plural' => t('Descripcions'),
+      ),
+      'id_tipo_ies' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Id Tipo Ies'),
+        'title_plural' => t('Id Tipo y'),
+      ),
+      'orden' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Orden'),
+        'title_plural' => t('Ordens'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+    ),
+    'relations' => array(),
+  );
+
+  return $autoadmin_schema;
+}

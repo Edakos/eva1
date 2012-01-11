@@ -229,7 +229,7 @@ function autoadmin_validate_schema_array_structure() {
           'autoadmin_type' => array(
             'required' => TRUE,
             'type' => 'string',
-            'allowed_values' => array('int', 'varchar', 'text', 'serial', 'has_one', 'has_many', 'primary_key', 'weight', 'bool'),
+            'allowed_values' => array('int', 'varchar', 'text', 'serial', 'has_one', 'has_many', 'primary_key', 'weight', 'bool', 'datetime'),
           ),
           'title' => array(
             'required' => TRUE,

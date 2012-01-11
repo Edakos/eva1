@@ -20,5 +20,71 @@ function ceaaces_autoload_info() {
       'file' => 'paris.php',
       'file path' => libraries_get_path('j4mie-orm'),
     ),
+    'RedBean' => array(
+      'file' => 'rb.php',
+      'file path' => libraries_get_path('RedBean'),
+    ),
   );
 }
+
+
+function ceaaces_help() {
+  $output = '';  //declare your output variable
+  switch ($path) {
+  case "admin/help#ceaaces":
+    $output = '<p>'.  t("Apoyo al proceso de evaluación de las IES.") .'</p>';
+    break;
+  }
+  return $output;
+}
+
+
+
+/**
+ * Implementation of hook_perm()
+ */
+function ceaaces_perm() {
+  return array('upload ceaaces files', 'administer ceaaces', 'access ceaaces reports');
+}
+
+function ceaaces_admin() {
+  $form = array();
+
+  $tipos_ies = db_query(db_rewrite_sql('SELECT * FROM ev_tipo_ies'));
+  while ($tipo_ies = db_fetch_array($tipos_ies)) {
+    $form['ceaaces_tipo_ies_' . $tipo_ies['id']] = array(
+      '#type' => 'textfield', 
+      '#title' => t('Ingrese nuevo tipo de IES'), 
+      '#default_value' => $tipo_ies['nombre'],
+      '#size' => 60,
+    );
+  }
+
+  $form['ceaaces_nuevo_tipo_ies'] = array(
+    '#type' => 'textfield', 
+    '#title' => t('Ingrese nuevo tipo de IES'), 
+    '#size' => 60,
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implementation of hook_menu()
+ */
+function ceaaces_menu() {
+  $items = array();
+  
+  // Put your menu items here.
+  $items['admin/settings/ceaaces'] = array(
+    'title' => 'Tipos de IES', 
+    'page callback' => 'Administra los tipos de IES disponibles', 
+    'access arguments' => array('administer ceaaces'), 
+    'type' => MENU_NORMAL_ITEM,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ceaaces_admin'),
+  );
+  
+  return $items;
+}
+
