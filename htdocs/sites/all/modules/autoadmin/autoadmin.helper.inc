@@ -13,6 +13,15 @@
  */
 
 /**
+ * Return the database table fields that is considered internal non-editable metadata
+ *
+ * @return array
+ */
+function autoadmin_get_metadata() {
+  return array('created', 'modified');
+}
+
+/**
  * Assembles page descriptions.
  *
  * @param array $schema
@@ -23,15 +32,18 @@ function autoadmin_get_page_description($schema) {
   $description = autoadmin_set_filter_page_description(NULL, NULL, NULL);
   // If no descriptions.
   if (empty($description)) {
-    return t('Showing all !title_plural', array('!title_plural' => $schema['title_plural']));
+    return t('!ShowingAll !title_plural', array('!ShowingAll' => t('Showing all'), '!title_plural' => $schema['title_plural']));
   }
   // Otherwise show filtering values and add a 'show all' link.
-  return t('Showing !title_plural where !title is !value (!link)', array(
+  return t('!Showing !title_plural !where !title !is !value (!link)', array(
+    '!Showing' => t('Showing'),
     '!title_plural' => $schema['title_plural'],
+    '!where' => t('where'),
     '!title' => $description['title'],
+    '!is' => t('is'),
     '!value' => $description['value'],
     '!link' => theme('autoadmin_operations', array(array(
-      'title' => t('Show all !title_plural', array('!title_plural' => $schema['title_plural'])),
+      'title' => t('!ShowAll !title_plural', array('!ShowAll' => t('Show all'), '!title_plural' => $schema['title_plural'])),
       'href' => $schema['path'] . '/list',
       'query' => 'show=all'
     ))),

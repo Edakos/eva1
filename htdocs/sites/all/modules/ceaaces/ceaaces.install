@@ -31,31 +31,31 @@ function ceaaces_uninstall() {
 function ceaaces_schema() {
   // Database schema for {ev_tipo_ies} table.
   $schema['ev_tipo_ies'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
-        'default' => 'UL',
+        'default' => 'NULL',
       ),
     ),
     'primary key' => array('id'),
@@ -63,47 +63,47 @@ function ceaaces_schema() {
   
   // Database schema for {ev_ies} table.
   $schema['ev_ies'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_tipo_ies_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'codigo' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'observaciones' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'ev_lugar_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -114,61 +114,61 @@ function ceaaces_schema() {
   
   // Database schema for {ev_variable} table.
   $schema['ev_variable'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_tipo_dato_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'descripcion' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'ev_tipo_ies_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'borrado' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'size' => 'small',
         'not null' => FALSE,
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
-        'default' => 'UL',
+        'default' => 'NULL',
       ),
       'coord' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '10',
         'not null' => FALSE,
       ),
       'ev_hoja_calculo_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
@@ -178,63 +178,63 @@ function ceaaces_schema() {
   
   // Database schema for {ev_valor} table.
   $schema['ev_valor'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_variable_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_ies_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'dato' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'fecha_creacion' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'borrado' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'size' => 'small',
         'not null' => FALSE,
       ),
       'fuente' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'grupo' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'ev_evaluador_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
@@ -244,31 +244,31 @@ function ceaaces_schema() {
   
   // Database schema for {ev_tipo_dato} table.
   $schema['ev_tipo_dato'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
-        'default' => 'UL',
+        'default' => 'NULL',
       ),
     ),
     'primary key' => array('id'),
@@ -276,39 +276,39 @@ function ceaaces_schema() {
   
   // Database schema for {ev_valor_posible} table.
   $schema['ev_valor_posible'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_variable_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'dato' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'descripcion' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
     ),
     'primary key' => array('id'),
@@ -316,42 +316,42 @@ function ceaaces_schema() {
   
   // Database schema for {ev_validacion} table.
   $schema['ev_validacion'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'regexp' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'ev_tipo_dato_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_variable_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -362,52 +362,52 @@ function ceaaces_schema() {
   
   // Database schema for {ev_formula} table.
   $schema['ev_formula'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_indicador_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_variable_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'orden' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'postfijo' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'prefijo' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -418,53 +418,53 @@ function ceaaces_schema() {
   
   // Database schema for {ev_indicador} table.
   $schema['ev_indicador'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_criterio_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'codigo' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'descripcion' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'orden' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'borrado' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'size' => 'small',
         'not null' => FALSE,
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -475,52 +475,52 @@ function ceaaces_schema() {
   
   // Database schema for {ev_criterio} table.
   $schema['ev_criterio'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_criterio_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'codigo' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'descripcion' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'ev_tipo_ies_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'orden' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -531,38 +531,38 @@ function ceaaces_schema() {
   
   // Database schema for {ev_hoja_calculo} table.
   $schema['ev_hoja_calculo'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
       ),
       'notes' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'ev_tipo_ies_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
@@ -572,37 +572,37 @@ function ceaaces_schema() {
   
   // Database schema for {ev_lugar} table.
   $schema['ev_lugar'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_parroquia_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'descripcion' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -613,32 +613,32 @@ function ceaaces_schema() {
   
   // Database schema for {ev_parroquia} table.
   $schema['ev_parroquia'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_canton_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -649,32 +649,32 @@ function ceaaces_schema() {
   
   // Database schema for {ev_canton} table.
   $schema['ev_canton'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_provincia_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -685,32 +685,32 @@ function ceaaces_schema() {
   
   // Database schema for {ev_provincia} table.
   $schema['ev_provincia'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_pais_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -721,32 +721,32 @@ function ceaaces_schema() {
   
   // Database schema for {ev_pais} table.
   $schema['ev_pais'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'nacionalidad' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -757,98 +757,98 @@ function ceaaces_schema() {
   
   // Database schema for {ev_persona} table.
   $schema['ev_persona'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'prefijo' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'nombres' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'apellido_paterno' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'apellido_materno' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'subfijo' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'cedula' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'telefono_fijo' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'telefono_movil' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'direccion_domiciliaria' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'email' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'fecha_nacimiento' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => FALSE,
       ),
       'ev_lugar_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'es_mujer' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
       ),
       'ev_pais_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -859,43 +859,43 @@ function ceaaces_schema() {
   
   // Database schema for {ev_evaluador} table.
   $schema['ev_evaluador'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
       ),
       'notes' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'ev_tipo_ies_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_persona_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
@@ -905,57 +905,57 @@ function ceaaces_schema() {
   
   // Database schema for {ev_carrera} table.
   $schema['ev_carrera'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_subarea_unesco_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'nivel' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_ies_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_pais_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_modalidad_carrera_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'num_creditos' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -966,44 +966,44 @@ function ceaaces_schema() {
   
   // Database schema for {ev_alumno} table.
   $schema['ev_alumno'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_persona_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_carrera_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'num_matricula' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'observaciones' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
     ),
     'primary key' => array('id'),
@@ -1011,57 +1011,57 @@ function ceaaces_schema() {
   
   // Database schema for {ev_titulo} table.
   $schema['ev_titulo'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'descripcion' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'registro_senescyt' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'ev_carrera_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_persona_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'fecha_inicio_estudios' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => FALSE,
       ),
       'fecha_fin_estudios' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -1072,27 +1072,27 @@ function ceaaces_schema() {
   
   // Database schema for {ev_cargo} table.
   $schema['ev_cargo'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -1103,27 +1103,27 @@ function ceaaces_schema() {
   
   // Database schema for {ev_categoria} table.
   $schema['ev_categoria'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -1134,27 +1134,27 @@ function ceaaces_schema() {
   
   // Database schema for {ev_relacion_trabajo} table.
   $schema['ev_relacion_trabajo'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -1165,79 +1165,79 @@ function ceaaces_schema() {
   
   // Database schema for {ev_profesor} table.
   $schema['ev_profesor'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_persona_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_ies_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'fecha_ingreso' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => FALSE,
       ),
       'ev_relacion_trabajo_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_cargo_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_categoria_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'sueldo' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'dedicacion' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'ev_unidad_academica_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'email' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'observaciones' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'text',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
     ),
     'primary key' => array('id'),
@@ -1245,29 +1245,29 @@ function ceaaces_schema() {
   
   // Database schema for {ev_mec} table.
   $schema['ev_mec'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_ies_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
     ),
     'primary key' => array('id'),
@@ -1275,27 +1275,27 @@ function ceaaces_schema() {
   
   // Database schema for {ev_modalidad_carrera} table.
   $schema['ev_modalidad_carrera'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -1306,27 +1306,27 @@ function ceaaces_schema() {
   
   // Database schema for {ev_subarea_unesco} table.
   $schema['ev_subarea_unesco'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,
@@ -1337,32 +1337,32 @@ function ceaaces_schema() {
   
   // Database schema for {ev_unidad_academica} table.
   $schema['ev_unidad_academica'] = array(
-    'description' => t('TODO: please describe this table!'),
+    'description' => t('Tabla del Sistema de CEAACES'),
     'fields' => array(
       'id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'serial',
         'not null' => TRUE,
       ),
       'ev_ies_id' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
       ),
       'created' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'modified' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'datetime',
         'not null' => TRUE,
-        'default' => 'ow(',
+        'default' => 'now()',
       ),
       'name' => array(
-        'description' => t('TODO: please describe this field!'),
+        'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'varchar',
         'length' => '1000',
         'not null' => FALSE,

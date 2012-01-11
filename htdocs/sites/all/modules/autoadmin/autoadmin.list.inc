@@ -43,8 +43,20 @@ function autoadmin_list($table) {
  */
 function _autoadmin_list_header($schema) {
   $header = array();
+  $metadata = autoadmin_get_metadata();
+  $metadata_header = array();
   foreach ($schema['fields'] as $field_key => $field) {
-    $header[] = array('data' => $field['title'], 'field' => $field_key);
+    $h = array('data' => $field['title'], 'field' => $field_key);
+    if (in_array($field['key'], $metadata)) {
+      $metadata_header[$field['key']] = $h;
+    } else {
+      $header[] = $h;
+    }
+  }
+  foreach ($metadata as $m) {
+    if (isset($metadata_header[$m])) {
+      $header[] = $metadata_header[$m];
+    }
   }
   $header[] = t('Operations');
   return $header;
@@ -92,11 +104,24 @@ function _autoadmin_list_no_rows($schema) {
  */
 function _autoadmin_list_row($db_row, $schema) {
   $table_row = array();
+  $metadata = autoadmin_get_metadata();
+  $metadata_fields = array();
   foreach ($schema['fields'] as $field_key => $field) {
     if ($field['autoadmin_type'] != 'bool') {
-             $table_row[$field_key] = check_plain(truncate_utf8($db_row[$field_key], AUTOADMIN_LIST_TRUNCATE, FALSE, TRUE));
+      $r = check_plain(truncate_utf8($db_row[$field_key], AUTOADMIN_LIST_TRUNCATE, FALSE, TRUE));
     } else {
-            $table_row[$field_key] = _autoadmin_list_field_bool($db_row, $field_key, $schema);
+      $r = _autoadmin_list_field_bool($db_row, $field_key, $schema);
+    }
+
+    if (in_array($field_key, $metadata)) {
+      $metadata_fields[$field_key] = $r;
+    } else {
+      $table_row[$field_key] = $r;
+    }
+  }
+  foreach ($metadata as $m) {
+    if (isset($metadata_fields[$m])) {
+      $table_row[$m] = $metadata_fields[$m];
     }
   }
   // Add operation links.
@@ -208,7 +233,7 @@ function _autoadmin_list_operations_has_many($schema, $primary_value) {
   foreach ($schema['relations_by_type']['has_many'] as $relation) {
     $foreign_schema = autoadmin_schema_get_one($relation['foreign_table']);
     $links[] = array(
-      'title' => t('Edit !title_plural', array('!title_plural' => $foreign_schema['title_plural'])),
+      'title' => t('[!Edit !title_plural]', array('!Edit' => t('Edit'), '!title_plural' => $foreign_schema['title_plural'])),
       'href' => $foreign_schema['path'],
       'query' => array($relation['foreign_key'] => $primary_value),
     );

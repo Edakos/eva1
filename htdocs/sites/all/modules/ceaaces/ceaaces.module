@@ -44,7 +44,7 @@ function ceaaces_help() {
  * Implementation of hook_perm()
  */
 function ceaaces_perm() {
-  return array('upload ceaaces files', 'administer ceaaces', 'access ceaaces reports');
+  return array('upload ceaaces evaluations', 'administer ceaaces', 'access ceaaces reports');
 }
 
 function ceaaces_admin() {
@@ -85,6 +85,34 @@ function ceaaces_menu() {
     'page arguments' => array('ceaaces_admin'),
   );
   
+  $items['evaluacion'] = array(
+    'title' => 'Carga de la evaluación', 
+    'page callback' => 'ceaaces_upload_eva_spreadsheet', 
+    'access arguments' => array('upload ceaaces evaluations'), 
+    'type' => MENU_CALLBACK,
+  );
+  
   return $items;
+}
+
+/**
+ * Formulario para la carga de la hoja de cálculo con la evaluación de IES
+ */
+
+function ceaaces_upload_eva_spreadsheet () {
+  $form = array();
+
+  $form['tipo_ies'] = array(
+    '#type' => 'select',
+    '#title' => 'Tipo de IES',
+    '#options' => array(1,2),
+  );
+
+  $form['hoja_calculo'] = array(
+    '#type' => 'file', 
+    '#title' => t('Hoja de cálculo'), 
+  );
+
+  return system_settings_form($form);
 }
 

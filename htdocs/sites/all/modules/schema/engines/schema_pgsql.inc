@@ -118,7 +118,11 @@ function schema_pgsql_inspect($tbl_name = NULL) {
         // a string.  However, pgsql returns $r['column_default']
         // wrapped in single-quotes.  We just want the string value,
         // so strip off the quotes.
-        $col['default'] = substr($col['default'], 1, -1);
+        //$col['default'] = substr($col['default'], 1, -1);
+
+        // if the first character is ' or " and the first and last character are the same, only then drop the first and last character.
+        $d = $col['default'];
+        $col['default'] = (in_array($d[0], array("'", '"')) && $d[0] == $d[strlen($d) - 1]) ? substr($d, 1, -1) : $d;
       }
 
     }

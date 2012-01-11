@@ -78,8 +78,11 @@ function _autoadmin_edit_form_get_row($schema, $primary_value) {
  */
 function _autoadmin_edit_build_form($row, $schema, &$weight) {
   $form = array();
+  $metadata = autoadmin_get_metadata();
   foreach ($schema['fields'] as $field_key => $field) {
-    $form[$field_key] = _autoadmin_edit_build_field($schema, $field, $row, &$weight);
+    if (!in_array($field_key, $metadata)) {
+      $form[$field_key] = _autoadmin_edit_build_field($schema, $field, $row, &$weight);
+    }
   }
   return $form;
 }
@@ -126,6 +129,12 @@ function autoadmin_edit_form_submit($form, &$form_state) {
     }
   }
   else {
+    if (array_key_exists('modified', $data)) { 
+      //if there is the 'modified' audit-purpose field 
+      // then put the current time
+      // (isset function is not used because it returns false if the value is null)
+      $data['modified'] = 'now()';
+    }
     $status = drupal_write_record($values['schema']['table'], $data, $pk_name);
     if ($status) {
       $text_vars['!pk'] = $data[$pk_name];
