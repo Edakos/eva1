@@ -249,13 +249,14 @@
         break;
         
         case 'singularize':
-            require_once('inflector.php');
-            $inflector = new Inflector();
+            //require_once('inflector.php');
+            //$inflector = new Inflector();
             $word = (isset($_GET["word"]) ? urldecode($_GET["word"]) : '');
             
             if ($word != '') {
                 header("HTTP/1.0 201 Created");
-                echo $inflector->singularize($word);
+                //echo $inflector->singularize($word);
+                echo $word;
             } else {
                 header("HTTP/1.0 404 Not Found");
             }

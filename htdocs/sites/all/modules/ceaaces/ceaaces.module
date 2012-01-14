@@ -44,7 +44,12 @@ function ceaaces_help() {
  * Implementation of hook_perm()
  */
 function ceaaces_perm() {
-  return array('upload ceaaces evaluations', 'administer ceaaces', 'access ceaaces reports');
+  return array(
+    'upload ceaaces evaluations', 
+    'administer ceaaces', 
+    'access ceaaces reports',
+    'acceso a form inscripcion a pruebas en ceaaces'
+  );
 }
 
 function ceaaces_admin() {
@@ -92,6 +97,13 @@ function ceaaces_menu() {
     'type' => MENU_CALLBACK,
   );
   
+  $items['inscripcion'] = array(
+    'title' => 'Inscripción para pruebas de conocimiento',
+    'page callback' => 'ceaaces_inscripcion', 
+    'access arguments' => array('acceso a form inscripcion a pruebas en ceaaces'), 
+    'type' => MENU_CALLBACK,
+  );
+  
   return $items;
 }
 
@@ -99,7 +111,7 @@ function ceaaces_menu() {
  * Formulario para la carga de la hoja de cálculo con la evaluación de IES
  */
 
-function ceaaces_upload_eva_spreadsheet () {
+function ceaaces_upload_eva_spreadsheet() {
   $form = array();
 
   $form['tipo_ies'] = array(
@@ -116,3 +128,22 @@ function ceaaces_upload_eva_spreadsheet () {
   return system_settings_form($form);
 }
 
+function ceaaces_inscripcion() {
+  $form = array();
+
+  $form['nombre'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Nombre',
+    '#default_value' => 'Ingrese su nombre',
+    '#size' => 60,
+  );
+
+  $form['cedula'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Nombre',
+    '#default_value' => 'Ingrese su nombre',
+    '#size' => 60,
+  );
+
+  return system_settings_form($form);
+}
