@@ -451,6 +451,7 @@
 <row name="ev_carrera_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <relation table="ev_carrera" row="id" />
+<relation table="ev_carrera" row="id" />
 </row>
 <row name="num_matricula" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -500,6 +501,52 @@
 <row name="pasantias" null="1" autoincrement="0">
 <datatype>SMALLINT</datatype>
 <comment>realizó pasantías durante el 2011?</comment>
+</row>
+<row name="n" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="carrera" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="institucion" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="cedula" null="1" autoincrement="0">
+<datatype>VARCHAR(20)</datatype>
+</row>
+<row name="provincia" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="canton" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="parroquia" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="ev_parroquia_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_parroquia" row="id" />
+</row>
+<row name="ev_canton_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_canton" row="id" />
+</row>
+<row name="ev_provincia_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_provincia" row="id" />
+</row>
+<row name="ev_ies_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_ies" row="id" />
+</row>
+<row name="sede" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="direccion" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="lugar" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
 </row>
 <key type="PRIMARY" name="">
 <part>id</part>
@@ -1086,5 +1133,88 @@
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
+</table>
+<table x="922" y="1608" name="ev_form_mtn">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="ev_parroquia_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_parroquia" row="id" />
+</row>
+<row name="ev_canton_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_canton" row="id" />
+</row>
+<row name="ev_provincia_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_provincia" row="id" />
+</row>
+<row name="cedula" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="telefono_fijo" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="telefono_movil" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="direccion" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="email" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="apellido_paterno" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="apellido_materno" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="nombres" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="n" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="ev_estudiante_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_estudiante" row="id" />
+</row>
+<row name="ev_carrera_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_carrera" row="id" />
+</row>
+<row name="num_cred" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="num_cred_tot" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="provincia" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="canton" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="parroquia" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Para el formulario de datos de matriculados en tercer nivel</comment>
 </table>
 </sql>

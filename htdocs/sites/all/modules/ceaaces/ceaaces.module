@@ -99,7 +99,8 @@ function ceaaces_menu() {
   
   $items['inscripcion'] = array(
     'title' => 'Inscripción para pruebas de conocimiento',
-    'page callback' => 'ceaaces_inscripcion', 
+    'page callback' => 'drupal_get_form', 
+    'page arguments' => array('ceaaces_inscripcion'), 
     'access arguments' => array('acceso a form inscripcion a pruebas en ceaaces'), 
     'type' => MENU_CALLBACK,
   );
@@ -130,20 +131,327 @@ function ceaaces_upload_eva_spreadsheet() {
 
 function ceaaces_inscripcion() {
   $form = array();
+  $cedula = '1722736814';
 
-  $form['nombre'] = array(
+  $estudiante = db_fetch_object(db_query("SELECT * FROM ev_form_mtn WHERE cedula='$cedula'  ORDER BY id DESC LIMIT 1"));
+
+  $form['apellido_paterno'] = array(
     '#type' => 'textfield',
-    '#title' => 'Nombre',
-    '#default_value' => 'Ingrese su nombre',
+    '#title' => 'Apellido paterno',
+    '#default_value' => $estudiante->apellido_paterno,
     '#size' => 60,
   );
-
+  
+  $form['apellido_materno'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Apellido materno',
+    '#default_value' => $estudiante->apellido_materno,
+    '#size' => 60,
+  );
+  
+  $form['nombres'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Nombres',
+    '#default_value' => $estudiante->nombres,
+    '#size' => 60,
+  );
+  
   $form['cedula'] = array(
     '#type' => 'textfield',
-    '#title' => 'Nombre',
-    '#default_value' => 'Ingrese su nombre',
+    '#title' => 'Cédula',
+    '#default_value' => $estudiante->cedula,
     '#size' => 60,
   );
 
-  return system_settings_form($form);
+  $form['provincia'] = array(
+    '#type' => 'hierarchical_select',
+    '#title' => 'Provincia | Cantón | Parroquia',
+    '#config' => array(
+      'module' => 'ceaaces',
+      'params' => array(
+        'type' => '',
+      ),
+      'save_lineage'    => 0,
+      'enforce_deepest' => 0,
+      'entity_count'    => 0,
+      'require_entity'  => 0,
+      'resizable' => 0,
+      'level_labels' => array(
+        'status' => 1,
+        'labels' => array(
+          0 => t('Escoja una provincia'),
+          1 => t('Escoja un cantón'),
+          2 => t('Escoja una parroquia'),
+        ),
+      ),
+      'dropbox' => array(
+        'status' => 0,
+        'title' => t('Selected standards'),
+        'limit' => 0,
+        'reset_hs' => 0,
+      ),
+      'editability' => array(
+        'status' => 0,
+      ),
+      'params' => array(),
+      'render_flat_select' => 0,
+    ),
+    //'#default_value' => $estudiante->ev_provincia_id . '|' . $estudiante->ev_provincia_id . '-' . $estudiante->canton . '|' . $estudiante->ev_provincia_id . '-' . $estudiante->canton . '-' . $estudiante->parroquia,
+    '#default_value' => array($estudiante->ev_provincia_id,  $estudiante->ev_canton_id),
+  );
+  /*
+  $form['provincia'] = array(
+    '#type' => 'select',
+    '#title' => 'Provincia',
+    '#options' => ceaaces_get('provincia', 'id<>0'),
+  );
+  $form['canton'] = array(
+    '#type' => 'select',
+    '#title' => 'Cantón',
+    '#options' => array('Seleccione una provincia'),
+  );
+  $form['parroquia'] = array(
+    '#type' => 'select',
+    '#title' => 'Parroquia',
+    '#options' => array('Seleccione una provincia y un cantón'),
+  );
+   */
+  $form['telefono_fijo'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Teléfono fijo',
+    '#default_value' => $estudiante->telefono_fijo,
+    '#size' => 60,
+  );
+
+  $form['telefono_movil'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Teléfono móvil',
+    '#default_value' => $estudiante->telefono_movil,
+    '#size' => 60,
+  );
+
+  $form['direccion'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Dirección',
+    '#default_value' => $estudiante->direccion,
+    '#size' => 60,
+  );
+
+  $form['email'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Correo electrónico',
+    '#default_value' => $estudiante->email,
+    '#size' => 60,
+  );
+
+
+  $form['num_cred_tot'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Número de créditos totales para pasar la carrera',
+    '#default_value' => $estudiante->num_cred_tot,
+    '#size' => 30,
+  );
+  $form['num_cred'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Número de créditos aprobados hasta la fecha',
+    '#default_value' => $estudiante->num_cred,
+    '#size' => 30,
+  );
+  $form['submit'] = array('#type' => 'submit', '#value' => 'Guardar');
+
+  //return system_settings_form($form);
+  return $form;
 }
+
+function ceaaces_inscripcion_validate($form, &$form_state) {
+  if (!ctype_digit($form_state['values']['num_cred_tot'])) {
+    form_set_error('', 'Ingrese un número entero válido en el campo de Número de créditos totales.');
+  }
+  if (!ctype_digit($form_state['values']['num_cred'])) {
+    form_set_error('', 'Ingrese un número entero válido en el campo de Número de créditos.');
+  }
+}
+
+function ceaaces_inscripcion_submit($form, &$form_state) {
+  $a = '';
+  $b = '';
+  $glue = '';
+  $closed = false;
+  foreach ($form as $k => $attr) {
+    if ($k == 'submit') {
+      $closed = true;
+    }
+    if (!$closed && $k[0] != '#') {
+      $vb = $form_state['values'][$k];
+      //if ($attr['#type'] == 'textfield' || $attr['#type'] == 'textfield') {
+      if ($attr['#type'] == 'hierarchical_select') {
+        $geo = explode('-', $vb);
+
+        $tablas = array('provincia', 'canton', 'parroquia');
+        $count = 0;
+        $vb = '';
+        $k = '';
+        $glue2 = '';
+        foreach ($geo as $g) {
+          $vb .= $glue2 . "$g,(select name from ev_{$tablas[$count]} where id=$g)";
+          $k .= $glue2 . "ev_{$tablas[$count]}_id,{$tablas[$count]}";
+          $count++;
+          $glue2 = ',';
+        }
+      } else {
+        $vb = "'$vb'";
+      }
+      $a .= $glue . $k; 
+      $b .= $glue . $vb;
+      $glue = ',';
+    }
+
+  }
+  $q = 'INSERT INTO ev_form_mtn(' . $a . ') values (' . $b . ')';
+  db_query($q);
+  drupal_set_message('Su formulario ha sido guardado.' . $q);
+}
+
+function ceaaces_get($tabla, $where=NULL, $order=NULL) {
+  $q = 'SELECT id, name FROM ev_' . $tabla;
+  if (!empty($where)) {
+    $q .= ' WHERE ' . $where;
+  }
+  if (empty($order)) {
+    $order = 'name';
+  }
+  $q .= ' ORDER BY ' . $order;
+
+  $valores = db_query($q);
+  $result = array();
+  while ($valor = db_fetch_object($valores)) {
+    $result[$valor->id] = $valor->name;
+  }
+  return $result;
+}
+
+/**
+ * Implementation of hook_hierarchical_select_root_level().
+ */
+function ceaaces_hierarchical_select_root_level($params) {
+  $hierarchy = ceaaces_get_geo_hierarchy();
+  $items = $hierarchy['root']['children'];
+  return _ceaaces_items_associate_labels_with_items($items); 
+}
+
+/**
+ * Implementation of hook_hierarchical_select_children().
+ */
+function ceaaces_hierarchical_select_children($parent) {
+  $hierarchy = ceaaces_get_geo_hierarchy();
+  $items = $hierarchy[$parent]['children'];
+  return _ceaaces_items_associate_labels_with_items($items);
+}
+
+function ceaaces_get_geo_hierarchy() {
+  static $ceaaces_geo_hierarchy;
+
+  if (!isset($ceaaces_geo_hierarchy)) {
+    $sql = '
+      SELECT
+      pr.id as pr_id,
+      c.id as c_id,
+      pa.id as pa_id,
+      pr.name as pr_name,
+      c.name as c_name,
+      pa.name as pa_name,
+      pr.codigo as pr_codigo,
+      c.codigo as c_codigo,
+      pa.codigo as pa_codigo
+      FROM
+      ev_provincia as pr,
+      ev_canton as c,
+      ev_parroquia as pa
+      WHERE
+      pr.id = c.ev_provincia_id
+      AND c.id = pa.ev_canton_id
+      ORDER BY 
+      pr.name, c.name, pa.name
+      ';
+    $result = db_query($sql);
+    $previous = array('pr' => NULL, 'c' => NULL, 'pa' => NULL);
+    while ($g = db_fetch_object($result)) {
+      $pr_id = $g->pr_id;
+      $c_id = $g->pr_id . "-" . $g->c_id;
+      $pa_id = $g->pr_id . "-" . $g->c_id . "-" . $g->pa_id;
+
+      if ($previous['pr'] <> $pr_id) {
+        //quiebre de provincia
+        $ceaaces_geo_hierarchy['root']['children'][] = $pr_id;
+        $ceaaces_geo_hierarchy[$pr_id]['label'] = $g->pr_name;
+      }
+
+      if ($previous['c'] <> $c_id) {
+        //quiebre de canton
+        $ceaaces_geo_hierarchy[$pr_id]['children'][] = $c_id;
+        $ceaaces_geo_hierarchy[$c_id]['label'] = $g->c_name;
+      }
+      $ceaaces_geo_hierarchy[$c_id]['children'][] = $pa_id;
+      $ceaaces_geo_hierarchy[$pa_id]['label'] = $g->pa_name;
+
+      $previous['pr'] = $pr_id;
+      $previous['c'] = $c_id;
+      $previous['pa'] = $pa_id;
+    }
+  }
+  return $ceaaces_geo_hierarchy;
+}
+
+
+/**
+ * Implementation of hook_hierarchical_select_lineage().
+ */
+function ceaaces_hierarchical_select_lineage($item, $params) {
+  // If given the item "Company A-Accounts Payable-Employee C", this will
+  // generate the following lineage:
+  // Array
+  // (
+  //   [0] => Company A
+  //   [1] => Company A-Accounts Payable
+  //   [2] => Company A-Accounts Payable-Employee C
+  // )
+  $parts = explode('-', $item);
+
+  $lineage = array();
+  for ($i = 0; $i < count($parts); $i++) {
+    $lineage[] = implode('-', array_slice($parts, 0, $i + 1));
+  }
+  return $lineage;
+}
+
+/**
+ * Implementation of hook_hierarchical_select_valid_item().
+ */
+function ceaaces_hierarchical_select_valid_item($item, $params) {
+  $hierarchy = ceaaces_get_geo_hierarchy();
+  return isset($hierarchy[$item]['label']);
+}
+
+/**
+ * Implementation of hook_hierarchical_select_item_get_label().
+ */
+function ceaaces_hierarchical_select_item_get_label($item, $params) {
+  $hierarchy = ceaaces_get_geo_hierarchy();
+  return $hierarchy[$item]['label'];
+}
+
+
+function _ceaaces_items_associate_labels_with_items($items) {
+  $hierarchy = ceaaces_get_geo_hierarchy();
+  $options = array();
+
+  if (count($items)) {
+    foreach ($items as $item) {
+      // Use the translated item when available!
+      $options[$item] = t($hierarchy[$item]['label']);
+    }
+  }
+  return $options;
+}
+
+
