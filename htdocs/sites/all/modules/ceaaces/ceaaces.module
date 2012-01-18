@@ -92,7 +92,8 @@ function ceaaces_menu() {
   
   $items['evaluacion'] = array(
     'title' => 'Carga de la evaluación', 
-    'page callback' => 'ceaaces_upload_eva_spreadsheet', 
+    'page callback' => 'drupal_get_form', 
+    'page arguments' => array('ceaaces_upload_eva_spreadsheet'),
     'access arguments' => array('upload ceaaces evaluations'), 
     'type' => MENU_CALLBACK,
   );
@@ -126,13 +127,17 @@ function ceaaces_upload_eva_spreadsheet() {
     '#title' => t('Hoja de cálculo'), 
   );
 
+  $form['submit'] = array('#type' => 'submit', '#value' => 'Enviar');
+
   return system_settings_form($form);
 }
 
 function ceaaces_inscripcion() {
+  global $user;
   $form = array();
-  $cedula = '1722736814';
-
+  //$cedula = '1722736814';
+  $cedula = $user->name;
+watchdog('ceaaces', 'user.name=' . $cedula . ' | user: ' . serialize($user));
   $estudiante = db_fetch_object(db_query("SELECT * FROM ev_form_mtn WHERE cedula='$cedula'  ORDER BY id DESC LIMIT 1"));
 
   $form['apellido_paterno'] = array(
@@ -172,7 +177,7 @@ function ceaaces_inscripcion() {
         'type' => '',
       ),
       'save_lineage'    => 0,
-      'enforce_deepest' => 0,
+      'enforce_deepest' => 1,
       'entity_count'    => 0,
       'require_entity'  => 0,
       'resizable' => 0,
@@ -197,7 +202,7 @@ function ceaaces_inscripcion() {
       'render_flat_select' => 0,
     ),
     //'#default_value' => $estudiante->ev_provincia_id . '|' . $estudiante->ev_provincia_id . '-' . $estudiante->canton . '|' . $estudiante->ev_provincia_id . '-' . $estudiante->canton . '-' . $estudiante->parroquia,
-    '#default_value' => array($estudiante->ev_provincia_id,  $estudiante->ev_canton_id),
+    '#default_value' => array($estudiante->ev_provincia_id,  $estudiante->ev_canton_id, $estudiante->ev_parroquia_id),
   );
   /*
   $form['provincia'] = array(
@@ -309,7 +314,7 @@ function ceaaces_inscripcion_submit($form, &$form_state) {
   }
   $q = 'INSERT INTO ev_form_mtn(' . $a . ') values (' . $b . ')';
   db_query($q);
-  drupal_set_message('Su formulario ha sido guardado.' . $q);
+  drupal_set_message('Su formulario ha sido guardado.' );
 }
 
 function ceaaces_get($tabla, $where=NULL, $order=NULL) {

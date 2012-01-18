@@ -440,7 +440,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="603" y="1394" name="ev_estudiante">
+<table x="605" y="1394" name="ev_estudiante">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -858,6 +858,39 @@
 <row name="modified" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
+<row name="n" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="provincia" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="canton" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="parroquia" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="institucion" null="1" autoincrement="0">
+<datatype>VARCHAR(10)</datatype>
+</row>
+<row name="sede" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="nivel" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="modalidad" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="jornada" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="organiz_cp" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="subarea" null="1" autoincrement="0">
+<datatype>VARCHAR(200)</datatype>
+</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>

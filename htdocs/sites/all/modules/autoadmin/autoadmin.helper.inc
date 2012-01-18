@@ -325,3 +325,17 @@ function autoadmin_drush_default_schema_alias($schema) {
   }
   return $schema['primary key'][0];
 }
+
+/**
+ * Sets by ref default values for a numeric fields length and maxlength.
+ * 
+ * @global String $db_type
+ * @param array $field
+ * @param string $size
+ * @param string $maxlength
+ */
+function autoadmin_numeric_field_lengths($field, &$size, &$maxlength) {
+  global $db_type;
+  $size = !empty($field['size']) ? $field['size'] : '64';
+  $maxlength = !empty($field['maxlength']) ? $field['maxlength'] : '128';
+}

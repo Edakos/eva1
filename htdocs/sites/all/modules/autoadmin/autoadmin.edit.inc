@@ -303,4 +303,34 @@ function _autoadmin_edit_field_datetime($row, $field, $schema, $weight) {
   );
 }
 
+function _autoadmin_edit_field_date($row, $field, $schema, $weight) {
+  return array(
+    '#type' => 'date_popup',
+    '#title' => $field['title'],
+    '#description' => !empty($field['description']) ? $field['description'] : '',
+    '#default_value' => _autoadmin_edit_field_get_value($row, $field, $schema),
+//    '#size' => ($field['length'] > AUTOADMIN_EDIT_VARCHAR_MAX_SIZE) ? AUTOADMIN_EDIT_VARCHAR_MAX_SIZE : $field['length'],
+//    '#maxlength' => $field['length'],
+    '#required' => TRUE,
+    '#weight' => $weight,
+//    '#date_format' => 'Y-m-d',
+    '#date_year_range' => '-100:+20',
+  );
+}
+
+function _autoadmin_edit_field_numeric($row, $field, $schema, $weight) {
+  autoadmin_numeric_field_lengths($field, $size, $maxlength);
+  return array(
+    '#type' => 'textfield',
+    '#title' => $field['title'],
+    '#description' => !empty($field['description']) ? $field['description'] : '',
+    '#default_value' => _autoadmin_edit_field_get_value($row, $field, $schema),
+    '#size' => $size,
+    '#maxlength' => $maxlength,
+    '#required' => TRUE,
+    '#weight' => $weight,
+    '#element_validate' => array('autoadmin_validate_numeric'),
+  );
+}
+
 /* end form field generators */

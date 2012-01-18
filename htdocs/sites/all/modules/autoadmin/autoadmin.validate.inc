@@ -229,7 +229,7 @@ function autoadmin_validate_schema_array_structure() {
           'autoadmin_type' => array(
             'required' => TRUE,
             'type' => 'string',
-            'allowed_values' => array('int', 'varchar', 'text', 'serial', 'has_one', 'has_many', 'primary_key', 'weight', 'bool', 'datetime'),
+            'allowed_values' => array('int', 'varchar', 'text', 'serial', 'has_one', 'has_many', 'primary_key', 'weight', 'bool', 'datetime', 'date', 'numeric'),
           ),
           'title' => array(
             'required' => TRUE,
@@ -274,6 +274,12 @@ function autoadmin_validate_schema_array_structure() {
 function autoadmin_validate_int($element, &$form_state) {
    if (!is_numeric($element['#value']) || (int)$element['#value'] != $element['#value']) {
      form_error($element, t('<strong>!field:</strong> Must be a positive or negative whole number.', array('!field' => $element['#title'])));
+   }
+}
+
+function autoadmin_validate_numeric($element, &$form_state) {
+   if (!is_numeric($element['#value']) || (float)$element['#value'] != $element['#value']) {
+     form_error($element, t('<strong>!field:</strong> Must be a positive or negative float number.', array('!field' => $element['#title'])));
    }
 }
 /* end form field validation */
