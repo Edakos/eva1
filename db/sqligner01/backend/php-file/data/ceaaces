@@ -222,7 +222,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="311" y="376" name="ev_ies">
+<table x="295" y="324" name="ev_ies">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -249,6 +249,9 @@
 <row name="modified" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
+<row name="provincia" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>

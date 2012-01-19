@@ -1,0 +1,11 @@
+name = WebFM Popup
+description = Places the WebFM browser into a popup window for Rich Text Editors
+package = WebFM
+core = 6.x
+dependencies[] = webfm
+; Information added by drupal.org packaging script on 2011-11-29
+version = "6.x-2.16"
+core = "6.x"
+project = "webfm"
+datestamp = "1322579746"
+

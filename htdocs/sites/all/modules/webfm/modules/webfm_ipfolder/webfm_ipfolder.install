@@ -1,0 +1,65 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the webfm_ipfolder module.
+ */
+
+/**
+ * Implementation of hook_install().
+ *
+ */
+function webfm_ipfolder_install() {
+  drupal_install_schema('webfm_ipfolder');
+  variable_set('webfm_ipfolder_bydefault', TRUE);
+}
+
+/**
+ * Implementation of hook_uninstall().
+ *
+ */
+function webfm_ipfolder_uninstall() {
+  drupal_uninstall_schema('webfm_ipfolder');
+  variable_del('webfm_ipfolder_bydefault');
+}
+/**
+ * Implementation of hook_schema().
+ *
+ * @return array
+ */
+function webfm_ipfolder_schema() {
+  $schema['webfm_ipfolder'] = array(
+  'fields' => array(
+  'id' => array('type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE),
+  'folder' => array('type' => 'varchar', 'length' => 255, 'not null' => TRUE),
+  'ip1' => array('type' => 'int', size => 'big', 'unsigned' => FALSE, 'not null' => TRUE),
+  'ip2' => array('type' => 'int', size => 'big', 'unsigned' => FALSE, 'not null' => TRUE),
+  ),
+  'primary key' => array('id'),
+  );
+
+  return $schema;
+}
+
+/**
+ * Fixing wrong datatype in former mysql declaration
+ * Chaning from usigned INT to signed BIGINT for compatibility with pgsql.
+ * As reported in http://drupal.org/node/755882
+ */
+function webfm_ipfolder_update_6200() {
+  global $db_type;
+  $ret = array();
+
+  switch ($db_type) {
+    case 'pgsql':
+      db_change_column($ret, 'webfm_ipfolder', 'ip1', 'ip1', 'BIGINT', array('not null' => TRUE,));
+      db_change_column($ret, 'webfm_ipfolder', 'ip2', 'ip2', 'BIGINT', array('not null' => TRUE,));
+      break;
+
+    case 'mysql':
+    case 'mysqli':
+      $ret[] = update_sql("ALTER TABLE {webfm_ipfolder} CHANGE ip1 ip1 BIGINT( 10 ) NOT NULL , CHANGE ip2 ip2 BIGINT( 10 ) NOT NULL");
+      break;
+  }
+
+  return $ret;
+}

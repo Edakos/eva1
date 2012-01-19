@@ -91,9 +91,11 @@ function ceaaces_menu() {
   );
   
   $items['evaluacion'] = array(
-    'title' => 'Carga de la evaluación', 
-    'page callback' => 'drupal_get_form', 
-    'page arguments' => array('ceaaces_upload_eva_spreadsheet'),
+    'title' => 'Envío de la evaluación', 
+    //'title' => 'Creación de contraseña', 
+    //'page callback' => 'drupal_get_form', 
+    'page callback' => 'ceaaces_evaluacion', 
+    //'page arguments' => array('ceaaces_upload_eva_spreadsheet'),
     'access arguments' => array('upload ceaaces evaluations'), 
     'type' => MENU_CALLBACK,
   );
@@ -110,26 +112,76 @@ function ceaaces_menu() {
 }
 
 /**
+ *
+ */
+function ceaaces_evaluacion() {
+  $xxlinks = '<div>&nbsp;</div><div>&nbsp;</div>';
+  $links = '<div>&nbsp;</div><div>&nbsp;</div>
+    <table style="border:solid 0px #999;color:#999;">
+    <tr>
+    <td style="width:220px;border:solid 2px #ddd;text-align:center;">
+    <a href="formulario_institutos_2011.xls">Descargar último formulario enviado</a> <br><span>Subido el 18 de enero de 2012, <br>a las 16h36</span>
+    </td>
+    <td style="border:solid 2px #ddd;text-align:center;">
+    Huella digital del archivo (MD5): <br><span style="color:#000;font-size:14pt;font-family:Courier,Serif">79dde8972f1ae413e6cb2dfd0f74f4dc</span> <br>
+    <a href="http://es.wikipedia.org/wiki/MD5">(¿Qué es esto?)</a>
+    </td>
+    <td style="border:solid 2px #ddd;text-align:center;">
+    <a href="ddd.dd">Descargar comprobante</a>
+    </td>
+    </tr>
+    </table><div>&nbsp;</div><div>&nbsp;</div>
+    ';
+  $form = drupal_get_form('ceaaces_upload_eva_spreadsheet');
+  //$form = drupal_get_form('ceaaces_login2');
+  return $links.$form;
+}
+
+
+function ceaaces_login2() {
+  $form= array();
+
+  $form['clave1'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Ingrese su contraseña'),
+    '#size' => 60,
+  );
+
+  $form['clave2'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Repita su contraseña'),
+    '#size' => 60,
+  );
+  $form['submit'] = array('#type' => 'submit', '#value' => 'Enviar');
+  return $form;
+
+}
+
+/**
  * Formulario para la carga de la hoja de cálculo con la evaluación de IES
  */
 
 function ceaaces_upload_eva_spreadsheet() {
   $form = array();
 
-  $form['tipo_ies'] = array(
-    '#type' => 'select',
-    '#title' => 'Tipo de IES',
-    '#options' => array(1,2),
-  );
-
   $form['hoja_calculo'] = array(
     '#type' => 'file', 
-    '#title' => t('Hoja de cálculo'), 
+    '#title' => 'Ingrese el formulario', 
+    '#description' => 'Escoja el archivo de Excel del formulario que ha llenado con la información del Instituto.',
   );
 
   $form['submit'] = array('#type' => 'submit', '#value' => 'Enviar');
 
-  return system_settings_form($form);
+  return $form;
+}
+
+function ceaaces_upload_eva_spreadsheet_validate($form, &$form_state) {
+
+}
+
+
+function ceaaces_upload_eva_spreadsheet_submit($form, &$form_state) {
+
 }
 
 function ceaaces_inscripcion() {
@@ -170,7 +222,7 @@ watchdog('ceaaces', 'user.name=' . $cedula . ' | user: ' . serialize($user));
 
   $form['provincia'] = array(
     '#type' => 'hierarchical_select',
-    '#title' => 'Provincia | Cantón | Parroquia',
+    '#title' => 'Provincia | Cantón | Parroquia donde se imparte la carrera o programa académico',
     '#config' => array(
       'module' => 'ceaaces',
       'params' => array(
@@ -252,7 +304,7 @@ watchdog('ceaaces', 'user.name=' . $cedula . ' | user: ' . serialize($user));
 
   $form['num_cred_tot'] = array(
     '#type' => 'textfield',
-    '#title' => 'Número de créditos totales para pasar la carrera',
+    '#title' => 'Número de créditos totales para pasar la carrera o programa académico',
     '#default_value' => $estudiante->num_cred_tot,
     '#size' => 30,
   );
