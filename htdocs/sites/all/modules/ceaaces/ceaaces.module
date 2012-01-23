@@ -48,27 +48,49 @@ function ceaaces_perm() {
     'upload ceaaces evaluations', 
     'administer ceaaces', 
     'access ceaaces reports',
-    'acceso a form inscripcion a pruebas en ceaaces'
+    'acceso a form inscripcion a pruebas en ceaaces',
+    'acceso a admin form inscripcion a pruebas en ceaaces',
+    'download own ceaaces evaluations'
   );
 }
 
 function ceaaces_admin() {
   $form = array();
 
-  $tipos_ies = db_query(db_rewrite_sql('SELECT * FROM ev_tipo_ies'));
-  while ($tipo_ies = db_fetch_array($tipos_ies)) {
-    $form['ceaaces_tipo_ies_' . $tipo_ies['id']] = array(
-      '#type' => 'textfield', 
-      '#title' => t('Ingrese nuevo tipo de IES'), 
-      '#default_value' => $tipo_ies['nombre'],
-      '#size' => 60,
-    );
-  }
-
-  $form['ceaaces_nuevo_tipo_ies'] = array(
+  $form['ceaaces_porcentaje_min_cred_examen'] = array(
     '#type' => 'textfield', 
-    '#title' => t('Ingrese nuevo tipo de IES'), 
+    '#title' => t('Porcentaje mínimo de créditos aprobados para examen'), 
+    '#description' => 'Ingrese un número entre 0 y 100 para definir el porcentaje mínimo que debe tener un estudiante de pregrado para rendir el examen.',
     '#size' => 60,
+    '#default_value' => variable_get('ceaaces_porcentaje_min_cred_examen', '80')
+  );
+
+  $form['ceaaces_mensaje_entra_examen'] = array(
+    '#type' => 'textarea', 
+    '#title' => t('Mensaje a estudiantes que van a examen'), 
+    '#description' => t('Mensaje que se le mostrará al estudiante de pregrado con un porcentaje de créditos aprobados mayor o igual al porcentaje mínimo. Las etiquetas disponibles son: !num_cred, !num_cred_tot, !porcentaje_cred, !porcentaje_min_cred_examen.'), 
+    '#default_value' => variable_get('ceaaces_mensaje_entra_examen', '')
+  );
+
+  $form['ceaaces_mensaje_no_entra_examen'] = array(
+    '#type' => 'textarea', 
+    '#title' => t('Mensaje a estudiantes que NO van a examen'), 
+    '#description' => t('Mensaje que se le mostrará al estudiante de pregrado con un porcentaje de créditos aprobados menor al porcentaje mínimo. Las etiquetas disponibles son: !num_cred, !num_cred_tot, !porcentaje_cred, !porcentaje_min_cred_examen.'), 
+    '#default_value' => variable_get('ceaaces_mensaje_no_entra_examen', '')
+  );
+
+  $form['ceaaces_mensaje_sin_num_cred'] = array(
+    '#type' => 'textarea', 
+    '#title' => t('Mensaje a estudiantes sin número de créditos aprobados'), 
+    '#description' => t('Mensaje que se le mostrará al estudiante de pregrado que no tengan registrado el dato de número de créditos aprobados. Las etiquetas disponibles son: !num_cred_tot, !porcentaje_min_cred_examen.'), 
+    '#default_value' => variable_get('ceaaces_mensaje_sin_num_cred', '')
+  );
+
+  $form['ceaaces_mensaje_sin_num_cred_tot'] = array(
+    '#type' => 'textarea', 
+    '#title' => t('Mensaje a estudiantes sin número de créditos totales'), 
+    '#description' => t('Mensaje que se le mostrará al estudiante de pregrado que no tengan registrado el dato de número de créditos totales de su carrera. Las etiquetas disponibles son: !num_cred, !porcentaje_min_cred_examen.'), 
+    '#default_value' => variable_get('ceaaces_mensaje_sin_num_cred_tot', '')
   );
 
   return system_settings_form($form);
@@ -82,8 +104,7 @@ function ceaaces_menu() {
   
   // Put your menu items here.
   $items['admin/settings/ceaaces'] = array(
-    'title' => 'Tipos de IES', 
-    'page callback' => 'Administra los tipos de IES disponibles', 
+    'title' => 'Configuración CEAACES', 
     'access arguments' => array('administer ceaaces'), 
     'type' => MENU_NORMAL_ITEM,
     'page callback' => 'drupal_get_form',
@@ -92,46 +113,136 @@ function ceaaces_menu() {
   
   $items['evaluacion'] = array(
     'title' => 'Envío de la evaluación', 
+    'access arguments' => array('upload ceaaces evaluations'), 
     //'title' => 'Creación de contraseña', 
     //'page callback' => 'drupal_get_form', 
     'page callback' => 'ceaaces_evaluacion', 
     //'page arguments' => array('ceaaces_upload_eva_spreadsheet'),
-    'access arguments' => array('upload ceaaces evaluations'), 
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['evaluacion_descargar'] = array(
+    //'title' => 'Envío de la evaluación', 
+    'access arguments' => array('download own ceaaces evaluations'), 
+    //'title' => 'Creación de contraseña', 
+    'page callback' => 'ceaaces_evaluacion_descargar', 
+    //'page callback' => 'file_download', 
+    //'page arguments' => array('forms_institutos'),
     'type' => MENU_CALLBACK,
   );
   
   $items['inscripcion'] = array(
     'title' => 'Inscripción para pruebas de conocimiento',
-    'page callback' => 'drupal_get_form', 
-    'page arguments' => array('ceaaces_inscripcion'), 
     'access arguments' => array('acceso a form inscripcion a pruebas en ceaaces'), 
+    //'page callback' => 'drupal_get_form', 
+    'page callback' => 'ceaaces_inscripcion_readonly', 
+    //'page arguments' => array('ceaaces_inscripcion'), 
     'type' => MENU_CALLBACK,
   );
-  
+
+  $items['inscripcion_editar'] = array(
+    'title' => 'Inscripción para pruebas de conocimiento',
+    'access arguments' => array('acceso a admin form inscripcion a pruebas en ceaaces'), 
+    'page callback' => 'drupal_get_form', 
+    //'page callback' => 'ceaaces_inscripcion_readonly', 
+    'page arguments' => array('ceaaces_inscripcion'), 
+    'type' => MENU_CALLBACK,
+  );
+
+
   return $items;
+}
+
+function ceaaces_evaluacion_descargar() {
+  global $user;
+  $file_id = $_GET['file'];
+  $file = db_fetch_object(db_query("SELECT * FROM ev_archivo WHERE id=" . $file_id));
+  
+  $filename = $file->name;
+  //Obtiene el ID del usuario que subió el archivo:
+  $file_uid = explode('-', $filename);
+  $file_uid = $file_uid[0];
+  
+  //if ($user->uid == $file->uid) {
+
+  if ($user->uid == $file_uid) { 
+    //Descarga solo si el usuario actual es el mismo que subió el archivo:
+    $filepath = variable_get('file_directory_path', 'files') . '/forms_institutos/' . $filename;
+    unset($_GET['file']);
+    file_download($filepath);
+  } else {
+    form_set_error('hoja_calculo', 'El archivo que intenta acceder no le pertenece. Este incidente será reportado.');
+    drupal_goto('/');
+  }
+}
+
+function ceaaces_file_basename($filename) {
+  //Originally by Aleksander Machniak
+  //http://pear.php.net/bugs/bug.php?id=14529&edit=12&patch=mime.patch&revision=1222363721
+  //basename() is not unicode safe and locale dependent
+  if (stristr(PHP_OS, 'win') || stristr(PHP_OS, 'netware')) {
+    return preg_replace('/^.*[\\\\\\/]/', '', $filename);
+  }
+  else {
+    return preg_replace('/^.*[\/]/', '', $filename);
+  }
+}
+
+function ceaaces_file_download($filepath) {
+  //return "XXX";
+  $filename = ceaaces_file_basename($filepath);
+  $file = db_fetch_object(db_query("SELECT * FROM ev_archivo WHERE name='" . $filename . "'"));
+  $orig_filename = $file->orig_name;
+
+  $header = array();
+  $new_window = true;
+  if ($new_window) {
+    $header[] = 'Pragma: public'; // required
+    $header[] = 'Expires: 0';
+    $header[] = 'Cache-Control: must-revalidate, post-check=0, pre-check=0';
+    $header[] = 'Content-Transfer-Encoding: binary';
+    $header[] = 'Content-Disposition: inline; filename="'. $orig_filename .'";' ;
+  }
+  else {
+    $header[] = 'Pragma: no-cache';
+    $header[] = 'Cache-Control: no-cache, must-revalidate';
+    $header[] = 'Content-Disposition: attachment; filename="'. $orig_filename .'";' ;
+  }
+
+  $header[] = 'Content-Type: '. file_get_mimetype($orig_filename);
+  $header[] = 'Content-Length: '. (string)(@filesize($filepath));
+  $header[] = 'Connection: close';
+  return $header;
+
 }
 
 /**
  *
  */
 function ceaaces_evaluacion() {
-  $xxlinks = '<div>&nbsp;</div><div>&nbsp;</div>';
+  global $user;
   $links = '<div>&nbsp;</div><div>&nbsp;</div>
-    <table style="border:solid 0px #999;color:#999;">
-    <tr>
-    <td style="width:220px;border:solid 2px #ddd;text-align:center;">
-    <a href="formulario_institutos_2011.xls">Descargar último formulario enviado</a> <br><span>Subido el 18 de enero de 2012, <br>a las 16h36</span>
-    </td>
-    <td style="border:solid 2px #ddd;text-align:center;">
-    Huella digital del archivo (MD5): <br><span style="color:#000;font-size:14pt;font-family:Courier,Serif">79dde8972f1ae413e6cb2dfd0f74f4dc</span> <br>
-    <a href="http://es.wikipedia.org/wiki/MD5">(¿Qué es esto?)</a>
-    </td>
-    <td style="border:solid 2px #ddd;text-align:center;">
-    <a href="ddd.dd">Descargar comprobante</a>
-    </td>
-    </tr>
-    </table><div>&nbsp;</div><div>&nbsp;</div>
-    ';
+    <table style="border:solid 0px #999;color:#999;">';
+  $sql = "SELECT * FROM ev_archivo WHERE ies_name = '" . str_replace("'", "''", $user->name) . "' ORDER BY created DESC";
+  $result = db_query($sql);  
+  while ($file = db_fetch_object($result)) {
+    $links .= '<tr>
+      <td style="width:220px;border:solid 2px #ddd;text-align:center;">
+      <a href="/evaluacion_descargar?file=' . $file->id . '">' . $file->orig_name . '</a> <br><span>Subido ' . $file->created . '</span>
+      </td>
+      <td style="border:solid 2px #ddd;text-align:center;">
+      Huella digital del archivo (MD5): <br><span style="color:#000;font-size:14pt;font-family:Courier,Serif">' . $file->md5 . '</span> <br>
+      <a href="http://es.wikipedia.org/wiki/MD5">(¿Qué es esto?)</a>
+      </td>
+      <td style="border:solid 2px #ddd;text-align:center;">
+      <a href="ddd.dd">Descargar comprobante</a>
+      </td>
+      </tr>';
+  
+  }
+  $xxlinks = '<div>&nbsp;</div><div>&nbsp;</div>';
+  $links .= '</table><div>&nbsp;</div><div>&nbsp;</div>';
+//$links .= $sql; 
   $form = drupal_get_form('ceaaces_upload_eva_spreadsheet');
   //$form = drupal_get_form('ceaaces_login2');
   return $links.$form;
@@ -163,9 +274,11 @@ function ceaaces_login2() {
 
 function ceaaces_upload_eva_spreadsheet() {
   $form = array();
+  $form['#attributes'] = array('enctype' => "multipart/form-data");
 
   $form['hoja_calculo'] = array(
     '#type' => 'file', 
+    //'#type' => 'filefield_widget', 
     '#title' => 'Ingrese el formulario', 
     '#description' => 'Escoja el archivo de Excel del formulario que ha llenado con la información del Instituto.',
   );
@@ -175,13 +288,127 @@ function ceaaces_upload_eva_spreadsheet() {
   return $form;
 }
 
+/*
 function ceaaces_upload_eva_spreadsheet_validate($form, &$form_state) {
-
+  if (!$file = file_check_upload('hoja_calculo') ) {
+    form_set_error('hoja_calculo', t('No se ha podido subir el archivo. Por favor vuelva a intentarlo.') );
+  }
 }
-
+ */
 
 function ceaaces_upload_eva_spreadsheet_submit($form, &$form_state) {
+  global $user;
+  $file_directory_path = variable_get('file_directory_path', 'files');
+  $dest = $file_directory_path;
 
+
+  if (file_check_directory($dest)) {
+    //$dest .= '/Insituto-' . $user->codigo . '.xlsx'; 
+    $filename = 'Insituto.xlsx';
+    //$dest .= '/Insituto.xlsx';
+
+    $file = file_save_upload('hoja_calculo', array(), $dest);
+
+    if($file != 0) {
+      $dest_path = $file_directory_path . '/forms_institutos';
+      $filename = $file->filename;
+      
+      $extension = explode('.', $filename);
+      $extension = $extension[1];
+
+      $md5 = md5_file($dest . '/' . $file->filename);
+      $file->filename = $user->uid . '-' . $md5 . '-' . time() . '.' . $extension;
+      $result = file_move($file, $dest_path, FILE_EXISTS_RENAME);
+      if ($result == 1) {
+        //Success, $file object will contain a different (renamed)
+        //filename and filepath if the destination existed
+        db_query("INSERT INTO ev_archivo (ies_name, ev_tipo_archivo_id, name, md5, path, extension, orig_name) VALUES ('" . str_replace("'", "''", $user->name) . "', 1, '{$file->filename}', '$md5', '{$dest_path}', '{$extension}', '{$filename}')");
+        drupal_set_message('El archivo: <strong>"' . $filename . '"</strong> ha sido cargado exitosamente.');
+      }
+      else {
+        //Failure
+        drupal_set_message('ERROR moviendo el archivo <strong>' . $filename . '"</strong> al directorio de formularios.');
+      }
+    } else {
+      drupal_set_message('ERROR descargando el archivo a ' . $dest);
+    }
+  } else {
+    drupal_set_message( t('ALERTA: El directorio de descargas del servidor no es accesible. Consulte con el administrador del sistema. admin!', 'status') );
+  }
+}
+
+function ceaaces_inscripcion_readonly() {
+  $form = ceaaces_inscripcion();
+  $output = '';
+
+  $num_cred = $form['num_cred']['#default_value'];
+  $num_cred = (empty($num_cred)) ? 0 : $num_cred;
+  $num_cred_tot = $form['num_cred_tot']['#default_value'];
+  $num_cred_tot = (empty($num_cred_tot)) ? 0 : $num_cred_tot;
+
+  $porcentaje_min_cred_examen = variable_get('ceaaces_porcentaje_min_cred_examen', '80');
+  $porcentaje_cred = ($num_cred_tot == 0) ? -1 : round(($num_cred / $num_cred_tot) * 100);
+
+  if ($porcentaje_cred >= $porcentaje_min_cred_examen) {
+    $mensaje_examen = variable_get('ceaaces_mensaje_entra_examen', '');
+    $mensaje_examen = t($mensaje_examen, array(
+      '!num_cred' => $num_cred,
+      '!num_cred_tot' => $num_cred_tot,
+      '!porcentaje_cred' => $porcentaje_cred,
+      '!porcentaje_min_cred_examen' => $porcentaje_min_cred_examen,
+    ));
+  } else if ($porcentaje_cred == -1) {
+    $mensaje_examen = variable_get('ceaaces_mensaje_sin_num_cred_tot', '');
+    $mensaje_examen = t($mensaje_examen, array(
+      '!num_cred' => $num_cred,
+      '!porcentaje_min_cred_examen' => $porcentaje_min_cred_examen,
+    ));
+  } else if ($porcentaje_cred == 0) {
+    $mensaje_examen = variable_get('ceaaces_mensaje_sin_num_cred', '');
+    $mensaje_examen = t($mensaje_examen, array(
+      '!num_cred_tot' => $num_cred_tot,
+      '!porcentaje_min_cred_examen' => $porcentaje_min_cred_examen,
+    ));
+  } else {
+    $mensaje_examen = variable_get('ceaaces_mensaje_no_entra_examen', '');
+    $mensaje_examen = t($mensaje_examen, array(
+      '!num_cred' => $num_cred,
+      '!num_cred_tot' => $num_cred_tot,
+      '!porcentaje_cred' => $porcentaje_cred,
+      '!porcentaje_min_cred_examen' => $porcentaje_min_cred_examen,
+    ));
+  }
+  $output .= '<div style="background-color:#ffa;margin:20px;width:400px;border:solid 2px #ff6;">';
+  $output .= $mensaje_examen;
+  $output .= '</div>';
+
+  $output .= '<table border=0>';
+  foreach ($form as $k => $field) {
+    if ($field['#type'] != 'submit') {
+      $output .= '<tr>';
+      $output .= '<th style="width:200px;">';
+      $output .= $field['#title'] . ':';
+      $output .= '</th>';
+      $output .= '<td style="width:400px;">';
+      $default = (isset($field['#default_description'])) ? $field['#default_description'] : $field['#default_value'];
+      if (is_array($default)) {
+        $glue = '';
+        foreach ($default as $v) {
+          $output .= $glue . $v;
+          $glue = ', ';
+        }
+      } else {
+        $output .= $default;
+      }
+      $output .= '</td>';
+      $output .= '</tr>';
+    }
+  }
+  $output .= '</table>';
+  $output .= '<div>';
+  $output .= '<a href="/inscripcion_editar">Editar la información</a>';
+  $output .= '</div>';
+  return $output;
 }
 
 function ceaaces_inscripcion() {
@@ -189,8 +416,10 @@ function ceaaces_inscripcion() {
   $form = array();
   //$cedula = '1722736814';
   $cedula = $user->name;
-watchdog('ceaaces', 'user.name=' . $cedula . ' | user: ' . serialize($user));
+  watchdog('ceaaces', 'user.name=' . $cedula . ' | user: ' . serialize($user));
   $estudiante = db_fetch_object(db_query("SELECT * FROM ev_form_mtn WHERE cedula='$cedula'  ORDER BY id DESC LIMIT 1"));
+  $_SESSION['ev_form_mtn_id'] = $estudiante->id;
+  $_SESSION['ev_form_mtn_n'] = $estudiante->n;
 
   $form['apellido_paterno'] = array(
     '#type' => 'textfield',
@@ -222,7 +451,7 @@ watchdog('ceaaces', 'user.name=' . $cedula . ' | user: ' . serialize($user));
 
   $form['provincia'] = array(
     '#type' => 'hierarchical_select',
-    '#title' => 'Provincia | Cantón | Parroquia donde se imparte la carrera o programa académico',
+    '#title' => 'Provincia, cantón y parroquia donde se imparte la carrera o programa académico',
     '#config' => array(
       'module' => 'ceaaces',
       'params' => array(
@@ -255,6 +484,7 @@ watchdog('ceaaces', 'user.name=' . $cedula . ' | user: ' . serialize($user));
     ),
     //'#default_value' => $estudiante->ev_provincia_id . '|' . $estudiante->ev_provincia_id . '-' . $estudiante->canton . '|' . $estudiante->ev_provincia_id . '-' . $estudiante->canton . '-' . $estudiante->parroquia,
     '#default_value' => array($estudiante->ev_provincia_id,  $estudiante->ev_canton_id, $estudiante->ev_parroquia_id),
+    '#default_description' => array($estudiante->provincia,  $estudiante->canton, $estudiante->parroquia),
   );
   /*
   $form['provincia'] = array(
@@ -364,7 +594,7 @@ function ceaaces_inscripcion_submit($form, &$form_state) {
     }
 
   }
-  $q = 'INSERT INTO ev_form_mtn(' . $a . ') values (' . $b . ')';
+  $q = 'INSERT INTO ev_form_mtn(' . $a . ', registro_origen_id, registro_origen_n) values (' . $b . ', ' . $_SESSION['ev_form_mtn_id'] . ', ' . $_SESSION['ev_form_mtn_n'] . ')';
   db_query($q);
   drupal_set_message('Su formulario ha sido guardado.' );
 }

@@ -222,7 +222,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="295" y="324" name="ev_ies">
+<table x="301" y="323" name="ev_ies">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -657,7 +657,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="827" y="1013" name="ev_titulo">
+<table x="792" y="1015" name="ev_titulo">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -941,7 +941,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="483" y="581" name="ev_sede">
+<table x="494" y="572" name="ev_sede">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -1170,7 +1170,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="922" y="1608" name="ev_form_mtn">
+<table x="910" y="1555" name="ev_form_mtn">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -1248,9 +1248,74 @@
 <row name="parroquia" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 </row>
+<row name="registro_origen_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="registro_origen_n" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 <comment>Para el formulario de datos de matriculados en tercer nivel</comment>
+</table>
+<table x="146" y="331" name="ev_archivo">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="ev_tipo_archivo_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_tipo_archivo" row="id" />
+</row>
+<row name="md5" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="path" null="1" autoincrement="0">
+<datatype>VARCHAR(200)</datatype>
+</row>
+<row name="extension" null="1" autoincrement="0">
+<datatype>VARCHAR(10)</datatype>
+</row>
+<row name="ies_name" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="orig_name" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="-18" y="358" name="ev_tipo_archivo">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
 </table>
 </sql>
