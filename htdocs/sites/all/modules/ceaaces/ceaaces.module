@@ -24,6 +24,22 @@ function ceaaces_autoload_info() {
       'file' => 'rb.php',
       'file path' => libraries_get_path('RedBean'),
     ),
+    'tcpdf' => array(
+      'file' => 'tcpdf.php',
+      'file path' => libraries_get_path('tcpdf'),
+    ),
+    'fpdf' => array(
+      'file' => 'fpdf.php',
+      'file path' => libraries_get_path('fpdf'),
+    ),
+    'fpdf_tpl' => array(
+      'file' => 'fpdf_tpl.php',
+      'file path' => libraries_get_path('fpdf'),
+    ),
+    'fpdi' => array(
+      'file' => 'fpdi.php',
+      'file path' => libraries_get_path('fpdi'),
+    ),
   );
 }
 
@@ -50,7 +66,9 @@ function ceaaces_perm() {
     'access ceaaces reports',
     'acceso a form inscripcion a pruebas en ceaaces',
     'acceso a admin form inscripcion a pruebas en ceaaces',
-    'download own ceaaces evaluations'
+    'download own ceaaces evaluations',
+    'download all ceaaces evaluations',
+    'download ceaaces evaluation receipt'
   );
 }
 
@@ -131,6 +149,16 @@ function ceaaces_menu() {
     'type' => MENU_CALLBACK,
   );
   
+  $items['evaluacion_comprobante'] = array(
+    //'title' => 'Envío de la evaluación', 
+    'access arguments' => array('download ceaaces evaluation receipt'), 
+    //'title' => 'Creación de contraseña', 
+    'page callback' => 'ceaaces_evaluacion_comprobante', 
+    //'page callback' => 'file_download', 
+    //'page arguments' => array('forms_institutos'),
+    'type' => MENU_CALLBACK,
+  );
+  
   $items['inscripcion'] = array(
     'title' => 'Inscripción para pruebas de conocimiento',
     'access arguments' => array('acceso a form inscripcion a pruebas en ceaaces'), 
@@ -155,6 +183,13 @@ function ceaaces_menu() {
 
 function ceaaces_evaluacion_descargar() {
   global $user;
+
+  if (!isset($_GET['file']) || !is_numeric($_GET['file'])) {
+    form_set_error('hoja_calculo', 'Se ha detectado un uso indebido del sistema. Este incidente será reportado.');
+    drupal_goto('/');
+    return;
+  }
+
   $file_id = $_GET['file'];
   $file = db_fetch_object(db_query("SELECT * FROM ev_archivo WHERE id=" . $file_id));
   
@@ -167,13 +202,51 @@ function ceaaces_evaluacion_descargar() {
 
   if ($user->uid == $file_uid) { 
     //Descarga solo si el usuario actual es el mismo que subió el archivo:
-    $filepath = variable_get('file_directory_path', 'files') . '/forms_institutos/' . $filename;
+    if (isset($_GET['comprobante'])) {
+      $filename = $file->name . ".pdf";
+      $filepath = variable_get('file_directory_path', 'files') . '/forms_institutos/comprobantes/' . $filename;
+      //Si es comprobante, verifica que exista, y si no lo genera:
+      if (!file_exists($filepath)) {
+        ceaaces_evaluacion_comprobante($filepath, $file);
+      }
+    } else {
+      $filepath = variable_get('file_directory_path', 'files') . '/forms_institutos/' . $filename;
+    }
     unset($_GET['file']);
     file_download($filepath);
   } else {
     form_set_error('hoja_calculo', 'El archivo que intenta acceder no le pertenece. Este incidente será reportado.');
     drupal_goto('/');
+    return;
   }
+}
+
+function ceaaces_evaluacion_comprobante($filepath, $file) {
+  $path = explode('/', $filepath);
+  $filename = array_pop($path);
+  $path = implode('/', $path);
+
+  $pdf = new FPDI(); 
+  $pdf->AddPage(); 
+  $pdf->setSourceFile($path . '/plantilla-comprobante-recepcion-archivo.pdf'); 
+  $tplIdx = $pdf->importPage(1); 
+  $pdf->useTemplate($tplIdx, 0, 0, 0); 
+  $pdf->SetFont('Arial'); 
+  $pdf->SetTextColor(0,0,0); 
+  $pdf->SetXY(91, 79); 
+  $pdf->Write(0, "GIIES-CEAACES-2012-" . $file->id); 
+  $pdf->SetXY(90, 117); 
+  $pdf->Write(0, $file->ies_name); 
+  $pdf->SetXY(90, 127); 
+  $pdf->Write(0, $file->created); 
+  $pdf->SetXY(90, 137); 
+  $pdf->Write(0, $file->created); 
+  $pdf->SetXY(90, 147); 
+  $pdf->Write(0, $file->orig_name); 
+  $pdf->SetXY(90, 157); 
+  $pdf->Write(0, $file->md5); 
+  $pdf->Output($filepath, 'D'); 
+
 }
 
 function ceaaces_file_basename($filename) {
@@ -235,7 +308,7 @@ function ceaaces_evaluacion() {
       <a href="http://es.wikipedia.org/wiki/MD5">(¿Qué es esto?)</a>
       </td>
       <td style="border:solid 2px #ddd;text-align:center;">
-      <a href="ddd.dd">Descargar comprobante</a>
+      <a href="/evaluacion_descargar?file=' . $file->id . '&comprobante">Descargar comprobante</a> <br>
       </td>
       </tr>';
   
@@ -314,7 +387,7 @@ function ceaaces_upload_eva_spreadsheet_submit($form, &$form_state) {
       $filename = $file->filename;
       
       $extension = explode('.', $filename);
-      $extension = $extension[1];
+      $extension = $extension[count($extension) - 1];
 
       $md5 = md5_file($dest . '/' . $file->filename);
       $file->filename = $user->uid . '-' . $md5 . '-' . time() . '.' . $extension;
@@ -327,7 +400,7 @@ function ceaaces_upload_eva_spreadsheet_submit($form, &$form_state) {
       }
       else {
         //Failure
-        drupal_set_message('ERROR moviendo el archivo <strong>' . $filename . '"</strong> al directorio de formularios.');
+        drupal_set_message('ERROR moviendo el archivo <strong>"' . $filename . '"</strong> al directorio de formularios.');
       }
     } else {
       drupal_set_message('ERROR descargando el archivo a ' . $dest);

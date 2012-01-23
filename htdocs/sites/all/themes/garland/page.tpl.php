@@ -39,7 +39,8 @@
           if ($logo || $site_title) {
             print '<h1><a href="'. check_url($front_page) .'" title="'. $site_title .'">';
             if ($logo) {
-              print '<img src="'. check_url($logo) .'" alt="'. $site_title .'" id="logo" />';
+              //print '<img src="'. check_url($logo) .'" alt="'. $site_title .'" id="logo" />';
+              print '<img src="/sites/default/files/garland_logo.png" alt="'. $site_title .'" id="logo" />';
             }
             print $site_html .'</a></h1>';
           }
