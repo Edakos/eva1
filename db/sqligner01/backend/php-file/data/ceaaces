@@ -222,7 +222,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="301" y="323" name="ev_ies">
+<table x="299" y="301" name="ev_ies">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -251,6 +251,18 @@
 <default>CURRENT_TIMESTAMP</default></row>
 <row name="provincia" null="1" autoincrement="0">
 <datatype>VARCHAR(100)</datatype>
+</row>
+<row name="uid" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="cedula_contacto" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="email_contacto" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<row name="nombre_contacto" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
 </row>
 <key type="PRIMARY" name="">
 <part>id</part>
@@ -1314,6 +1326,32 @@
 <row name="modified" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>CURRENT_TIMESTAMP</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1138" y="1933" name="ev_log">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="description" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="uid" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="tipo" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>

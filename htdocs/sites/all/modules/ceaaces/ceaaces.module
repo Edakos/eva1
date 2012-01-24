@@ -139,6 +139,13 @@ function ceaaces_menu() {
     'type' => MENU_CALLBACK,
   );
   
+  $items['evaluacion_todas'] = array(
+    'title' => 'Lista de evaluaciones', 
+    'access arguments' => array('download all ceaaces evaluations'), 
+    'page callback' => 'ceaaces_evaluacion_todas', 
+    'type' => MENU_CALLBACK,
+  );
+  
   $items['evaluacion_descargar'] = array(
     //'title' => 'Envío de la evaluación', 
     'access arguments' => array('download own ceaaces evaluations'), 
@@ -159,6 +166,14 @@ function ceaaces_menu() {
     'type' => MENU_CALLBACK,
   );
   
+  $items['cambiar_clave'] = array(
+    'title' => 'Cambio de clave',
+    'access arguments' => array('upload ceaaces evaluations'), 
+    'page callback' => 'drupal_get_form', 
+    'page arguments' => array('ceaaces_cambiar_clave'), 
+    'type' => MENU_CALLBACK,
+  );
+
   $items['inscripcion'] = array(
     'title' => 'Inscripción para pruebas de conocimiento',
     'access arguments' => array('acceso a form inscripcion a pruebas en ceaaces'), 
@@ -177,8 +192,55 @@ function ceaaces_menu() {
     'type' => MENU_CALLBACK,
   );
 
-
   return $items;
+}
+
+function ceaaces_evaluacion_todas() {
+  $output = '';
+  $result = db_query('
+    SELECT
+    i.codigo,
+    i.name as i_name,
+    a.name as a_name,
+    a.orig_name,
+    a.created,
+    a.uid,
+    a.md5
+    FROM ev_ies AS i
+    LEFT OUTER JOIN ev_archivo AS a
+    ON a.ies_name = i.name
+    ');
+
+  $output .= '<table border=0>';
+  $output .= '<th>Código</th>';
+  $output .= '<th>Instituto</th>';
+  $output .= '<th>Archivo</th>';
+  $output .= '<th>Huella MD5 de archivo</th>';
+  $output .= '<th>Fecha y hora de envío</th>';
+  while ($ies = db_fetch_object($result)) {
+    $output .= '<tr>';
+    $output .= '<td>';
+    $output .= $ies->codigo;
+    $output .= '</td>';
+    $output .= '<td>';
+    $output .= $ies->i_name;
+    $output .= '</td>';
+    $output .= '<td>';
+    $output .= $ies->a_name;
+    $output .= '</td>';
+    $output .= '<td>';
+    $output .= $ies->orig_name;
+    $output .= '</td>';
+    $output .= '<td>';
+    $output .= $ies->md5;
+    $output .= '</td>';
+    $output .= '<td>';
+    $output .= $ies->created;
+    $output .= '</td>';
+    $output .= '</tr>';
+  }
+  $output .= '</table>';
+  return $output;
 }
 
 function ceaaces_evaluacion_descargar() {
@@ -226,6 +288,8 @@ function ceaaces_evaluacion_comprobante($filepath, $file) {
   $filename = array_pop($path);
   $path = implode('/', $path);
 
+  $datetime = explode(' ', $file->created);
+
   $pdf = new FPDI(); 
   $pdf->AddPage(); 
   $pdf->setSourceFile($path . '/plantilla-comprobante-recepcion-archivo.pdf'); 
@@ -233,19 +297,21 @@ function ceaaces_evaluacion_comprobante($filepath, $file) {
   $pdf->useTemplate($tplIdx, 0, 0, 0); 
   $pdf->SetFont('Arial'); 
   $pdf->SetTextColor(0,0,0); 
-  $pdf->SetXY(91, 79); 
-  $pdf->Write(0, "GIIES-CEAACES-2012-" . $file->id); 
-  $pdf->SetXY(90, 117); 
+  $pdf->SetXY(85, 79); 
+  $pdf->Write(0, ceaaces_evaluacion_comprobante_codigo($file->id)); 
+  $pdf->SetXY(80, 117); 
   $pdf->Write(0, $file->ies_name); 
-  $pdf->SetXY(90, 127); 
-  $pdf->Write(0, $file->created); 
-  $pdf->SetXY(90, 137); 
-  $pdf->Write(0, $file->created); 
-  $pdf->SetXY(90, 147); 
+  $pdf->SetXY(80, 127); 
+  $pdf->Write(0, $datetime[0]); 
+  $pdf->SetXY(80, 137); 
+  $pdf->Write(0, $datetime[1]); 
+  $pdf->SetXY(80, 147); 
   $pdf->Write(0, $file->orig_name); 
-  $pdf->SetXY(90, 157); 
+  $pdf->SetXY(80, 157); 
   $pdf->Write(0, $file->md5); 
-  $pdf->Output($filepath, 'D'); 
+  //$pdf->Output($filepath, 'D'); 
+  //$pdf->Output($filename, 'D'); 
+  $pdf->Output($filepath, 'F'); 
 
 }
 
@@ -261,11 +327,62 @@ function ceaaces_file_basename($filename) {
   }
 }
 
+function ceaaces_evaluacion_comprobante_codigo($num) {
+  return "GIIES-CEAACES-2012-" . $num;
+}
+
+
+/**
+ * Implementation of hook_user()
+ */
+function ceaaces_user($op, &$edit, &$account, $category = NULL) {
+  watchdog('XXX', 'en ' . $op . '!! account:' . serialize($account));
+  switch ($op) {
+    case "after_update":
+      // Your code here.
+      break;
+    case "categories":
+      break;
+    case "delete":
+      break;
+    case "form":
+      break;
+    case "insert":
+      break;
+    case "load":
+      break;
+    case "login":
+      break;
+    case "logout":
+      break;
+    case "register":
+      break;
+    case "submit":
+      break;
+    case "update":
+      break;
+    case "validate":
+      break;
+    case "view":
+      break;
+  }
+}
+
+
+
 function ceaaces_file_download($filepath) {
   //return "XXX";
+
   $filename = ceaaces_file_basename($filepath);
-  $file = db_fetch_object(db_query("SELECT * FROM ev_archivo WHERE name='" . $filename . "'"));
-  $orig_filename = $file->orig_name;
+  $f = explode('.', $filename);
+  $extension = array_pop($f);
+  if ($extension == 'pdf') {
+    $file = db_fetch_object(db_query("SELECT * FROM ev_archivo WHERE name='" . implode('.', $f) . "'"));
+    $orig_filename = ceaaces_evaluacion_comprobante_codigo($file->id);
+  } else {
+    $file = db_fetch_object(db_query("SELECT * FROM ev_archivo WHERE name='" . $filename . "'"));
+    $orig_filename = $file->orig_name;
+  }
 
   $header = array();
   $new_window = true;
@@ -289,11 +406,47 @@ function ceaaces_file_download($filepath) {
 
 }
 
+function ceaaces_block($op = 'list', $delta = 0) {
+  global $user;
+  $block = array();
+
+  if ($op == "list") {
+    $block[0]["info"] = t('Datos de IES');
+  } else if ($op == 'view') {
+    $block_content = '';
+    $ies = db_fetch_object(db_query('SELECT * FROM ev_ies where uid=' . $user->uid));
+
+    if (!empty($ies)) {
+      $block_content .= '<h3>' . $ies->name . '</h3>';
+      $block_content .= '<hr>';
+      $block_content .= '<div>' . $ies->nombre_contacto . '</div>';
+      //$block_content .= '<div>C.I.: ' . $ies->cedula_contacto . '</div>';
+      //$block_content .= '<div>Email: ' . $ies->email_contacto . '</div>';
+      //$block_content .= 'Código:' . $ies->codigo;
+    }
+
+    $block['subject'] = '';
+    if ($block_content == '') {  
+      // no content from a week ago
+      $block['content'] = 'No hay datos registrados';
+    } else {
+      // set up the block
+      $block['content'] = $block_content;
+    }
+  }
+  return $block;
+}
+
 /**
  *
  */
 function ceaaces_evaluacion() {
   global $user;
+  $num = db_result(db_query('SELECT count(*) FROM ev_log WHERE uid=' . $user->uid . ' AND tipo=1'));
+  if ($num == 0) {
+    drupal_set_message('Bienvenido al sistema de Gestión de Información de las Instituciones de Educación Superior. Usted ha ingresado con la clave proporcionada por CEAACES, la cual debe ser cambiada para poder hacer uso de este sistema. Por favor sívase utilizar el siguiente formulario para realizar el cambio de clave indicado.');
+    drupal_goto('cambiar_clave');
+  }
   $links = '<div>&nbsp;</div><div>&nbsp;</div>
     <table style="border:solid 0px #999;color:#999;">';
   $sql = "SELECT * FROM ev_archivo WHERE ies_name = '" . str_replace("'", "''", $user->name) . "' ORDER BY created DESC";
@@ -322,23 +475,44 @@ function ceaaces_evaluacion() {
 }
 
 
-function ceaaces_login2() {
+function ceaaces_cambiar_clave() {
   $form= array();
 
   $form['clave1'] = array(
-    '#type' => 'textfield',
+    '#type' => 'password',
     '#title' => t('Ingrese su contraseña'),
     '#size' => 60,
   );
 
   $form['clave2'] = array(
-    '#type' => 'textfield',
+    '#type' => 'password',
     '#title' => t('Repita su contraseña'),
     '#size' => 60,
   );
   $form['submit'] = array('#type' => 'submit', '#value' => 'Enviar');
   return $form;
 
+}
+
+function ceaaces_cambiar_clave_validate($form, &$form_state) {
+  global $user;
+  if (strlen($form_state['values']['clave1']) < 8) {
+    form_set_error('clave1', 'Ingrese una clave de mínimo ocho caracteres.');
+  }
+  if ($form_state['values']['clave1'] != $form_state['values']['clave2']) {
+    form_set_error('clave2', 'Ingrese el mismo texto en ambos campos.');
+  }
+}
+
+function ceaaces_cambiar_clave_submit($form, &$form_state) {
+  global $user;
+  $account = user_load($user->uid);
+  $account->pass = $form_state['values']['clave1'];
+  user_save($user, array('pass' => $form_state['values']['clave1']));
+
+  db_query('INSERT INTO ev_log(uid, tipo) VALUES (' . $user->uid . ', 1)');
+  drupal_set_message('El cambio de la clave original se ha realizado con éxito. Usted puede volver a cambiar su clave en cualquier momento, accediendo a "Mi cuenta" en la parte izquierda, en la opción "Editar".');
+  drupal_goto('evaluacion');
 }
 
 /**
@@ -403,7 +577,7 @@ function ceaaces_upload_eva_spreadsheet_submit($form, &$form_state) {
         drupal_set_message('ERROR moviendo el archivo <strong>"' . $filename . '"</strong> al directorio de formularios.');
       }
     } else {
-      drupal_set_message('ERROR descargando el archivo a ' . $dest);
+      form_set_error('', 'No se pudo registrar porque no ha ingresado ningún archivo.');
     }
   } else {
     drupal_set_message( t('ALERTA: El directorio de descargas del servidor no es accesible. Consulte con el administrador del sistema. admin!', 'status') );
