@@ -553,8 +553,13 @@ function ceaaces_upload_eva_spreadsheet_submit($form, &$form_state) {
     //$dest .= '/Insituto-' . $user->codigo . '.xlsx'; 
     $filename = 'Insituto.xlsx';
     //$dest .= '/Insituto.xlsx';
+    $validators = array( 
+      'file_validate_extensions' => array(
+        'xlsx xls ods'
+      )
+    );
 
-    $file = file_save_upload('hoja_calculo', array(), $dest);
+    $file = file_save_upload('hoja_calculo', $validators, $dest);
 
     if($file != 0) {
       $dest_path = $file_directory_path . '/forms_institutos';
