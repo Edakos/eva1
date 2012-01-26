@@ -5,7 +5,7 @@
  * @file
  * Auto Admin schemas for ceaaces module.
  *
- * @tables {ev_hoja_calculo}, {ev_criterio}, {ev_indicador}, {ev_formula}, {ev_tipo_dato}, {ev_valor}, {ev_tipo_ies}, {ev_provincia}, {ev_canton}, {ev_valor_posible}, {ev_variable}, {ev_validacion}, {ev_relacion_trabajo}, {ev_cargo}, {ev_profesor}, {ev_categoria}, {ev_estudiante}, {ev_unidad_academica}, {ev_persona}, {ev_lugar}, {ev_parroquia}, {ev_titulo}, {ev_subarea_unesco}, {ev_evaluador}, {ev_pais}, {ev_carrera}, {ev_modalidad_estudio}, {ev_ies}, {ev_sede}, {ev_nivel_carrera}, {ev_tipo_sede}, {ev_organizacion_malla}, {ev_estado_carrera}, {ev_jornada}, {ev_form_mtn}
+ * @tables {ev_hoja_calculo}, {ev_criterio}, {ev_indicador}, {ev_formula}, {ev_tipo_dato}, {ev_valor}, {ev_tipo_ies}, {ev_provincia}, {ev_canton}, {ev_valor_posible}, {ev_variable}, {ev_validacion}, {ev_relacion_trabajo}, {ev_cargo}, {ev_profesor}, {ev_categoria}, {ev_estudiante}, {ev_unidad_academica}, {ev_persona}, {ev_lugar}, {ev_parroquia}, {ev_titulo}, {ev_subarea_unesco}, {ev_evaluador}, {ev_pais}, {ev_carrera}, {ev_modalidad_estudio}, {ev_sede}, {ev_nivel_carrera}, {ev_tipo_sede}, {ev_organizacion_malla}, {ev_estado_carrera}, {ev_jornada}, {ev_archivo}, {ev_form_mtn}, {ev_ies}, {ev_tipo_archivo}, {ev_log}
  */
 
 /**
@@ -1089,7 +1089,7 @@ function ceaaces_autoadmin_schema() {
         'title_plural' => t('Num Creds'),
       ),
       'fecha_inicio_estudios' => array(
-        'autoadmin_type' => 'date',
+        'autoadmin_type' => 'datetime',
         'title' => t('Fecha Inicio Estudios'),
         'title_plural' => t('Fecha Inicio Estudios'),
       ),
@@ -1950,6 +1950,61 @@ function ceaaces_autoadmin_schema() {
         'title' => t('Costo Anual Est'),
         'title_plural' => t('Costo Anual Ests'),
       ),
+      'n' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('N'),
+        'title_plural' => t('Ns'),
+      ),
+      'provincia' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Provincia'),
+        'title_plural' => t('Provincias'),
+      ),
+      'canton' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Canton'),
+        'title_plural' => t('Cantons'),
+      ),
+      'parroquia' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Parroquia'),
+        'title_plural' => t('Parroquias'),
+      ),
+      'institucion' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Institucion'),
+        'title_plural' => t('Institucions'),
+      ),
+      'sede' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Sede'),
+        'title_plural' => t('Sedes'),
+      ),
+      'nivel' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Nivel'),
+        'title_plural' => t('Nivels'),
+      ),
+      'modalidad' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Modalidad'),
+        'title_plural' => t('Modalidads'),
+      ),
+      'jornada' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Jornada'),
+        'title_plural' => t('Jornadas'),
+      ),
+      'organiz_cp' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Organiz Cp'),
+        'title_plural' => t('Organiz Cps'),
+      ),
+      'subarea' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Subarea'),
+        'title_plural' => t('Subareas'),
+      ),
     ),
     'relations' => array(
       'ev_subarea_unesco' => array(
@@ -2044,99 +2099,6 @@ function ceaaces_autoadmin_schema() {
         'type' => 'has_many',
         'local_key' => 'id',
         'foreign_key' => 'ev_modalidad_estudio_id',
-      ),
-    ),
-  );
-
-  // Auto Admin schema for {ev_ies} table
-  $autoadmin_schema['ev_ies'] = array(
-    'alias' => 'name',
-    'inline_filter' => FALSE,
-    'path' => 'admin/content/ev_ies',
-    'title' => t('Ev Ies'),
-    'title_plural' => t('Ev y'),
-    'fields' => array(
-      'id' => array(
-        'autoadmin_type' => 'primary_key',
-        'title' => t('Id'),
-        'title_plural' => t('Ids'),
-      ),
-      'ev_tipo_ies_id' => array(
-        'autoadmin_type' => 'has_one',
-        'title' => t('Ev Tipo Ies'),
-        'title_plural' => t('Ev Tipo y'),
-      ),
-      'codigo' => array(
-        'autoadmin_type' => 'text',
-        'title' => t('Codigo'),
-        'title_plural' => t('Codigos'),
-      ),
-      'observaciones' => array(
-        'autoadmin_type' => 'text',
-        'title' => t('Observaciones'),
-        'title_plural' => t('Observaciones'),
-      ),
-      'created' => array(
-        'autoadmin_type' => 'datetime',
-        'title' => t('Created'),
-        'title_plural' => t('Createds'),
-      ),
-      'modified' => array(
-        'autoadmin_type' => 'datetime',
-        'title' => t('Modified'),
-        'title_plural' => t('Modifieds'),
-      ),
-      'name' => array(
-        'autoadmin_type' => 'varchar',
-        'title' => t('Name'),
-        'title_plural' => t('Names'),
-      ),
-      'ev_parroquia_id' => array(
-        'autoadmin_type' => 'has_one',
-        'title' => t('Ev Parroquia'),
-        'title_plural' => t('Ev Parroquias'),
-      ),
-    ),
-    'relations' => array(
-      'ev_tipo_ies' => array(
-        'type' => 'has_one',
-        'local_key' => 'ev_tipo_ies_id',
-        'foreign_key' => 'id',
-      ),
-      'ev_parroquia' => array(
-        'type' => 'has_one',
-        'local_key' => 'ev_parroquia_id',
-        'foreign_key' => 'id',
-      ),
-      'ev_carrera' => array(
-        'type' => 'has_many',
-        'local_key' => 'id',
-        'foreign_key' => 'ev_ies_id',
-      ),
-      'ev_estudiante' => array(
-        'type' => 'has_many',
-        'local_key' => 'id',
-        'foreign_key' => 'ev_ies_id',
-      ),
-      'ev_profesor' => array(
-        'type' => 'has_many',
-        'local_key' => 'id',
-        'foreign_key' => 'ev_ies_id',
-      ),
-      'ev_sede' => array(
-        'type' => 'has_many',
-        'local_key' => 'id',
-        'foreign_key' => 'ev_ies_id',
-      ),
-      'ev_unidad_academica' => array(
-        'type' => 'has_many',
-        'local_key' => 'id',
-        'foreign_key' => 'ev_ies_id',
-      ),
-      'ev_valor' => array(
-        'type' => 'has_many',
-        'local_key' => 'id',
-        'foreign_key' => 'ev_ies_id',
       ),
     ),
   );
@@ -2459,6 +2421,79 @@ function ceaaces_autoadmin_schema() {
     ),
   );
 
+  // Auto Admin schema for {ev_archivo} table
+  $autoadmin_schema['ev_archivo'] = array(
+    'alias' => 'name',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_archivo',
+    'title' => t('Ev Archivo'),
+    'title_plural' => t('Ev Archivos'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'name' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Name'),
+        'title_plural' => t('Names'),
+      ),
+      'notes' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Notes'),
+        'title_plural' => t('Notes'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+      'ev_tipo_archivo_id' => array(
+        'autoadmin_type' => 'has_one',
+        'title' => t('Ev Tipo Archivo'),
+        'title_plural' => t('Ev Tipo Archivos'),
+      ),
+      'path' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Path'),
+        'title_plural' => t('Paths'),
+      ),
+      'extension' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Extension'),
+        'title_plural' => t('Extensions'),
+      ),
+      'md5' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Md5'),
+        'title_plural' => t('Md5s'),
+      ),
+      'ies_name' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Ies Name'),
+        'title_plural' => t('Ies Names'),
+      ),
+      'orig_name' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Orig Name'),
+        'title_plural' => t('Orig Names'),
+      ),
+    ),
+    'relations' => array(
+      'ev_tipo_archivo' => array(
+        'type' => 'has_one',
+        'local_key' => 'ev_tipo_archivo_id',
+        'foreign_key' => 'id',
+      ),
+    ),
+  );
+
   // Auto Admin schema for {ev_form_mtn} table
   $autoadmin_schema['ev_form_mtn'] = array(
     'alias' => 'name',
@@ -2587,6 +2622,16 @@ function ceaaces_autoadmin_schema() {
         'title' => t('Parroquia'),
         'title_plural' => t('Parroquias'),
       ),
+      'registro_origen_id' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Registro Origen'),
+        'title_plural' => t('Registro Origens'),
+      ),
+      'registro_origen_n' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Registro Origen N'),
+        'title_plural' => t('Registro Origen Ns'),
+      ),
     ),
     'relations' => array(
       'ev_parroquia' => array(
@@ -2615,6 +2660,214 @@ function ceaaces_autoadmin_schema() {
         'foreign_key' => 'id',
       ),
     ),
+  );
+
+  // Auto Admin schema for {ev_ies} table
+  $autoadmin_schema['ev_ies'] = array(
+    'alias' => 'name',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_ies',
+    'title' => t('Ev Ies'),
+    'title_plural' => t('Ev y'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'ev_tipo_ies_id' => array(
+        'autoadmin_type' => 'has_one',
+        'title' => t('Ev Tipo Ies'),
+        'title_plural' => t('Ev Tipo y'),
+      ),
+      'codigo' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Codigo'),
+        'title_plural' => t('Codigos'),
+      ),
+      'observaciones' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Observaciones'),
+        'title_plural' => t('Observaciones'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+      'name' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Name'),
+        'title_plural' => t('Names'),
+      ),
+      'ev_parroquia_id' => array(
+        'autoadmin_type' => 'has_one',
+        'title' => t('Ev Parroquia'),
+        'title_plural' => t('Ev Parroquias'),
+      ),
+      'provincia' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Provincia'),
+        'title_plural' => t('Provincias'),
+      ),
+      'uid' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Uid'),
+        'title_plural' => t('Uids'),
+      ),
+      'cedula_contacto' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Cedula Contacto'),
+        'title_plural' => t('Cedula Contactos'),
+      ),
+      'email_contacto' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Email Contacto'),
+        'title_plural' => t('Email Contactos'),
+      ),
+      'nombre_contacto' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Nombre Contacto'),
+        'title_plural' => t('Nombre Contactos'),
+      ),
+    ),
+    'relations' => array(
+      'ev_tipo_ies' => array(
+        'type' => 'has_one',
+        'local_key' => 'ev_tipo_ies_id',
+        'foreign_key' => 'id',
+      ),
+      'ev_parroquia' => array(
+        'type' => 'has_one',
+        'local_key' => 'ev_parroquia_id',
+        'foreign_key' => 'id',
+      ),
+      'ev_carrera' => array(
+        'type' => 'has_many',
+        'local_key' => 'id',
+        'foreign_key' => 'ev_ies_id',
+      ),
+      'ev_estudiante' => array(
+        'type' => 'has_many',
+        'local_key' => 'id',
+        'foreign_key' => 'ev_ies_id',
+      ),
+      'ev_profesor' => array(
+        'type' => 'has_many',
+        'local_key' => 'id',
+        'foreign_key' => 'ev_ies_id',
+      ),
+      'ev_sede' => array(
+        'type' => 'has_many',
+        'local_key' => 'id',
+        'foreign_key' => 'ev_ies_id',
+      ),
+      'ev_unidad_academica' => array(
+        'type' => 'has_many',
+        'local_key' => 'id',
+        'foreign_key' => 'ev_ies_id',
+      ),
+      'ev_valor' => array(
+        'type' => 'has_many',
+        'local_key' => 'id',
+        'foreign_key' => 'ev_ies_id',
+      ),
+    ),
+  );
+
+  // Auto Admin schema for {ev_tipo_archivo} table
+  $autoadmin_schema['ev_tipo_archivo'] = array(
+    'alias' => 'name',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_tipo_archivo',
+    'title' => t('Ev Tipo Archivo'),
+    'title_plural' => t('Ev Tipo Archivos'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'name' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Name'),
+        'title_plural' => t('Names'),
+      ),
+      'notes' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Notes'),
+        'title_plural' => t('Notes'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+    ),
+    'relations' => array(
+      'ev_archivo' => array(
+        'type' => 'has_many',
+        'local_key' => 'id',
+        'foreign_key' => 'ev_tipo_archivo_id',
+      ),
+    ),
+  );
+
+  // Auto Admin schema for {ev_log} table
+  $autoadmin_schema['ev_log'] = array(
+    'alias' => 'name',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_log',
+    'title' => t('Ev Log'),
+    'title_plural' => t('Ev Logs'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'name' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Name'),
+        'title_plural' => t('Names'),
+      ),
+      'description' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Description'),
+        'title_plural' => t('Descriptions'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+      'uid' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Uid'),
+        'title_plural' => t('Uids'),
+      ),
+      'tipo' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Tipo'),
+        'title_plural' => t('Tipos'),
+      ),
+    ),
+    'relations' => array(),
   );
 
   return $autoadmin_schema;
