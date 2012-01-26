@@ -196,50 +196,159 @@ function ceaaces_menu() {
 }
 
 function ceaaces_evaluacion_todas() {
-  $output = '';
-  $result = db_query('
+  $result = db_query("
     SELECT
     i.codigo,
-    i.name as i_name,
-    a.name as a_name,
+    i.name AS i_name,
+    i.cedula_contacto,
+    i.nombre_contacto,
+    i.email_contacto,
     a.orig_name,
-    a.created,
-    a.uid,
-    a.md5
+    a.md5,
+    to_char(a.created, 'DD/MM/YYYY HH:MI:SS') AS created,
+    a.extension,
+    a.id AS a_id,
+    (SELECT COUNT(*) FROM ev_log AS l WHERE l.uid = i.uid) AS cambio_clave
     FROM ev_ies AS i
     LEFT OUTER JOIN ev_archivo AS a
-    ON a.ies_name = i.name
-    ');
+    ON a.ies_name = i.codigo
+    WHERE NOT i.uid IS NULL
+    ORDER BY i.name ASC, a.created DESC
+    ");
+  $output = '';
+  $last_ies = null;
+  $buff = '';
+  $zebra = false;
+  $data = array();
+
+  while ($ies = db_fetch_object($result)) {
+    $created = explode('.', $ies->created);
+    $created = $created[0];
+
+    $ies->orig_name = (empty($ies->a_id)) ? '' : '<a href="evaluacion_descargar?file=' . $ies->a_id . '">' . ceaaces_evaluacion_comprobante_codigo($ies->a_id) . '.' . $ies->extension . '</a>';
+    $ies->md5 = 'HUELLA DIGITAL: '. $ies->md5;
+    $ies->created = 'ENVIADO: ' . $created;
+
+    $data[$ies->codigo][] = $ies;
+
+    /*
+    $data[$ies->codigo][] = array(
+      'codigo' => $ies->codigo,
+      'i_name' => ($ies->cambio_clave == 1) ? $ies->i_name : '<i>' . $ies->i_name . '<br><span style="color:#900;">(sin activar su usuario)</span></i>',
+      'contacto' => $ies->nombre_contacto . '<br>C.I.: ' . $ies->cedula_contacto . '<br>Email: <a href="mailto:' . $ies->email_contacto . '">' . $ies->email_contacto . '</a>',
+      //'orig_name' => '<a href="evaluacion_descargar?file=' . $ies->a_id . '">' . $ies->orig_name . '</a>',
+      'orig_name' => (empty($ies->a_id)) ? '' : '<a href="evaluacion_descargar?file=' . $ies->a_id . '">' . ceaaces_evaluacion_comprobante_codigo($ies->a_id) . '.' . $ies->extension . '</a>',
+      'md5' => $ies->md5,
+      'created' => $created
+    );
+     */
+  }
+
+
+  $count = 0;
 
   $output .= '<table border=0>';
-  $output .= '<th>Código</th>';
+  $output .= '<th>&nbsp;</th>';
+  //$output .= '<th>Código</th>';
   $output .= '<th>Instituto</th>';
-  $output .= '<th>Archivo</th>';
-  $output .= '<th>Huella MD5 de archivo</th>';
-  $output .= '<th>Fecha y hora de envío</th>';
-  while ($ies = db_fetch_object($result)) {
-    $output .= '<tr>';
-    $output .= '<td>';
-    $output .= $ies->codigo;
-    $output .= '</td>';
-    $output .= '<td>';
-    $output .= $ies->i_name;
-    $output .= '</td>';
-    $output .= '<td>';
-    $output .= $ies->a_name;
-    $output .= '</td>';
-    $output .= '<td>';
-    $output .= $ies->orig_name;
-    $output .= '</td>';
-    $output .= '<td>';
-    $output .= $ies->md5;
-    $output .= '</td>';
-    $output .= '<td>';
-    $output .= $ies->created;
-    $output .= '</td>';
-    $output .= '</tr>';
+  $output .= '<th>Contacto</th>';
+  $output .= '<th>Archivos</th>';
+  //$output .= '<th>Huella Digital</th>';
+  //$output .= '<th>Fecha y hora de envío</th>';
+  foreach ($data as $codigo => $archivos) {
+    $zebra = !$zebra;
+    $count ++;
+    $header = clone $archivos[0];
+    
+    $fila = array(
+      'num' => $count . '.',
+      //'codigo' => $header->codigo,
+      'i_name' => '<h3>' . $header->i_name . '</h3>Código: ' . $header->codigo,
+      'contacto' => (empty($header->nombre_contacto) ? '<i>(Contacto no registrado)</i>' : $header->nombre_contacto) . '<br>C.I.: ' . $header->cedula_contacto . '<br>Email: <a href="mailto:' . $header->email_contacto . '">' . $header->email_contacto . '</a>' . (($header->cambio_clave == 1) ? '' : '<br><i><span style="color:#900;">(Usuario no activado con cambio de clave)</span></i>'),
+      'archivo' => ''
+    );
+    $a = '';
+
+    if (count($archivos) > 1) {
+      //$header->orig_name = '<strong>' . $header->orig_name . '</strong><div><hr></div><div><i><a href="#" onclick="this.parentNode.parentNode.parentNode.parentNode.style.display=\'none\';document.getElementById(\'ceaaces_ies_' . $codigo . '\').style.display=\'\'">(Mostrar todos los archivos enviados por este Instituto)</a></i></div>';
+      $a .= '<div>';
+      $a .= '<ul>';
+      $a .= ceaaces_evaluacion_todas_li(array(
+        'orig_name' => '<strong>' . $header->orig_name . '</strong>',
+        'md5' => $header->md5,
+        'created' => $header->created
+      ));
+
+      $a .= '</ul>';
+      $a .= '<div><hr></div>';
+      $a .= '<div><i><a href="#" onclick="this.parentNode.parentNode.parentNode.style.display=\'none\';document.getElementById(\'ceaaces_ies_' . $codigo . '\').style.display=\'\'">(Mostrar todos los archivos enviados por este Instituto)</a></i></div>';
+      $a .= '</div>';
+      
+      $style = 'font-weight:bold;';
+      $a .= '<ol id="ceaaces_ies_' . $codigo . '" style="display:none;">';
+
+      $count2 = 0;
+      foreach ($archivos as $archivo) {
+        $count2++;
+        $a .= ceaaces_evaluacion_todas_li(array(
+          'filename' => $archivo->orig_name,
+          'md5' => $archivo->md5,
+          'created' => $archivo->created
+        ), $style);
+        $style = '';
+      }
+      $a .= '</ol>';
+    } else if (!empty($header->a_id)) {
+      $a .= '<ol>';
+      $a .= ceaaces_evaluacion_todas_li(array(
+        'filename' => $header->orig_name,
+        'md5' => $header->md5,
+        'created' => $header->created
+      ));
+      $a .= '</ol>';
+    } else {
+      $a .= '<i>El Instituto no tiene archivos enviados.</i>';
+    }
+
+
+    $fila['archivo'] = $a;
+    $output .= ceaaces_evaluacion_todas_tr($fila, ($zebra ? 'background-color:#ddd;' : ''));
   }
   $output .= '</table>';
+  return $output;
+}
+
+function ceaaces_evaluacion_todas_tr($tr, $style_tr = '', $style_td = '') {
+  $output = '';
+
+  $style = (empty($style_tr) ? '' : ' style="' . $style_tr . '"');
+  $output .= '<tr' . $style . '>';
+
+  $style = (empty($style_td) ? '' : ' style="' . $style_td . '"');
+  foreach ($tr as $td) {
+    $output .= '<td' . $style . '>';
+    $output .= $td;
+    $output .= '</td>';
+  }
+  $output .= '</tr>';
+
+  return $output;
+}
+
+function ceaaces_evaluacion_todas_li($li, $style = '') {
+  $output = '';
+
+  $output .= '<li>';
+
+  $style = (empty($style) ? '' : ' style="' . $style . '"');
+  foreach ($li as $l) {
+    $output .= '<span' . $style . '>';
+    $output .= $l;
+    $output .= '</span>';
+    $output .= '<br>';
+  }
+  $output .= '</li>';
+
   return $output;
 }
 
@@ -262,8 +371,8 @@ function ceaaces_evaluacion_descargar() {
   
   //if ($user->uid == $file->uid) {
 
-  if ($user->uid == $file_uid) { 
-    //Descarga solo si el usuario actual es el mismo que subió el archivo:
+  if (user_access('download all ceaaces evaluations') || $user->uid == $file_uid) { 
+    //Descarga si se tiene el permiso de descargar cualquiera, o si el usuario actual es el mismo que subió el archivo:
     if (isset($_GET['comprobante'])) {
       $filename = $file->name . ".pdf";
       $filepath = variable_get('file_directory_path', 'files') . '/forms_institutos/comprobantes/' . $filename;
@@ -327,8 +436,20 @@ function ceaaces_file_basename($filename) {
   }
 }
 
-function ceaaces_evaluacion_comprobante_codigo($num) {
-  return "GIIES-CEAACES-2012-" . $num;
+function ceaaces_evaluacion_comprobante_codigo($num, $prefijo = '', $subfijo = '') {
+  global $user;
+  $codigo = '';
+  $prefijo = empty($prefijo) ? 'GIIES-CEAACES-2012-' : $prefijo;
+  $subfijo = empty($subfijo) ? '' : $subfijo;
+
+  foreach ($user->roles as $rid => $role_name) {
+    if ($rid == 9) { //Coordinador de todos los Institutos
+      $codigo_ies = db_result(db_query('SELECT ies_name FROM ev_archivo WHERE id=' . $num));
+      $prefijo = $codigo_ies . '-';
+      $subfijo = '';
+    }
+  }
+  return $prefijo . $num . $subfijo;
 }
 
 
@@ -376,9 +497,10 @@ function ceaaces_file_download($filepath) {
   $filename = ceaaces_file_basename($filepath);
   $f = explode('.', $filename);
   $extension = array_pop($f);
-  if ($extension == 'pdf') {
-    $file = db_fetch_object(db_query("SELECT * FROM ev_archivo WHERE name='" . implode('.', $f) . "'"));
-    $orig_filename = ceaaces_evaluacion_comprobante_codigo($file->id);
+  if (user_access('download all ceaaces evaluations') || $extension == 'pdf') {
+    $ev_archivo_name = ($extension == 'pdf') ? implode('.', $f) : $filename;
+    $file = db_fetch_object(db_query("SELECT * FROM ev_archivo WHERE name='" . $ev_archivo_name . "'"));
+    $orig_filename = ceaaces_evaluacion_comprobante_codigo($file->id) . '.' . $extension;
   } else {
     $file = db_fetch_object(db_query("SELECT * FROM ev_archivo WHERE name='" . $filename . "'"));
     $orig_filename = $file->orig_name;
@@ -428,7 +550,7 @@ function ceaaces_block($op = 'list', $delta = 0) {
     $block['subject'] = '';
     if ($block_content == '') {  
       // no content from a week ago
-      $block['content'] = 'No hay datos registrados';
+      $block['content'] = 'Este usuario no tiene asociado un Instituto. Los archivos enviados no aparecerán en el reporte de formularios.';
     } else {
       // set up the block
       $block['content'] = $block_content;
@@ -449,12 +571,13 @@ function ceaaces_evaluacion() {
   }
   $links = '<div>&nbsp;</div><div>&nbsp;</div>
     <table style="border:solid 0px #999;color:#999;">';
-  $sql = "SELECT * FROM ev_archivo WHERE ies_name = '" . str_replace("'", "''", $user->name) . "' ORDER BY created DESC";
+  $sql = "SELECT *, to_char(created, 'DD/MM/YYYY HH:MI:SS') as creado FROM ev_archivo WHERE ies_name = '" . str_replace("'", "''", $user->name) . "' ORDER BY created DESC";
   $result = db_query($sql);  
+  $first = true;
   while ($file = db_fetch_object($result)) {
-    $links .= '<tr>
+    $links .= '<tr' . ($first ? ' style="background-color:#ffb;"' : '') . '>
       <td style="width:220px;border:solid 2px #ddd;text-align:center;">
-      <a href="/evaluacion_descargar?file=' . $file->id . '">' . $file->orig_name . '</a> <br><span>Subido ' . $file->created . '</span>
+      <a href="/evaluacion_descargar?file=' . $file->id . '">' . $file->orig_name . '</a> <br><span>Subido ' . $file->creado . '</span>
       </td>
       <td style="border:solid 2px #ddd;text-align:center;">
       Huella digital del archivo (MD5): <br><span style="color:#000;font-size:14pt;font-family:Courier,Serif">' . $file->md5 . '</span> <br>
@@ -464,7 +587,7 @@ function ceaaces_evaluacion() {
       <a href="/evaluacion_descargar?file=' . $file->id . '&comprobante">Descargar comprobante</a> <br>
       </td>
       </tr>';
-  
+    $first = false;
   }
   $xxlinks = '<div>&nbsp;</div><div>&nbsp;</div>';
   $links .= '</table><div>&nbsp;</div><div>&nbsp;</div>';
