@@ -457,7 +457,7 @@ function ceaaces_evaluacion_comprobante_codigo($num, $prefijo = '', $subfijo = '
  * Implementation of hook_user()
  */
 function ceaaces_user($op, &$edit, &$account, $category = NULL) {
-  watchdog('XXX', 'en ' . $op . '!! account:' . serialize($account));
+  //watchdog('XXX', 'en ' . $op . '!! account:' . serialize($account));
   switch ($op) {
     case "after_update":
       // Your code here.
@@ -481,6 +481,26 @@ function ceaaces_user($op, &$edit, &$account, $category = NULL) {
     case "submit":
       break;
     case "update":
+      watchdog('hook_user:update', 'edit[roles] : ' . serialize($edit['roles']) . ' | account->roles: ' . serialize($account->roles));
+      if (!isset($edit['roles'][8]) && isset ($account->roles[8])) {
+        watchdog('---', 'DROP: updating to null ev_ies where codigo = ' . $account->name);
+        $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $account->name . "'"));
+        if (!empty($ies)) {
+          db_query("UPDATE ev_ies SET uid=NULL WHERE codigo='" . $account->name . "'");
+          drupal_set_message('Se ha desvinculado al usuario "' . $account->name . '" de una IES cuyo código es el mismo.');
+        } else {
+          form_set_error('', 'No se pudo desvincular al usuario "' . $account->name . '" de su IES. No se encontró la IES con código "' . $account->name . '".');
+        }
+      } else if (isset($edit['roles'][8]) && !isset ($account->roles[8])) {
+        watchdog('---', 'ADD: updating to ' . $account->uid . ' ev_ies = ' . $account->name);
+        $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $account->name . "'"));
+        if (!empty($ies)) {
+          db_query("UPDATE ev_ies SET uid=" . $account->uid . " WHERE codigo='" . $account->name . "'");
+          drupal_set_message('Se ha vinculado al usuario "' . $account->name . '" con una IES cuyo código es el mismo.');
+        } else {
+          form_set_error('', 'No se pudo vincular al usuario "' . $account->name . '" con una IES. No se encontró la IES con código "' . $account->name . '".');
+        }
+      }
       break;
     case "validate":
       break;
