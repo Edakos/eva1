@@ -64,9 +64,11 @@ function ceaaces_perm() {
     'upload ceaaces evaluations', 
     'administer ceaaces', 
     'access ceaaces reports',
+    'access all ceaaces institutes',
+    'access all ceaaces universities',
     'acceso a form inscripcion a pruebas en ceaaces',
     'acceso a admin form inscripcion a pruebas en ceaaces',
-    'download own ceaaces evaluations',
+    'download own ceaaces evaluations', 
     'download all ceaaces evaluations',
     'download ceaaces evaluation receipt'
   );
@@ -141,6 +143,7 @@ function ceaaces_menu() {
   
   $items['evaluacion_todas'] = array(
     'title' => 'Lista de evaluaciones', 
+    //'access arguments' => array('download all ceaaces evaluations', 'download all ceaaces evaluations universities'), 
     'access arguments' => array('download all ceaaces evaluations'), 
     'page callback' => 'ceaaces_evaluacion_todas', 
     'type' => MENU_CALLBACK,
@@ -148,6 +151,7 @@ function ceaaces_menu() {
   
   $items['evaluacion_todas/detalles/%/%'] = array(
     'title' => 'Detalle de la IES', 
+    //'access arguments' => array('download all ceaaces evaluations', 'download all ceaaces evaluations universities'), 
     'access arguments' => array('download all ceaaces evaluations'), 
     'page callback' => 'ceaaces_evaluacion_todas_detalles', 
     'page arguments' => array(1, 2, 3, 4),
@@ -156,6 +160,7 @@ function ceaaces_menu() {
   
   $items['evaluacion_descargar'] = array(
     //'title' => 'Envío de la evaluación', 
+    //'access arguments' => array('download own ceaaces evaluations', 'download own ceaaces evaluations universities'), 
     'access arguments' => array('download own ceaaces evaluations'), 
     //'title' => 'Creación de contraseña', 
     'page callback' => 'ceaaces_evaluacion_descargar', 
@@ -204,7 +209,7 @@ function ceaaces_menu() {
 }
 
 
-function ceaaces_evaluacion_todas_detalles($id, $page_return = NULL) {
+function ceaaces_evaluacion_todas_detalles($arg1, $id, $page_return = NULL) {
   if (empty($id) || !is_numeric($id)) {
     form_set_error('', 'Error accediendo a los detalles. Probable mal uso del sistema. ID:' . serialize($id));
     drupal_goto('/');
@@ -228,10 +233,9 @@ function ceaaces_evaluacion_todas_detalles($id, $page_return = NULL) {
     LEFT OUTER JOIN ev_archivo AS a
     ON a.ies_name=i.codigo
     WHERE NOT i.uid IS NULL
-    AND i.ev_tipo_ies_id=2
     AND i.id=$id
     ORDER BY i.name ASC, a.created DESC
-    ");
+    "); //AND i.ev_tipo_ies_id=2
   
   $last_ies = null;
   $buff = '';
@@ -426,7 +430,8 @@ function ceaaces_evaluacion_todas() {
     LEFT OUTER JOIN ev_archivo AS a
     ON a.ies_name = i.codigo
     WHERE NOT i.uid IS NULL
-    AND i.ev_tipo_ies_id = 2
+    " . (user_access('access all ceaaces universities') ? " AND i.ev_tipo_ies_id = 1" : '') . "
+    " . (user_access('access all ceaaces institutes') ? " AND i.ev_tipo_ies_id = 2" : '') . "
     ";
 
   //////INI 
@@ -479,8 +484,9 @@ function ceaaces_evaluacion_todas() {
         ) as a_id
     FROM ev_ies AS i
     WHERE NOT i.uid IS NULL
-    AND i.ev_tipo_ies_id = 2
-    ";
+    " . (user_access('access all ceaaces universities') ? " AND i.ev_tipo_ies_id = 1" : '') . "
+    " . (user_access('access all ceaaces institutes') ? " AND i.ev_tipo_ies_id = 2" : '') . "
+    "; //AND i.ev_tipo_ies_id = 2
   $res = pager_query($query . tablesort_sql($header), $limit = 20);
   $data = array();
   $count = 0;
@@ -721,15 +727,15 @@ function ceaaces_evaluacion_comprobante($filepath, $file) {
   $pdf->SetTextColor(0,0,0); 
   $pdf->SetXY(85, 79); 
   $pdf->Write(0, ceaaces_evaluacion_comprobante_codigo($file->id)); 
-  $pdf->SetXY(80, 117); 
+  $pdf->SetXY(82, 117); 
   $pdf->Write(0, $file->ies_name); 
-  $pdf->SetXY(80, 127); 
+  $pdf->SetXY(82, 127); 
   $pdf->Write(0, $datetime[0]); 
-  $pdf->SetXY(80, 137); 
+  $pdf->SetXY(82, 137); 
   $pdf->Write(0, $datetime[1]); 
-  $pdf->SetXY(80, 147); 
+  $pdf->SetXY(82, 147); 
   $pdf->Write(0, $file->orig_name); 
-  $pdf->SetXY(80, 157); 
+  $pdf->SetXY(82, 157); 
   $pdf->Write(0, $file->md5); 
   //$pdf->Output($filepath, 'D'); 
   //$pdf->Output($filename, 'D'); 
@@ -795,7 +801,7 @@ function ceaaces_user($op, &$edit, &$account, $category = NULL) {
       break;
     case "update":
       watchdog('hook_user:update', 'edit[roles] : ' . serialize($edit['roles']) . ' | account->roles: ' . serialize($account->roles));
-      if (!isset($edit['roles'][8]) && isset ($account->roles[8])) {
+      if ((!isset($edit['roles'][8]) && isset ($account->roles[8])) || (!isset($edit['roles'][11]) && isset ($account->roles[11]))) { //quitando rol de representante de instituto(8) o de universidad (11)
         watchdog('---', 'DROP: updating to null ev_ies where codigo = ' . $account->name);
         $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $account->name . "'"));
         if (!empty($ies)) {
@@ -804,7 +810,7 @@ function ceaaces_user($op, &$edit, &$account, $category = NULL) {
         } else {
           form_set_error('', 'No se pudo desvincular al usuario "' . $account->name . '" de su IES. No se encontró la IES con código "' . $account->name . '".');
         }
-      } else if (isset($edit['roles'][8]) && !isset ($account->roles[8])) {
+      } else if ((isset($edit['roles'][8]) && !isset ($account->roles[8])) || (isset($edit['roles'][11]) && !isset ($account->roles[11]))) {//agregando  rol de representante de instituto(8) o de universidad (11)
         watchdog('---', 'ADD: updating to ' . $account->uid . ' ev_ies = ' . $account->name);
         $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $account->name . "'"));
         if (!empty($ies)) {
@@ -883,7 +889,7 @@ function ceaaces_block($op = 'list', $delta = 0) {
     $block['subject'] = '';
     if ($block_content == '') {  
       // no content from a week ago
-      $block['content'] = 'Este usuario no tiene asociado un Instituto. Los archivos enviados no aparecerán en el reporte de formularios.';
+      $block['content'] = 'Este usuario no tiene asociado una IES. Los archivos enviados no aparecerán en el reporte de formularios.';
     } else {
       // set up the block
       $block['content'] = $block_content;
@@ -983,7 +989,7 @@ function ceaaces_upload_eva_spreadsheet() {
     '#type' => 'file', 
     //'#type' => 'filefield_widget', 
     '#title' => 'Ingrese el formulario', 
-    '#description' => 'Escoja el archivo de Excel del formulario que ha llenado con la información del Instituto.',
+    '#description' => 'Escoja el archivo de Excel del formulario que ha llenado.',
   );
 
   $form['submit'] = array('#type' => 'submit', '#value' => 'Enviar');
