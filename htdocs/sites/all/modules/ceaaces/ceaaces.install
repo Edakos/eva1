@@ -5,7 +5,7 @@
  * @file
  * Install file for ceaaces module.
  *
- * @tables {ev_hoja_calculo}, {ev_criterio}, {ev_indicador}, {ev_formula}, {ev_tipo_dato}, {ev_valor}, {ev_tipo_ies}, {ev_provincia}, {ev_canton}, {ev_valor_posible}, {ev_variable}, {ev_validacion}, {ev_relacion_trabajo}, {ev_cargo}, {ev_profesor}, {ev_categoria}, {ev_estudiante}, {ev_unidad_academica}, {ev_persona}, {ev_lugar}, {ev_parroquia}, {ev_titulo}, {ev_subarea_unesco}, {ev_evaluador}, {ev_pais}, {ev_carrera}, {ev_modalidad_estudio}, {ev_sede}, {ev_nivel_carrera}, {ev_tipo_sede}, {ev_organizacion_malla}, {ev_estado_carrera}, {ev_jornada}, {ev_archivo}, {ev_form_mtn}, {ev_ies}, {ev_tipo_archivo}, {ev_log}
+ * @tables {ev_hoja_calculo}, {ev_criterio}, {ev_indicador}, {ev_formula}, {ev_tipo_dato}, {ev_valor}, {ev_tipo_ies}, {ev_provincia}, {ev_canton}, {ev_valor_posible}, {ev_variable}, {ev_validacion}, {ev_relacion_trabajo}, {ev_cargo}, {ev_profesor}, {ev_categoria}, {ev_estudiante}, {ev_unidad_academica}, {ev_persona}, {ev_lugar}, {ev_parroquia}, {ev_titulo}, {ev_subarea_unesco}, {ev_evaluador}, {ev_pais}, {ev_carrera}, {ev_modalidad_estudio}, {ev_sede}, {ev_nivel_carrera}, {ev_tipo_sede}, {ev_organizacion_malla}, {ev_estado_carrera}, {ev_jornada}, {ev_archivo}, {ev_form_mtn}, {ev_ies}, {ev_tipo_archivo}, {ev_log}, {ev_ies_comentario}, {ev_ies_tipo_comentario}
  */
 
 /**
@@ -2321,6 +2321,99 @@ function ceaaces_schema() {
         'description' => t('Campo del Sistema de CEAACES'),
         'type' => 'int',
         'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+  
+  // Database schema for {ev_ies_comentario} table.
+  $schema['ev_ies_comentario'] = array(
+    'description' => t('Tabla del Sistema de CEAACES'),
+    'fields' => array(
+      'id' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'varchar',
+        'length' => '1000',
+        'not null' => FALSE,
+      ),
+      'description' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'text',
+        'not null' => FALSE,
+      ),
+      'created' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'datetime',
+        'not null' => TRUE,
+        'default' => 'now()',
+      ),
+      'modified' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'datetime',
+        'not null' => TRUE,
+        'default' => 'now()',
+      ),
+      'ev_ies_id' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'ev_ies_tipo_comentario_id' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'uid' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'usuario' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'varchar',
+        'length' => '100',
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+  
+  // Database schema for {ev_ies_tipo_comentario} table.
+  $schema['ev_ies_tipo_comentario'] = array(
+    'description' => t('Tabla del Sistema de CEAACES'),
+    'fields' => array(
+      'id' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'varchar',
+        'length' => '1000',
+        'not null' => FALSE,
+      ),
+      'notes' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'text',
+        'not null' => FALSE,
+      ),
+      'created' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'datetime',
+        'not null' => TRUE,
+        'default' => 'now()',
+      ),
+      'modified' => array(
+        'description' => t('Campo del Sistema de CEAACES'),
+        'type' => 'datetime',
+        'not null' => TRUE,
+        'default' => 'now()',
       ),
     ),
     'primary key' => array('id'),

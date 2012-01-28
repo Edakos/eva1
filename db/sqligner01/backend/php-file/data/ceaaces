@@ -39,7 +39,7 @@
 		<type label="Inet CIDR Addr" length="0" sql="CIDR" quote="'"/>
 		<type label="Geometry" length="0" sql="GEOMETRY" quote="'"/>
 	</group>
-</datatypes><table x="78" y="146" name="ev_criterio">
+</datatypes><table x="398" y="9" name="ev_criterio">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -73,7 +73,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="304" y="13" name="ev_indicador">
+<table x="558" y="3" name="ev_indicador">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -106,7 +106,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="617" y="19" name="ev_formula">
+<table x="721" y="13" name="ev_formula">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -1352,6 +1352,60 @@
 <row name="tipo" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 </row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="69" y="129" name="ev_ies_comentario">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="description" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="ev_ies_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_ies" row="id" />
+</row>
+<row name="ev_ies_tipo_comentario_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="ev_ies_tipo_comentario" row="id" />
+</row>
+<row name="uid" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="usuario" null="1" autoincrement="0">
+<datatype>VARCHAR(100)</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="37" y="6" name="ev_ies_tipo_comentario">
+<row name="id" null="0" autoincrement="1">
+<datatype>SERIAL</datatype>
+</row>
+<row name="name" null="1" autoincrement="0">
+<datatype>VARCHAR(1000)</datatype>
+</row>
+<row name="notes" null="1" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="created" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="modified" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>

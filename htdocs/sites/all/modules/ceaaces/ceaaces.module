@@ -146,6 +146,14 @@ function ceaaces_menu() {
     'type' => MENU_CALLBACK,
   );
   
+  $items['evaluacion_todas/detalles/%'] = array(
+    'title' => 'Detalle de la IES', 
+    'access arguments' => array('download all ceaaces evaluations'), 
+    'page callback' => 'ceaaces_evaluacion_todas_detalles', 
+    'page arguments' => array(2),
+    'type' => MENU_CALLBACK,
+  );
+  
   $items['evaluacion_descargar'] = array(
     //'title' => 'Envío de la evaluación', 
     'access arguments' => array('download own ceaaces evaluations'), 
@@ -195,9 +203,213 @@ function ceaaces_menu() {
   return $items;
 }
 
+
+function ceaaces_evaluacion_todas_detalles($id) {
+  if (empty($id) || !is_numeric($id)) {
+    form_set_error('', 'Error accediendo a los detalles. Probable mal uso del sistema. ID:' . serialize($id));
+    drupal_goto('/');
+  }
+  $output = '';
+  $result = db_query("
+    SELECT
+    i.id,
+    i.codigo,
+    i.name AS i_name,
+    i.cedula_contacto,
+    i.nombre_contacto,
+    i.email_contacto,
+    a.orig_name,
+    a.md5,
+    to_char(a.created, 'DD/MM/YYYY HH:MI:SS') AS created,
+    a.extension,
+    a.id AS a_id,
+    (SELECT COUNT(*) FROM ev_log AS l WHERE l.uid = i.uid) AS cambio_clave
+    FROM ev_ies AS i
+    LEFT OUTER JOIN ev_archivo AS a
+    ON a.ies_name=i.codigo
+    WHERE NOT i.uid IS NULL
+    AND i.ev_tipo_ies_id=2
+    AND i.id=$id
+    ORDER BY i.name ASC, a.created DESC
+    ");
+  
+  $last_ies = null;
+  $buff = '';
+  $zebra = false;
+  $data = array();
+  $count = 0;
+
+  while ($ies = db_fetch_object($result)) {
+    $data[] = $ies;
+  }
+
+
+  $output .= '<a href="/evaluacion_todas">&laquo;Regresar al listado de IES</a>';
+  $output .= '<div>&nbsp;</div>';
+
+  $output .= '<table>';
+  $output .= '<tr>';
+  $output .= '<td width="200px"><strong>';
+  $output .= 'Código:';
+  $output .= '</strong></td>';
+  $output .= '<td>';
+  $output .= $data[0]->codigo;
+  $output .= '</td>';
+  $output .= '</tr>';
+  $output .= '<tr>';
+  $output .= '<td width="200px"><strong>';
+  $output .= 'Nombre:';
+  $output .= '</strong></td>';
+  $output .= '<td>';
+  $output .= $data[0]->i_name;
+  $output .= '</td>';
+  $output .= '</tr>';
+  $output .= '<tr>';
+  $output .= '<td width="200px"><strong>';
+  $output .= 'Contacto:';
+  $output .= '</strong></td>';
+  $output .= '<td>';
+  $output .= $data[0]->nombre_contacto;
+  $output .= '</td>';
+  $output .= '</tr>';
+  $output .= '<tr>';
+  $output .= '<td width="200px"><strong>';
+  $output .= 'Cédula:';
+  $output .= '</strong></td>';
+  $output .= '<td>';
+  $output .= $data[0]->cedula_contacto;
+  $output .= '</td>';
+  $output .= '</tr>';
+  $output .= '<tr>';
+  $output .= '<td width="200px"><strong>';
+  $output .= 'Correo electrónico:';
+  $output .= '</strong></td>';
+  $output .= '<td>';
+  $output .= '<a href="mailto:' . $data[0]->email_contacto . '">' . $data[0]->email_contacto . '</a>';
+  $output .= '</td>';
+  $output .= '</tr>';
+  $output .= '</table>';
+
+
+  $output .= '<div>&nbsp;</div>';
+  $output .= '<div>&nbsp;</div>';
+  $output .= '<div>&nbsp;</div>';
+
+  $output .= '<h3>Archivos enviados</h3>';
+  if (empty($data[0]->a_id)) {
+    $output .= '<i>El Instituto no tiene archivos enviados.</i>';
+  } else {
+    $output .= '<table>';
+
+    $output .= '<tr>';
+    $output .= '<th>&nbsp;</th>';
+    $output .= '<th>Archivo</th>';
+    $output .= '<th>Huella Digital</th>';
+    $output .= '<th>Enviado</th>';
+    $output .= '</tr>';
+
+    foreach ($data as $ies) {
+      $created = explode('.', $ies->created);
+      $created = $created[0];
+
+      $output .= '<tr>';
+      $output .= '<td>';
+      $output .= '<strong>' . ++$count . '.</strong>';
+      $output .= '</td>';
+      $output .= '<td>';
+      $output .= (empty($ies->a_id)) ? '' : '<a href="evaluacion_descargar?file=' . $ies->a_id . '"><img src="/sites/default/files/' . $ies->extension  . '.png" width="20px" height="20px">&nbsp;' . ceaaces_evaluacion_comprobante_codigo($ies->a_id) . '.' . $ies->extension . '</a>';
+      $output .= '</td>';
+      $output .= '<td>';
+      $output .= $ies->md5;
+      $output .= '</td>';
+      $output .= '<td>';
+      $output .= $created;
+      $output .= '</td>';
+      $output .= '</tr>';
+    }
+    $output .= '</table>';
+  }
+  $output .= '<div>&nbsp;</div>';
+  $output .= '<div>&nbsp;</div>';
+  $output .= '<div>&nbsp;</div>';
+
+  $output .= '<h3>Observaciones </h3>';
+  $result = db_query("
+    SELECT 
+    id, 
+    description,
+    to_char(created, 'DD/MM/YYYY HH:MI:SS') AS created,
+    usuario
+    FROM
+    ev_ies_comentario
+    WHERE
+    ev_ies_tipo_comentario_id=1
+    AND ev_ies_id=$id
+    ");
+  $obs = array();
+  while ($ob = db_fetch_object($result)) {
+    $obs[] = $ob;
+  }
+
+  if (count($obs) > 0) {
+    $output .= '<ol>';
+    foreach ($obs as $ob) {
+      $output .= '<li>';
+      $output .= $ob->description;
+
+      $output .= '<br>';
+      $output .= '<i>Por ' . $ob->usuario . ', con fecha ' . $ob->created . '</i>';
+      $output .= '</li>';
+    } 
+    $output .= '</ol>';
+  } else {
+    $output .= '<i>No hay observaciones.</i>';
+  }
+  $output .= drupal_get_form('ceaaces_evaluacion_todas_observaciones', $id);
+
+  return $output;
+}
+
+function ceaaces_evaluacion_todas_observaciones(&$form_state, $ev_ies_id) {
+  $form = array();
+
+  $form['observacion'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Ingrese una observación'),
+    '#size' => 60,
+  );
+  $form['ev_ies_id'] = array(
+    '#type' => 'hidden',
+    '#value' => $ev_ies_id,
+  );
+  $form['submit'] = array('#type' => 'submit', '#value' => 'Enviar');
+
+  return $form;
+}
+
+function ceaaces_evaluacion_todas_observaciones_submit($form, &$form_state) {
+  global $user;
+
+  db_query("INSERT INTO ev_ies_comentario(
+    description, 
+    ev_ies_id, 
+    ev_ies_tipo_comentario_id, 
+    uid, 
+    usuario
+  ) VALUES (
+    '" . $form_state['values']['observacion'] . "', 
+    " . $form_state['values']['ev_ies_id'] . ",
+    1, 
+    " . $user->uid . ", 
+    '" . $user->name . "' 
+  )");
+  drupal_set_message('Observación registrada.');
+}
+
 function ceaaces_evaluacion_todas() {
   $result = db_query("
     SELECT
+    i.id,
     i.codigo,
     i.name AS i_name,
     i.cedula_contacto,
@@ -213,6 +425,7 @@ function ceaaces_evaluacion_todas() {
     LEFT OUTER JOIN ev_archivo AS a
     ON a.ies_name = i.codigo
     WHERE NOT i.uid IS NULL
+    AND i.ev_tipo_ies_id = 2
     ORDER BY i.name ASC, a.created DESC
     ");
   $output = '';
@@ -225,7 +438,7 @@ function ceaaces_evaluacion_todas() {
     $created = explode('.', $ies->created);
     $created = $created[0];
 
-    $ies->orig_name = (empty($ies->a_id)) ? '' : '<a href="evaluacion_descargar?file=' . $ies->a_id . '">' . ceaaces_evaluacion_comprobante_codigo($ies->a_id) . '.' . $ies->extension . '</a>';
+    $ies->orig_name = (empty($ies->a_id)) ? '' : '<a href="evaluacion_descargar?file=' . $ies->a_id . '"><img src="/sites/default/files/' . $ies->extension  . '.png" width="20px" height="20px">&nbsp;' . ceaaces_evaluacion_comprobante_codigo($ies->a_id) . '.' . $ies->extension . '</a>';
     $ies->md5 = 'HUELLA DIGITAL: '. $ies->md5;
     $ies->created = 'ENVIADO: ' . $created;
 
@@ -249,10 +462,11 @@ function ceaaces_evaluacion_todas() {
 
   $output .= '<table border=0>';
   $output .= '<th>&nbsp;</th>';
-  //$output .= '<th>Código</th>';
+  $output .= '<th>Código</th>';
   $output .= '<th>Instituto</th>';
   $output .= '<th>Contacto</th>';
-  $output .= '<th>Archivos</th>';
+  $output .= '<th>Último archivo enviado</th>';
+  $output .= '<th>&nbsp;</th>';
   //$output .= '<th>Huella Digital</th>';
   //$output .= '<th>Fecha y hora de envío</th>';
   foreach ($data as $codigo => $archivos) {
@@ -262,14 +476,16 @@ function ceaaces_evaluacion_todas() {
     
     $fila = array(
       'num' => $count . '.',
-      //'codigo' => $header->codigo,
-      'i_name' => '<h3>' . $header->i_name . '</h3>Código: ' . $header->codigo,
-      'contacto' => (empty($header->nombre_contacto) ? '<i>(Contacto no registrado)</i>' : $header->nombre_contacto) . '<br>C.I.: ' . $header->cedula_contacto . '<br>Email: <a href="mailto:' . $header->email_contacto . '">' . $header->email_contacto . '</a>' . (($header->cambio_clave == 1) ? '' : '<br><i><span style="color:#900;">(Usuario no activado con cambio de clave)</span></i>'),
-      'archivo' => ''
+      'codigo' => $header->codigo,
+      'i_name' => '<strong>' . $header->i_name . '</strong>',//. $header->codigo,
+      //'contacto' => (empty($header->nombre_contacto) ? '<i>(Contacto no registrado)</i>' : $header->nombre_contacto) . '<br>C.I.: ' . $header->cedula_contacto . '<br>Email: <a href="mailto:' . $header->email_contacto . '">' . $header->email_contacto . '</a>' . (($header->cambio_clave == 1) ? '' : '<br><i><span style="color:#900;">(Usuario no activado con cambio de clave)</span></i>'),
+      'contacto' => (empty($header->nombre_contacto) ? '<i>(Contacto no registrado)</i>' : '<a href="mailto:' . $header->email_contacto . '">' . $header->nombre_contacto) . '</a>' . (($header->cambio_clave == 1) ? '' : '<br><i><span style="color:#900;">(Usuario no activado con cambio de clave)</span></i>'),
+      'archivo' => '',
+      'detalles' => '<a href="/evaluacion_todas/detalles/' . $header->id . '"><img src="/sites/default/files/lupa.png" width="20px" height="20px" title="Mostrar detalles"></a>'
     );
     $a = '';
 
-    if (count($archivos) > 1) {
+    if (count($archivos) > 1 && false) {
       //$header->orig_name = '<strong>' . $header->orig_name . '</strong><div><hr></div><div><i><a href="#" onclick="this.parentNode.parentNode.parentNode.parentNode.style.display=\'none\';document.getElementById(\'ceaaces_ies_' . $codigo . '\').style.display=\'\'">(Mostrar todos los archivos enviados por este Instituto)</a></i></div>';
       $a .= '<div>';
       $a .= '<ul>';
@@ -299,6 +515,7 @@ function ceaaces_evaluacion_todas() {
       }
       $a .= '</ol>';
     } else if (!empty($header->a_id)) {
+      /*
       $a .= '<ol>';
       $a .= ceaaces_evaluacion_todas_li(array(
         'filename' => $header->orig_name,
@@ -306,6 +523,8 @@ function ceaaces_evaluacion_todas() {
         'created' => $header->created
       ));
       $a .= '</ol>';
+       */
+      $a .= $header->orig_name;
     } else {
       $a .= '<i>El Instituto no tiene archivos enviados.</i>';
     }

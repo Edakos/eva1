@@ -5,7 +5,7 @@
  * @file
  * Auto Admin schemas for ceaaces module.
  *
- * @tables {ev_hoja_calculo}, {ev_criterio}, {ev_indicador}, {ev_formula}, {ev_tipo_dato}, {ev_valor}, {ev_tipo_ies}, {ev_provincia}, {ev_canton}, {ev_valor_posible}, {ev_variable}, {ev_validacion}, {ev_relacion_trabajo}, {ev_cargo}, {ev_profesor}, {ev_categoria}, {ev_estudiante}, {ev_unidad_academica}, {ev_persona}, {ev_lugar}, {ev_parroquia}, {ev_titulo}, {ev_subarea_unesco}, {ev_evaluador}, {ev_pais}, {ev_carrera}, {ev_modalidad_estudio}, {ev_sede}, {ev_nivel_carrera}, {ev_tipo_sede}, {ev_organizacion_malla}, {ev_estado_carrera}, {ev_jornada}, {ev_archivo}, {ev_form_mtn}, {ev_ies}, {ev_tipo_archivo}, {ev_log}
+ * @tables {ev_hoja_calculo}, {ev_criterio}, {ev_indicador}, {ev_formula}, {ev_tipo_dato}, {ev_valor}, {ev_tipo_ies}, {ev_provincia}, {ev_canton}, {ev_valor_posible}, {ev_variable}, {ev_validacion}, {ev_relacion_trabajo}, {ev_cargo}, {ev_profesor}, {ev_categoria}, {ev_estudiante}, {ev_unidad_academica}, {ev_persona}, {ev_lugar}, {ev_parroquia}, {ev_titulo}, {ev_subarea_unesco}, {ev_evaluador}, {ev_pais}, {ev_carrera}, {ev_modalidad_estudio}, {ev_sede}, {ev_nivel_carrera}, {ev_tipo_sede}, {ev_organizacion_malla}, {ev_estado_carrera}, {ev_jornada}, {ev_archivo}, {ev_form_mtn}, {ev_ies}, {ev_tipo_archivo}, {ev_log}, {ev_ies_comentario}, {ev_ies_tipo_comentario}
  */
 
 /**
@@ -2757,6 +2757,11 @@ function ceaaces_autoadmin_schema() {
         'local_key' => 'id',
         'foreign_key' => 'ev_ies_id',
       ),
+      'ev_ies_comentario' => array(
+        'type' => 'has_many',
+        'local_key' => 'id',
+        'foreign_key' => 'ev_ies_id',
+      ),
       'ev_profesor' => array(
         'type' => 'has_many',
         'local_key' => 'id',
@@ -2868,6 +2873,117 @@ function ceaaces_autoadmin_schema() {
       ),
     ),
     'relations' => array(),
+  );
+
+  // Auto Admin schema for {ev_ies_comentario} table
+  $autoadmin_schema['ev_ies_comentario'] = array(
+    'alias' => 'name',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_ies_comentario',
+    'title' => t('Ev Ies Comentario'),
+    'title_plural' => t('Ev Ies Comentarios'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'name' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Name'),
+        'title_plural' => t('Names'),
+      ),
+      'description' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Description'),
+        'title_plural' => t('Descriptions'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+      'ev_ies_id' => array(
+        'autoadmin_type' => 'has_one',
+        'title' => t('Ev Ies'),
+        'title_plural' => t('Ev y'),
+      ),
+      'ev_ies_tipo_comentario_id' => array(
+        'autoadmin_type' => 'has_one',
+        'title' => t('Ev Ies Tipo Comentario'),
+        'title_plural' => t('Ev Ies Tipo Comentarios'),
+      ),
+      'uid' => array(
+        'autoadmin_type' => 'int',
+        'title' => t('Uid'),
+        'title_plural' => t('Uids'),
+      ),
+      'usuario' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Usuario'),
+        'title_plural' => t('Usuarios'),
+      ),
+    ),
+    'relations' => array(
+      'ev_ies' => array(
+        'type' => 'has_one',
+        'local_key' => 'ev_ies_id',
+        'foreign_key' => 'id',
+      ),
+      'ev_ies_tipo_comentario' => array(
+        'type' => 'has_one',
+        'local_key' => 'ev_ies_tipo_comentario_id',
+        'foreign_key' => 'id',
+      ),
+    ),
+  );
+
+  // Auto Admin schema for {ev_ies_tipo_comentario} table
+  $autoadmin_schema['ev_ies_tipo_comentario'] = array(
+    'alias' => 'name',
+    'inline_filter' => FALSE,
+    'path' => 'admin/content/ev_ies_tipo_comentario',
+    'title' => t('Ev Ies Tipo Comentario'),
+    'title_plural' => t('Ev Ies Tipo Comentarios'),
+    'fields' => array(
+      'id' => array(
+        'autoadmin_type' => 'primary_key',
+        'title' => t('Id'),
+        'title_plural' => t('Ids'),
+      ),
+      'name' => array(
+        'autoadmin_type' => 'varchar',
+        'title' => t('Name'),
+        'title_plural' => t('Names'),
+      ),
+      'notes' => array(
+        'autoadmin_type' => 'text',
+        'title' => t('Notes'),
+        'title_plural' => t('Notes'),
+      ),
+      'created' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Created'),
+        'title_plural' => t('Createds'),
+      ),
+      'modified' => array(
+        'autoadmin_type' => 'datetime',
+        'title' => t('Modified'),
+        'title_plural' => t('Modifieds'),
+      ),
+    ),
+    'relations' => array(
+      'ev_ies_comentario' => array(
+        'type' => 'has_many',
+        'local_key' => 'id',
+        'foreign_key' => 'ev_ies_tipo_comentario_id',
+      ),
+    ),
   );
 
   return $autoadmin_schema;
