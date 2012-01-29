@@ -800,24 +800,27 @@ function ceaaces_user($op, &$edit, &$account, $category = NULL) {
     case "submit":
       break;
     case "update":
-      watchdog('hook_user:update', 'edit[roles] : ' . serialize($edit['roles']) . ' | account->roles: ' . serialize($account->roles));
-      if ((!isset($edit['roles'][8]) && isset ($account->roles[8])) || (!isset($edit['roles'][11]) && isset ($account->roles[11]))) { //quitando rol de representante de instituto(8) o de universidad (11)
-        watchdog('---', 'DROP: updating to null ev_ies where codigo = ' . $account->name);
-        $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $account->name . "'"));
-        if (!empty($ies)) {
-          db_query("UPDATE ev_ies SET uid=NULL WHERE codigo='" . $account->name . "'");
-          drupal_set_message('Se ha desvinculado al usuario "' . $account->name . '" de una IES cuyo código es el mismo.');
-        } else {
-          form_set_error('', 'No se pudo desvincular al usuario "' . $account->name . '" de su IES. No se encontró la IES con código "' . $account->name . '".');
-        }
-      } else if ((isset($edit['roles'][8]) && !isset ($account->roles[8])) || (isset($edit['roles'][11]) && !isset ($account->roles[11]))) {//agregando  rol de representante de instituto(8) o de universidad (11)
-        watchdog('---', 'ADD: updating to ' . $account->uid . ' ev_ies = ' . $account->name);
-        $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $account->name . "'"));
-        if (!empty($ies)) {
-          db_query("UPDATE ev_ies SET uid=" . $account->uid . " WHERE codigo='" . $account->name . "'");
-          drupal_set_message('Se ha vinculado al usuario "' . $account->name . '" con una IES cuyo código es el mismo.');
-        } else {
-          form_set_error('', 'No se pudo vincular al usuario "' . $account->name . '" con una IES. No se encontró la IES con código "' . $account->name . '".');
+
+      if (user_access('ev_ies update')) { //Solo si quien actualiza la informacion del usuario tiene el permiso "ev_ies update", quien por lo general solo es el administrador
+        watchdog('hook_user:update', 'edit[roles] : ' . serialize($edit['roles']) . ' | account->roles: ' . serialize($account->roles));
+        if ((!isset($edit['roles'][8]) && isset ($account->roles[8])) || (!isset($edit['roles'][11]) && isset ($account->roles[11]))) { //quitando rol de representante de instituto(8) o de universidad (11)
+          watchdog('---', 'DROP: updating to null ev_ies where codigo = ' . $account->name);
+          $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $account->name . "'"));
+          if (!empty($ies)) {
+            db_query("UPDATE ev_ies SET uid=NULL WHERE codigo='" . $account->name . "'");
+            drupal_set_message('Se ha desvinculado al usuario "' . $account->name . '" de una IES cuyo código es el mismo.');
+          } else {
+            form_set_error('', 'No se pudo desvincular al usuario "' . $account->name . '" de su IES. No se encontró la IES con código "' . $account->name . '".');
+          }
+        } else if ((isset($edit['roles'][8]) && !isset ($account->roles[8])) || (isset($edit['roles'][11]) && !isset ($account->roles[11]))) {//agregando  rol de representante de instituto(8) o de universidad (11)
+          watchdog('---', 'ADD: updating to ' . $account->uid . ' ev_ies = ' . $account->name);
+          $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $account->name . "'"));
+          if (!empty($ies)) {
+            db_query("UPDATE ev_ies SET uid=" . $account->uid . " WHERE codigo='" . $account->name . "'");
+            drupal_set_message('Se ha vinculado al usuario "' . $account->name . '" con una IES cuyo código es el mismo.');
+          } else {
+            form_set_error('', 'No se pudo vincular al usuario "' . $account->name . '" con una IES. No se encontró la IES con código "' . $account->name . '".');
+          }
         }
       }
       break;
