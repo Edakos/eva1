@@ -39,7 +39,7 @@
 		<type label="Inet CIDR Addr" length="0" sql="CIDR" quote="'"/>
 		<type label="Geometry" length="0" sql="GEOMETRY" quote="'"/>
 	</group>
-</datatypes><table x="398" y="9" name="ev_criterio">
+</datatypes><table x="468" y="28" name="ev_criterio">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -73,7 +73,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="558" y="3" name="ev_indicador">
+<table x="617" y="2" name="ev_indicador">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -106,7 +106,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="721" y="13" name="ev_formula">
+<table x="773" y="6" name="ev_formula">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -384,7 +384,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="429" y="239" name="ev_tipo_ies">
+<table x="525" y="452" name="ev_tipo_ies">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -1271,7 +1271,7 @@
 </key>
 <comment>Para el formulario de datos de matriculados en tercer nivel</comment>
 </table>
-<table x="146" y="331" name="ev_archivo">
+<table x="280" y="10" name="ev_archivo">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -1310,7 +1310,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="-18" y="358" name="ev_tipo_archivo">
+<table x="63" y="30" name="ev_tipo_archivo">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -1356,7 +1356,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="69" y="129" name="ev_ies_comentario">
+<table x="56" y="319" name="ev_ies_comentario">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -1390,7 +1390,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="37" y="6" name="ev_ies_tipo_comentario">
+<table x="54" y="193" name="ev_ies_tipo_comentario">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
