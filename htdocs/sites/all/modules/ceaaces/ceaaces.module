@@ -253,6 +253,14 @@ function ceaaces_menu() {
     'page arguments' => array('ceaaces_inscripcion'), 
     'type' => MENU_CALLBACK,
   );
+  //ceaaces_data_dictionary
+
+  $items['admin/settings/ceaaces_data_dictionary'] = array(
+    'title' => 'Consulta de Diccionario de Datos de CEAACES', 
+    'access arguments' => array('administer ceaaces'), 
+    'type' => MENU_NORMAL_ITEM,
+    'page callback' => 'ceaaces_data_dictionary',
+  );
 
   return $items;
 }
@@ -1411,6 +1419,158 @@ function _ceaaces_items_associate_labels_with_items($items) {
     }
   }
   return $options;
+}
+
+function ceaaces_data_dictionary() {
+  $output = '';
+  $data = array();
+
+  $query = "
+    SELECT 
+    c.table_name,
+    c.column_name,
+    c.data_type,
+    c.character_maximum_length,
+    c.column_default,
+    tc.constraint_type,
+    ccu.table_name AS ref_table_name,
+    ccu.column_name AS ref_column_name
+    FROM 
+    information_schema.columns as c
+    left outer join information_schema.key_column_usage as kcu
+    ON c.column_name = kcu.column_name and c.table_name = kcu.table_name
+    left outer join information_schema.table_constraints as tc
+    ON tc.constraint_name=kcu.constraint_name
+    left outer join information_schema.constraint_column_usage as ccu
+    ON ccu.constraint_name=tc.constraint_name and not tc.constraint_name is null
+    WHERE 
+    c.table_name LIKE 'ev_%' 
+    ORDER BY 
+    c.table_name, 
+    c.ordinal_position
+    ";
+  $result = db_query($query);
+  while ($field = db_fetch_object($result)) {
+    $data[$field->table_name]['fields'][$field->column_name] = array(
+      'data_type' => $field->data_type,
+      'character_maximum_length' => $field->character_maximum_length,
+      'column_default' => $field->column_default,
+      'constraint_type' => $field->constraint_type,
+      'ref_table_name' => $field->ref_table_name,
+      'ref_column_name' => $field->ref_column_name
+    );
+  }
+
+  $query = "
+    select 
+    ccu.table_name,
+    ccu.column_name,
+    tc.constraint_type,
+    tc.table_name AS ref_table_name,
+    kcu.column_name AS ref_column_name
+    from 
+    information_schema.constraint_column_usage as ccu,
+    information_schema.table_constraints as tc,
+    information_schema.key_column_usage as kcu
+    WHERE 
+    ccu.constraint_name=tc.constraint_name
+    and tc.constraint_name=kcu.constraint_name
+    and ccu.table_name LIKE 'ev_%'
+    and constraint_type='FOREIGN KEY'
+    ORDER BY
+    ccu.table_name
+    ";
+  
+  $result = db_query($query);
+
+  while ($ref = db_fetch_object($result)) {
+    $data[$ref->table_name]['refs'][] = $ref->ref_table_name;
+  }
+
+  $header = array(
+    array(
+      'data' => 'Tipo de dato',
+      'field' => 'data_type'
+    ),
+    array(
+      'data' => 'Longitud máxima',
+      'field' => 'character_maximum_length'
+    ),
+    array(
+      'data' => 'Valor por defecto',
+      'field' => 'column_default'
+    ),
+    array(
+      'data' => 'Tipo de restricción',
+      'field' => 'constraint_type'
+    ),
+    array(
+      'data' => 'Tabla relacionada',
+      'field' => 'ref_table_name'
+    ),
+//    array(
+//      'data' => 'Campo de la tabla foránea',
+//      'field' => 'ref_column_name'
+//    )
+  );
+
+  $output .= '<ul>';
+  foreach ($data as $table_name => $t) {
+    $output .= '<li>';
+    $output .= '<h1>';
+    $output .= '<a name="' . $table_name . '">Tabla ' . $table_name . '</a>';
+    $output .= '</h1>';
+    $first = true;
+    $th = '<th>Columna</th>';
+    $td = '';
+    foreach ($t['fields'] as $field_name => $f) {
+      $td .= '<tr>';
+      $td .= '<td>' . $field_name . '</td>';
+      foreach ($header as $h) {
+        if ($first) {
+          $th .= '<th>' . $h['data'] . '</th>';
+        }
+
+        $td .= '<td>';
+        if ($h['field'] == 'ref_table_name') { 
+          if ($field_name == 'id') { 
+            if (isset($t['refs']) && is_array($t['refs'])) {
+              $td .= '<ul>';
+              foreach($t['refs'] as $table_name) {
+                $td .= '<li>';
+                $td .= '<a href="#' . $table_name . '">';
+                $td .= $table_name;
+                $td .= '</a>';
+                $td .= '</li>';
+              }
+              $td .= '</ul>';
+            } else {
+              $td .= '&nbsp;';
+            }
+          } else {
+            if (!empty($f[$h['field']])) {
+              $td .= '<a href="#' . $f[$h['field']] . '">';
+              $td .= $f[$h['field']];
+              $td .= '</a>';
+            } else {
+              $td .= '&nbsp;';
+            }
+          }
+        } else {
+          $td .= $f[$h['field']];
+        }
+        $td .= '</td>';
+      }
+      $td .= '</tr>';
+      $first = false;
+    }
+    $output .= '<table><tr>' . $th . '</tr>' . $td . '</table>';
+    $output .= '</li>';
+
+  }
+  $output .= '</ul>';
+
+  return $output;
 }
 
 
