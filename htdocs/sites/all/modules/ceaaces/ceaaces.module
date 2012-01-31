@@ -107,6 +107,14 @@ function ceaaces_admin() {
     '#date_year_range' => '-100:+20'
   );
 
+  //ceaaces_evaluacion_msg_fuera_tiempo
+  $form['ceaaces_evaluacion_msg_fuera_tiempo'] = array(
+    '#type' => 'textarea', 
+    '#title' => t('Mensaje fuera del tiempo'), 
+    '#description' => t('Mensaje a representantes de IES que ingresan al sistema fuera del tiempo. Las etiquetas disponibles son: !tiempo_actual, !tiempo_maximo.'), 
+    '#default_value' => variable_get('ceaaces_evaluacion_msg_fuera_tiempo', 'Envío de archivos Fuera del límite, Periodo Vigente (24-Enero-2012:00:00 a 30-Ene-2011:24:00)')
+  );
+
   /*
   $form['ceaaces_usuario'] = array(
     '#type' => 'textfield', 
@@ -831,14 +839,21 @@ function ceaaces_evaluacion() {
   if (!user_access('bypass control access by date to ceaaces')) {
     $max_date = null;
     if (user_access('access all ceaaces institutes')) {
-      $max_date = strtotime(variable_get('ceaaces_evaluacion_institutos_max_date', '+1 day'));
+      $max_date = variable_get('ceaaces_evaluacion_institutos_max_date', '+1 day');
     } else if (user_access('access all ceaaces universities')) {
-      $max_date = strtotime(variable_get('ceaaces_evaluacion_universidades_max_date', '+1 day'));
+      $max_date = variable_get('ceaaces_evaluacion_universidades_max_date', '+1 day');
     }
     if (!empty($max_date)) {
+      $max_date = strtotime($max_date);
       if (time() > $max_date) {
         watchdog('ceaaces', 'Intento de acceso fuera de tiempo para el usuario: ' . $user->name . ', con uid: ' . $user->uid);
-        drupal_set_message('El sistema ya no permite el envío de archivos, ya que el lapso de días permitidos para su usuario ha concluido. Cualquier duda por favor comuníquese con los números indicados abajo.');
+        drupal_set_message(t(
+          variable_get('ceaaces_evaluacion_msg_fuera_tiempo',''), 
+          array(
+            '!tiempo_actual' => date('d/m/Y H:i:s'),
+            '!tiempo_maximo' => date('d/m/Y H:i:s', $max_date)
+          )
+        ));
         //drupal_goto('logout');
         return '';
       } 
