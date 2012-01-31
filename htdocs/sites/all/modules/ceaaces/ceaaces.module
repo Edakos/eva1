@@ -70,7 +70,8 @@ function ceaaces_perm() {
     'acceso a admin form inscripcion a pruebas en ceaaces',
     'download own ceaaces evaluations', 
     'download all ceaaces evaluations',
-    'download ceaaces evaluation receipt'
+    'download ceaaces evaluation receipt',
+    'bypass control access by date to ceaaces',
   );
 }
 
@@ -86,6 +87,36 @@ function ceaaces_admin() {
     '#default_value' => variable_get('ceaaces_num_max_rows_in_html_table', '20')
   );
 
+  $form['ceaaces_evaluacion_institutos_max_date'] = array(
+    '#type' => 'date_popup', 
+    '#title' => t('Fecha tope para recibir evaluaciones de Institutos'), 
+    '#description' => 'El sistema permitirá el acceso a los representantes de Institutos hasta la fecha indicada.',
+    //'#size' => 10,
+    '#default_value' => variable_get('ceaaces_evaluacion_institutos_max_date', ''),
+//    '#date_format' => 'Y-m-d',
+    '#date_year_range' => '-100:+20'
+  );
+
+  $form['ceaaces_evaluacion_universidades_max_date'] = array(
+    '#type' => 'date_popup', 
+    '#title' => t('Fecha tope para recibir evaluaciones de Universidades'), 
+    '#description' => 'El sistema permitirá el acceso a los representantes de Universidades hasta la fecha indicada.',
+    //'#size' => 10,
+    '#default_value' => variable_get('ceaaces_evaluacion_universidades_max_date', ''),
+//    '#date_format' => 'Y-m-d',
+    '#date_year_range' => '-100:+20'
+  );
+
+  /*
+  $form['ceaaces_usuario'] = array(
+    '#type' => 'textfield', 
+    '#title' => t('Usuario'), 
+    '#description' => 'Usuario.',
+    //'#size' => 10,
+    '#autocomplete_path' => 'user/autocomplete',
+    '#default_value' => variable_get('ceaaces_usuario', '')
+  );
+   */
 
   $form['ceaaces_porcentaje_min_cred_examen'] = array(
     '#type' => 'textfield', 
@@ -258,7 +289,7 @@ function ceaaces_evaluacion_todas_detalles($arg1, $id, $page_return = NULL) {
   }
 
 
-  $output .= '<a href="/evaluacion_todas' . (!empty($page_return) ? '?' . base64_decode($page_return) : '') . '">&laquo;Regresar al listado de IES</a>';
+  $output .= "<a href='/evaluacion_todas" . (!empty($page_return) ? '?' . base64_decode(urldecode($page_return)) : '') . "'>&laquo;Regresar al listado de IES</a>";
   $output .= '<div>&nbsp;</div>';
 
   $output .= '<table>';
@@ -439,6 +470,11 @@ function ceaaces_evaluacion_todas() {
       'field'=> 'nombre_contacto'
     ),
     array(
+      //'data' => '<img src="/sites/default/files/green-red.png" title="Activo/Inactivo" width="20px" height="20px">',//no funciona con el regresar del detalle
+      'data' => 'Estado',
+      'field' => 'cambio_clave'
+    ), //columna de activado/no activado
+    array(
       'data' => 'último archivo enviado',
       'field'=> 'a_name'
     ),
@@ -488,21 +524,29 @@ function ceaaces_evaluacion_todas() {
     foreach ($_GET as $k => $v) {
       $page_return[] = $k . '=' . $v;
     }
-    $page_return = '/' . base64_encode(implode('&', $page_return));
+    $page_return = '/' . urlencode(base64_encode(implode('&', $page_return)));
 
     $data[] = array(
       '<strong>' . $num . '.</strong>',
       $row['codigo'], 
       $row['i_name'], 
 //      $row['nombre_contacto'], 
-      (empty($row['nombre_contacto']) ? '<i>(Contacto no registrado)</i>' : '<a href="mailto:' . $row['email_contacto'] . '">' . $row['nombre_contacto']) . '</a>' . (($row['cambio_clave'] == 1) ? '' : '<br><i><span style="color:#900;">(Usuario no activado con cambio de clave)</span></i>'),
+      //(empty($row['nombre_contacto']) ? '<i>(Contacto no registrado)</i>' : '<a href="mailto:' . $row['email_contacto'] . '">' . $row['nombre_contacto']) . '</a>' . (($row['cambio_clave'] == 1) ? '' : '<br><i><span style="color:#900;">(Usuario no activado con cambio de clave)</span></i>'),
+      (empty($row['nombre_contacto']) ? '<i>(Contacto no registrado)</i>' : '<a href="mailto:' . $row['email_contacto'] . '">' . $row['nombre_contacto']) . '</a>',
+      '<img src="/sites/default/files/' . (($row['cambio_clave'] == 1) ? 'green': 'red') . '.png" width="20px" height="20px" title="' . (($row['cambio_clave'] == 1) ? 'Usuario activado': 'Usuario no activado con cambio de clave') . '">',
       //$row['a_name'],
       (empty($row['a_id'])) ? '<i>El Instituto no tiene archivos enviados.</i>' : '<a href="evaluacion_descargar?file=' . $row['a_id'] . '"><img src="/sites/default/files/' . $extension  . '.png" width="20px" height="20px">&nbsp;' . ceaaces_evaluacion_comprobante_codigo($row['a_id']) . '.' . $extension . '</a>',
 
-      '<a href="/evaluacion_todas/detalles/' . $row['id'] . $page_return . '"><img src="/sites/default/files/lupa.png" width="20px" height="20px" title="Mostrar detalles"></a>'
+      '<a href="/evaluacion_todas/detalles/' . $row['id'] . $page_return . '"><img src="/sites/default/files/lupa.png" width="20px" height="20px" title="Mostrar detalles"></a>' 
     );
   }
-  $output .= theme('table', $header, $data);
+
+  $table = theme('table', $header, $data);
+
+  //$output .= htmlentities($table);
+  //$table = t($table, array('>Activo<' => '><img src="/sites/default/files/green-red.png" title="Activo/Inactivo" width="20px" height="20px"><'));
+  //$table = implode('><img src="/sites/default/files/green-red.png" title="Usuario Activo / Inactivo" width="20px" height="20px"><', explode('>Activo<', $table));
+  $output .= $table;
 
   $query_num_pages = explode(' FROM ev_ies ', $query);
   $num_pages = db_result(db_query("SELECT count(*) FROM ev_ies " . $query_num_pages[1]));
@@ -677,24 +721,25 @@ function ceaaces_user($op, &$edit, &$account, $category = NULL) {
     case "update":
 
       if (user_access('ev_ies update')) { //Solo si quien actualiza la informacion del usuario tiene el permiso "ev_ies update", quien por lo general solo es el administrador
-        watchdog('hook_user:update', 'edit[roles] : ' . serialize($edit['roles']) . ' | account->roles: ' . serialize($account->roles));
+        $name = (isset($edit['name']) && !empty($edit['name'])) ? $edit['name'] : $account->name;
+        watchdog('hook_user:update', 'for user "' . $name . '" (uid ' . $account->uid . '): edit[roles] : ' . serialize($edit['roles']) . ' | account->roles: ' . serialize($account->roles));
         if ((!isset($edit['roles'][8]) && isset ($account->roles[8])) || (!isset($edit['roles'][11]) && isset ($account->roles[11]))) { //quitando rol de representante de instituto(8) o de universidad (11)
-          watchdog('---', 'DROP: updating to null ev_ies where codigo = ' . $account->name);
-          $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $account->name . "'"));
+          watchdog('---', 'DROP: updating to null ev_ies where codigo = ' . $name);
+          $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $name . "'"));
           if (!empty($ies)) {
-            db_query("UPDATE ev_ies SET uid=NULL WHERE codigo='" . $account->name . "'");
-            drupal_set_message('Se ha desvinculado al usuario "' . $account->name . '" de una IES cuyo código es el mismo.');
+            db_query("UPDATE ev_ies SET uid=NULL WHERE codigo='" . $name . "'");
+            drupal_set_message('Se ha desvinculado al usuario "' . $name . '" de una IES cuyo código es el mismo.');
           } else {
-            form_set_error('', 'No se pudo desvincular al usuario "' . $account->name . '" de su IES. No se encontró la IES con código "' . $account->name . '".');
+            form_set_error('', 'No se pudo desvincular al usuario "' . $name . '" de su IES. No se encontró la IES con código "' . $name . '".');
           }
         } else if ((isset($edit['roles'][8]) && !isset ($account->roles[8])) || (isset($edit['roles'][11]) && !isset ($account->roles[11]))) {//agregando  rol de representante de instituto(8) o de universidad (11)
-          watchdog('---', 'ADD: updating to ' . $account->uid . ' ev_ies = ' . $account->name);
-          $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $account->name . "'"));
+          watchdog('---', 'ADD: updating to ' . $account->uid . ' ev_ies = ' . $name);
+          $ies = db_result(db_query("SELECT id FROM ev_ies WHERE codigo='" . $name . "'"));
           if (!empty($ies)) {
-            db_query("UPDATE ev_ies SET uid=" . $account->uid . " WHERE codigo='" . $account->name . "'");
-            drupal_set_message('Se ha vinculado al usuario "' . $account->name . '" con una IES cuyo código es el mismo.');
+            db_query("UPDATE ev_ies SET uid=" . $account->uid . " WHERE codigo='" . $name . "'");
+            drupal_set_message('Se ha vinculado al usuario "' . $name . '" con una IES cuyo código es el mismo.');
           } else {
-            form_set_error('', 'No se pudo vincular al usuario "' . $account->name . '" con una IES. No se encontró la IES con código "' . $account->name . '".');
+            form_set_error('', 'No se pudo vincular al usuario "' . $name . '" con una IES. No se encontró la IES con código "' . $name . '".');
           }
         }
       }
@@ -781,6 +826,26 @@ function ceaaces_block($op = 'list', $delta = 0) {
  */
 function ceaaces_evaluacion() {
   global $user;
+
+  //Control de acceso al sistema hasta la fecha indicada en la configuración:
+  if (!user_access('bypass control access by date to ceaaces')) {
+    $max_date = null;
+    if (user_access('access all ceaaces institutes')) {
+      $max_date = strtotime(variable_get('ceaaces_evaluacion_institutos_max_date', '+1 day'));
+    } else if (user_access('access all ceaaces universities')) {
+      $max_date = strtotime(variable_get('ceaaces_evaluacion_universidades_max_date', '+1 day'));
+    }
+    if (!empty($max_date)) {
+      if (time() > $max_date) {
+        watchdog('ceaaces', 'Intento de acceso fuera de tiempo para el usuario: ' . $user->name . ', con uid: ' . $user->uid);
+        drupal_set_message('El sistema ya no permite el envío de archivos, ya que el lapso de días permitidos para su usuario ha concluido. Cualquier duda por favor comuníquese con los números indicados abajo.');
+        //drupal_goto('logout');
+        return '';
+      } 
+    }
+  }
+
+  //Obteniendo la información a desplegar:
   $num = db_result(db_query('SELECT count(*) FROM ev_log WHERE uid=' . $user->uid . ' AND tipo=1'));
   if ($num == 0) {
     drupal_set_message('Bienvenido al sistema de Gestión de Información de las Instituciones de Educación Superior. Usted ha ingresado con la clave proporcionada por CEAACES, la cual debe ser cambiada para poder hacer uso de este sistema. Por favor sívase utilizar el siguiente formulario para realizar el cambio de clave indicado.');

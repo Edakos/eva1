@@ -506,8 +506,9 @@ function webfm_nodeapi(&$node, $op, $teaser) {
         array_walk($files, 'intval');//Don't trust your Inputs. Forcing all values to int.
         webfm_dbupdate_attach($node->nid, $files);
 
+        //if i18nsync is not there this will just return an empty array
+        $i18nsync_nodeapi = variable_get('i18nsync_nodeapi_' . $node->type, array()); 
         //If this field is set to syncing we keep the POST Data othrwise we drop it
-        $i18nsync_nodeapi = variable_get('i18nsync_nodeapi_' . $node->type, FALSE);
         if (!in_array('webfm_attachments_sync', $i18nsync_nodeapi)) {
           unset($_POST['attachlist']);
         }
@@ -724,8 +725,12 @@ function webfm_attach_attached_form($node) {
     array_walk($attachlist, 'intval');//Don't trust your Inputs. Forcing all values to int.
     $attachlist = implode(',', $attachlist);
     $form['new']['attachlist']['#default_value'] = $attachlist;
+  } elseif (isset($node->attachlist) and empty($node->attachlist)) {
+    // this case applies when we are previewing but no attachments are left in the list
+    // we then set this to a space because the value get reset to the original value
+    // if the default_value is empty
+    $form['new']['attachlist']['#default_value'] = ' ';
   }
-
   return $form;
 }
 
@@ -991,7 +996,7 @@ function webfm_reload_upload($url, $confirm_form = '') {
  * Ajax post requests
  */
 function webfm_ajax() {
-  global $user, $node;
+  global $user, $node, $base_url;
 
   //3 possible outcomes - the user is either an admin, user or prohibited
   if (($user->uid == 1) || user_access('administer webfm')) {
@@ -1506,6 +1511,8 @@ function webfm_ajax() {
           // in the table, so avoid fetching those.
           // For new nodes and comments we can't get attachments from the database.
           $node_str = trim(drupal_strtolower(_webfm_utf8urldecode($_POST["param0"])));
+          $node_str = trim(str_replace($base_url, '', $node_str), '/');
+          $node_str = drupal_get_normal_path($node_str);
           // We edit an existing node: Fetch from database.
           if (strpos($node_str, '/edit')) {
             $node_str = str_replace('/edit', '', $node_str);
@@ -2685,49 +2692,61 @@ function _webfm_attach_new_window($status = NULL) {
  * @return boolean
  */
 function _webfm_check_access($filepath = NULL, $f = NULL) {
-  //got root? go ahead
+  global $user;
+
+  //If user is allowed to administer webfm: Allow
   if (user_access('administer webfm')) {
     return TRUE;
   }
 
-  //at first: get the file object
+  //At first: get the file object
   if (!is_null($filepath) and is_null($f)) {
     $f = webfm_get_file_record(NULL, $filepath);
   }
+  //If no object can be found:
   if (!is_object($f)) {
     return FALSE;
   }
 
+  //If it is the users own file: Allow.
+  if($f->uid === $user->uid) {
+      return TRUE;
+  }
+
+  //If File is available to the public: Allow
   if ($f->perm & WEBFM_FILE_ACCESS_PUBLIC_VIEW) {
-    //file is available to the public
-    // $f->perm is set to Public Download and WEBFM_FILE_ACCESS_PUBLIC_VIEW is still TRUE
+    // $f->perm is set to Public Download & WEBFM_FILE_ACCESS_PUBLIC_VIEW  = TRUE
     return TRUE;
   }
 
-  if ( user_access('access webfm') AND (webfm_file_view_access($f) OR webfm_file_mod_access($f)) ) {
+  //If User is allowed to access webfm and allowed to view the file or to modify the file: Allow
+  if (user_access('access webfm') AND (webfm_file_view_access($f) OR webfm_file_mod_access($f))) {
     return TRUE;
   }
 
-  if ( user_access('access webfm') OR user_access('view webfm attachments') ) {
-    $webfm_attach_result = db_query('SELECT nid,cid FROM {webfm_attach} WHERE fid = %d', $f->fid);
-    while ($webfm_attach_data = db_fetch_array($webfm_attach_result)) {
+  //If the user is allowed to view attached files: Access rights depend on the node the file is attached to.
+  //If the user is allowed to view the node: Allow
+  if (user_access('view webfm attachments')) {
+      //At first: Get node or comment ids this file is attached to
+      $webfm_attach_result = db_query('SELECT nid,cid FROM {webfm_attach} WHERE fid = %d', $f->fid);
 
-      //handle files attached to comments
-      if ($webfm_attach_data['cid'] != 0) {
-        // For a comment, a user must be able to view the parent node and have "access_comments".
-        if ( !user_access('access comments') ) {
-          continue;
-        }
-        $comment = _comment_load($dbfid['cid']);
-        $webfm_attach_data['nid'] = $comment->nid;
+      //Loop over all those nodes until we find one which the user has access to
+      while ($webfm_attach_data = db_fetch_array($webfm_attach_result)) {
+          //Handle files attached to comments
+          //For a comment, a user must be able to view the parent node and have "access_comments".
+          if ($webfm_attach_data['cid'] != 0) {
+              if (!user_access('access comments')) {
+                  continue;
+              }
+          $comment = _comment_load($webfm_attach_data['cid']);
+          $webfm_attach_data['nid'] = $comment->nid;
+          }
+          //Handle files attached to nodes
+          $node = node_load($webfm_attach_data['nid']);
+          if (node_access('view', $node)) {
+              return TRUE;
+          }
       }
-
-      //handle files attached to nodes
-      $node = node_load($dbfid['nid']);
-      if (node_access('view', $node)) {
-        return TRUE;
-      }
-    }
   }
 
   return FALSE;
