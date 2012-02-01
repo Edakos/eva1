@@ -39,7 +39,7 @@
 		<type label="Inet CIDR Addr" length="0" sql="CIDR" quote="'"/>
 		<type label="Geometry" length="0" sql="GEOMETRY" quote="'"/>
 	</group>
-</datatypes><table x="468" y="28" name="ev_criterio">
+</datatypes><table x="460" y="27" name="ev_criterio">
 <row name="id" null="0" autoincrement="1">
 <datatype>SERIAL</datatype>
 </row>
@@ -52,7 +52,8 @@
 </row>
 <row name="codigo" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
-<default>NULL</default></row>
+<default>NULL</default><comment>Código del criterio</comment>
+</row>
 <row name="descripcion" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
 <default>NULL</default></row>
@@ -62,6 +63,7 @@
 </row>
 <row name="orden" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
+<comment>Orden de despliegue del criterio.</comment>
 </row>
 <row name="created" null="0" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
@@ -72,6 +74,7 @@
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
+<comment>Los criterios por medio de los cuales se calculará la calificación de la IES</comment>
 </table>
 <table x="617" y="2" name="ev_indicador">
 <row name="id" null="0" autoincrement="1">
@@ -105,6 +108,7 @@
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
+<comment>Indicadores de un criterio específico, los cuales son calculados a través de una fórmula.</comment>
 </table>
 <table x="773" y="6" name="ev_formula">
 <row name="id" null="0" autoincrement="1">
@@ -232,7 +236,8 @@
 </row>
 <row name="codigo" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
-<default>NULL</default></row>
+<default>NULL</default><comment>Código de la IES</comment>
+</row>
 <row name="name" null="1" autoincrement="0">
 <datatype>VARCHAR(1000)</datatype>
 </row>
@@ -267,6 +272,7 @@
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
+<comment>Institutos de Educación Superior</comment>
 </table>
 <table x="106" y="864" name="ev_provincia">
 <row name="id" null="0" autoincrement="1">
@@ -1277,6 +1283,7 @@
 </row>
 <row name="name" null="1" autoincrement="0">
 <datatype>VARCHAR(1000)</datatype>
+<comment>Nombre del archivo.</comment>
 </row>
 <row name="notes" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -1293,12 +1300,15 @@
 </row>
 <row name="md5" null="1" autoincrement="0">
 <datatype>VARCHAR(100)</datatype>
+<comment>Huella digital MD5 calculado en el momento de subida del archivo.</comment>
 </row>
 <row name="path" null="1" autoincrement="0">
 <datatype>VARCHAR(200)</datatype>
+<comment>Ruta en donde fue colocado el archivo al momento de la subida.</comment>
 </row>
 <row name="extension" null="1" autoincrement="0">
 <datatype>VARCHAR(10)</datatype>
+<comment>Extensión del archivo.</comment>
 </row>
 <row name="ies_name" null="1" autoincrement="0">
 <datatype>VARCHAR(100)</datatype>
@@ -1309,6 +1319,7 @@
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
+<comment>Archivos subidos al sistema.</comment>
 </table>
 <table x="63" y="30" name="ev_tipo_archivo">
 <row name="id" null="0" autoincrement="1">
@@ -1316,6 +1327,7 @@
 </row>
 <row name="name" null="1" autoincrement="0">
 <datatype>VARCHAR(1000)</datatype>
+<comment>Nombre del archivo</comment>
 </row>
 <row name="notes" null="1" autoincrement="0">
 <datatype>TEXT</datatype>
@@ -1329,6 +1341,7 @@
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
+<comment>Tipos de archivo que el sistema puede manejar.</comment>
 </table>
 <table x="1138" y="1933" name="ev_log">
 <row name="id" null="0" autoincrement="1">

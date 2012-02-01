@@ -173,7 +173,7 @@ function ceaaces_menu() {
   
   // Put your menu items here.
   $items['admin/settings/ceaaces'] = array(
-    'title' => 'Configuración CEAACES', 
+    'title' => 'Configuración CEAACES-GIIES', 
     'access arguments' => array('administer ceaaces'), 
     'type' => MENU_NORMAL_ITEM,
     'page callback' => 'drupal_get_form',
@@ -256,7 +256,7 @@ function ceaaces_menu() {
   //ceaaces_data_dictionary
 
   $items['admin/settings/ceaaces_data_dictionary'] = array(
-    'title' => 'Consulta de Diccionario de Datos de CEAACES', 
+    'title' => 'Consulta de Diccionario de Datos de CEAACES-GIIES', 
     'access arguments' => array('administer ceaaces'), 
     'type' => MENU_NORMAL_ITEM,
     'page callback' => 'ceaaces_data_dictionary',
@@ -1434,7 +1434,9 @@ function ceaaces_data_dictionary() {
     c.column_default,
     tc.constraint_type,
     ccu.table_name AS ref_table_name,
-    ccu.column_name AS ref_column_name
+    ccu.column_name AS ref_column_name,
+    desc_t.description AS desc_t,
+    desc_c.description AS desc_c
     FROM 
     information_schema.columns as c
     left outer join information_schema.key_column_usage as kcu
@@ -1443,6 +1445,14 @@ function ceaaces_data_dictionary() {
     ON tc.constraint_name=kcu.constraint_name
     left outer join information_schema.constraint_column_usage as ccu
     ON ccu.constraint_name=tc.constraint_name and not tc.constraint_name is null
+    LEFT OUTER JOIN pg_class as class_t
+    ON c.table_name = class_t.relname
+    LEFT JOIN pg_description AS desc_t
+    ON class_t.oid = desc_t.objoid AND desc_t.objsubid = 0
+    LEFT OUTER JOIN pg_class as class_c
+    ON c.table_name = class_c.relname
+    LEFT JOIN pg_description AS desc_c
+    ON class_c.oid = desc_c.objoid AND desc_c.objsubid = c.ordinal_position::INTEGER
     WHERE 
     c.table_name LIKE 'ev_%' 
     ORDER BY 
@@ -1453,12 +1463,14 @@ function ceaaces_data_dictionary() {
   while ($field = db_fetch_object($result)) {
     $data[$field->table_name]['fields'][$field->column_name] = array(
       'data_type' => $field->data_type,
+      'desc_c' => $field->desc_c,
       'character_maximum_length' => $field->character_maximum_length,
       'column_default' => $field->column_default,
       'constraint_type' => $field->constraint_type,
       'ref_table_name' => $field->ref_table_name,
       'ref_column_name' => $field->ref_column_name
     );
+    $data[$field->table_name]['desc'] = $field->desc_t;
   }
 
   $query = "
@@ -1489,6 +1501,10 @@ function ceaaces_data_dictionary() {
 
   $header = array(
     array(
+      'data' => 'Descripción',
+      'field' => 'desc_c'
+    ),
+    array(
       'data' => 'Tipo de dato',
       'field' => 'data_type'
     ),
@@ -1507,19 +1523,23 @@ function ceaaces_data_dictionary() {
     array(
       'data' => 'Tabla relacionada',
       'field' => 'ref_table_name'
-    ),
-//    array(
-//      'data' => 'Campo de la tabla foránea',
-//      'field' => 'ref_column_name'
-//    )
+    )
   );
 
   $output .= '<ul>';
   foreach ($data as $table_name => $t) {
     $output .= '<li>';
-    $output .= '<h1>';
-    $output .= '<a name="' . $table_name . '">Tabla ' . $table_name . '</a>';
-    $output .= '</h1>';
+    $output .= '<div>&nbsp;</div>';
+    $output .= '<div>&nbsp;</div>';
+    $output .= '<div>&nbsp;</div>';
+    $output .= '<div><div>';
+    $output .= '<h2>';
+    $output .= 'Tabla <a name="' . $table_name . '">' . $table_name . '</a>';
+    $output .= '</h2>';
+    $output .= '<div>' . $t['desc'] . '</div>';
+    $output .= '</div><div style="text-align:right;">';
+    $output .= '<a href="/admin/content/' . $table_name . '">(mostrar sus datos)</a>';
+    $output .= '</div></div>';
     $first = true;
     $th = '<th>Columna</th>';
     $td = '';
