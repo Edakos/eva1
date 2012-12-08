@@ -1,3 +1,5 @@
 afuera
 
 **EDITADO desde centos 202
+
+desde ubuntu novatech
